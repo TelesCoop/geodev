@@ -1,4 +1,4 @@
- COUNTRIES = (
+COUNTRIES = (
     ("Afrique du Sud", "Afrique du Sud"),
     ("Algérie", "Algérie"),
     ("Angola", "Angola"),
