@@ -24,12 +24,12 @@ const map = new mapboxgl.Map({
     zoom: 4
 });
 
-const elementsPerCountry = JSON.parse('{{ elements_per_country | escapejs }}');
+const ressourcesPerCountry = JSON.parse('{{ ressources_per_country | escapejs }}');
 const countryParameters = JSON.parse('{{ country_parameters | escapejs }}');
-console.log("###", elementsPerCountry, countryParameters);
+console.log("###", ressourcesPerCountry, countryParameters);
 
 // adding ressources per country to the map
-for (const params of Object.entries(elementsPerCountry)) {
+for (const params of Object.entries(ressourcesPerCountry)) {
     const countryKey = params[0];
     const ressources = params[1];
 
