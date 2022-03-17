@@ -1,0 +1,73 @@
+// fonts
+$family-sans-serif: Inter, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif !default
+$family-primary: $family-sans-serif
+$family-secondary: $family-primary
+@font-face
+  font-family: 'Inter'
+  font-style: normal
+  font-weight: 400
+  src: url('/static/fonts/inter/inter-v8-latin-regular.eot') /* IE9 Compat Modes */
+  src: local(''), url('/static/fonts/inter/inter-v8-latin-regular.eot?#iefix') format('embedded-opentype'), url('/static/fonts/inter/inter-v8-latin-regular.woff2') format('woff2'), url('/static/fonts/inter/inter-v8-latin-regular.woff') format('woff'), url('/static/fonts/inter/inter-v8-latin-regular.ttf') format('truetype'), url('/static/fonts/inter/inter-v8-latin-regular.svg#IBMPlexSerif') format('svg')
+
+@font-face
+  font-family: 'Inter'
+  font-style: normal
+  font-weight: 700
+  src: url('/static/fonts/inter/inter-v8-latin-700.eot') /* IE9 Compat Modes */
+  src: local(''), url('/static/fonts/inter/inter-v8-latin-700.eot?#iefix') format('embedded-opentype'), url('/static/fonts/inter/inter-v8-latin-700.woff2') format('woff2'), url('/static/fonts/inter/inter-v8-latin-700.woff') format('woff'), url('/static/fonts/inter/inter-v8-latin-700.ttf') format('truetype'), url('/static/fonts/inter/inter-v8-latin-700.svg#Inter') format('svg')
+
+// bulma colors
+$yellow: #FFE08A
+$purple: #324176
+$orange: #E56934
+$grey: #8698D6
+$blue: #209CEE
+$green: #48C78E
+$red: #FF3860
+
+// derived colors
+$primary: $orange
+$info: $blue
+$link: $purple
+$warning: $yellow
+$danger: $red
+
+// custom colors
+$agriculture: #9F6B04
+$floors: #7A2906
+$biodiversity: #3C7E07
+$water: #0F7BC2
+$risks: #EA3576
+$health: #3748E1
+$cities: #693BB3
+$forest: #058566
+@import "node_modules/bulma/sass/utilities/functions"
+$agriculture-invert: findColorInvert($agriculture)
+$floors-invert: findColorInvert($floors)
+$biodiversity-invert: findColorInvert($biodiversity)
+$water-invert: findColorInvert($water)
+$risks-invert: findColorInvert($risks)
+$health-invert: findColorInvert($health)
+$cities-invert: findColorInvert($cities)
+$forest-invert: findColorInvert($forest)
+$custom-colors: ("agriculture": ($agriculture, $agriculture-invert), "floors": ($floors, $floors-invert), "biodiversity": ($biodiversity, $biodiversity-invert), "water": ($water, $water-invert), "risks": ($risks, $risks-invert), "health": ($health, $health-invert), "cities": ($cities, $cities-invert), "forest": ($forest, $forest-invert))
+
+// other custom
+$gap: 24px
+$desktop: 1024px
+$widescreen: 1216
+$fullhd: 1408
+
+// Import only what you need from Bulma
+@import "node_modules/bulma/sass/utilities/_all"
+@import "node_modules/bulma/sass/base/_all"
+@import "node_modules/bulma/sass/helpers/color"
+@import "node_modules/bulma/sass/helpers/typography"
+@import "node_modules/bulma/sass/helpers/spacing"
+@import "node_modules/bulma/sass/elements/button"
+@import "node_modules/bulma/sass/elements/container"
+@import "node_modules/bulma/sass/elements/title"
+@import "node_modules/bulma/sass/form/_all"
+@import "node_modules/bulma/sass/components/navbar"
+@import "node_modules/bulma/sass/layout/section"
+@import "node_modules/bulma/sass/grid/columns"
