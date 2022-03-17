@@ -1,0 +1,38 @@
+{% load static i18n wagtailcore_tags wagtailuserbar %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+
+  <title>
+    {% block title %}
+      {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+    {% endblock %}
+    {% block title_suffix %}
+      {% wagtail_site as current_site %}
+      {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
+    {% endblock %}
+  </title>
+  <meta name="description" content="{{ search_description }}"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="{% static 'css/bulma.geodev.css' %}">
+  <link rel="stylesheet" href="{% static 'css/geodev.css' %}">
+
+  <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}" type="image/x-icon"><!-- 32×32 -->
+
+  {% block extra_css %}
+    {# Override this in templates to add extra stylesheets #}
+  {% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+{% wagtailuserbar %}
+{% include "components/navbar.html" %}
+{% block content %}{% endblock %}
+{% include "components/footer.html" %}
+{% block extra_js %}{% endblock %}
+<script src="{% static 'js/geodev.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        width="{{ size|default:'24' }}"
+        height="{{ size|default:'24' }}"
+>
+  <path fill="none" d="M0 0h24v24H0z"/>
+  {% if name == "mail-line" %}
+    <path fill="{{ color|default:'currentColor' }}"
+          d="M3 3h18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm17 4.238l-7.928 7.1L4 7.216V19h16V7.238zM4.511 5l7.55 6.662L19.502 5H4.511z"
+    />
+  {% endif %}
+  {% if name == "lock-line" %}
+    <path fill="{{ color|default:'currentColor' }}"
+          d="M19 10h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V11a1 1 0 0 1 1-1h1V9a7 7 0 1 1 14 0v1zM5 12v8h14v-8H5zm6 2h2v4h-2v-4zm6-4V9A5 5 0 0 0 7 9v1h10z"
+    />
+  {% endif %}
+  {% if name == "arrow-right" %}
+    <path fill="{{ color|default:'currentColor' }}"
+          d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+    />
+  {% endif %}
+  {% if name == "map-line-2" %}
+    <path fill="{{ color|default:'currentColor' }}"
+          d="M2 5l7-3 6 3 6.303-2.701a.5.5 0 0 1 .697.46V19l-7 3-6-3-6.303 2.701a.5.5 0 0 1-.697-.46V5zm14 14.395l4-1.714V5.033l-4 1.714v12.648zm-2-.131V6.736l-4-2v12.528l4 2zm-6-2.011V4.605L4 6.319v12.648l4-1.714z"/>
+  {% endif %}
+</svg>

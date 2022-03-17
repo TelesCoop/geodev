@@ -1,0 +1,72 @@
+{% load static %}
+
+<div class="background-light" style="position: fixed; top: 0; left: 0; right: 0">
+  <div class="container">
+    <nav class="navbar" id="navbar" role="navigation" aria-label="main navigation" style="background: none">
+      <div class="navbar-brand">
+        <a class="navbar-item logo-holder" href="https://bulma.io">
+          <img src="/static/img/geodev.png" width="256" height="47">
+          <span class="navbar-additional-logo">
+            <img src="/static/img/theia.png" width="40" height="42">
+            <span style="max-width: 198px;display: inline-block;position: relative;bottom: 6px;"
+                  class="is-size-7 ml-2">Animation Régionale Pays du Sud du pôle Theia</span>
+          </span>
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar-menu">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbar-menu" class="navbar-menu">
+        <div class="navbar-end">
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              Le réseau GéoDEV
+            </a>
+            <div class="navbar-dropdown">
+              <a class="navbar-item">
+                About
+              </a>
+              <a class="navbar-item">
+                Jobs
+              </a>
+              <a class="navbar-item">
+                Contact
+              </a>
+              <hr class="navbar-divider">
+              <a class="navbar-item">
+                Report an issue
+              </a>
+            </div>
+          </div>
+          <a class="navbar-item">
+            Actualités
+          </a>
+          <a class="navbar-item">
+            Newsletter
+          </a>
+          <a class="navbar-item">
+            Contact
+          </a>
+          <div class="navbar-item navbar-end-container">
+            <div class="buttons navbar-additional-buttons" style="margin-bottom: -8px">
+              <a class="button is-small is-text mr-0">Connexion</a>
+              <a class="button is-small is-text">Inscription</a>
+            </div>
+            <div class="buttons mb-0">
+              <a class="button is-primary">
+                <span class="icon">
+                  {% include "components/icon.html" with size="16" name="map-line-2" %}
+                </span>
+                <span>Ressources</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>

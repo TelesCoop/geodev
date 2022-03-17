@@ -26,7 +26,7 @@ $green: #48C78E
 $red: #FF3860
 
 // derived colors
-$primary: $orange
+$primary: $purple
 $info: $blue
 $link: $purple
 $warning: $yellow
@@ -51,12 +51,24 @@ $health-invert: findColorInvert($health)
 $cities-invert: findColorInvert($cities)
 $forest-invert: findColorInvert($forest)
 $custom-colors: ("agriculture": ($agriculture, $agriculture-invert), "floors": ($floors, $floors-invert), "biodiversity": ($biodiversity, $biodiversity-invert), "water": ($water, $water-invert), "risks": ($risks, $risks-invert), "health": ($health, $health-invert), "cities": ($cities, $cities-invert), "forest": ($forest, $forest-invert))
+// Text colors
+$text: $purple
 
 // other custom
 $gap: 24px
 $desktop: 1024px
-$widescreen: 1216
-$fullhd: 1408
+$widescreen: 1216px
+$fullhd: 1408px
+$navbar-height: 10.6rem
+$navbar-item-img-max-height: 47px
+// we use svg icons and have to adjust the height inside buttons
+.button
+  .icon
+    &,
+    &.is-small,
+    &.is-medium,
+    &.is-large
+      height: 1.2em !important
 
 // Import only what you need from Bulma
 @import "node_modules/bulma/sass/utilities/_all"
@@ -70,4 +82,5 @@ $fullhd: 1408
 @import "node_modules/bulma/sass/form/_all"
 @import "node_modules/bulma/sass/components/navbar"
 @import "node_modules/bulma/sass/layout/section"
+@import "node_modules/bulma/sass/layout/footer"
 @import "node_modules/bulma/sass/grid/columns"

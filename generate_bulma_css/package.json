@@ -4,8 +4,8 @@
   "description": "generate bulma css",
   "main": "geodev.sass",
   "scripts": {
-    "css-build": "node-sass geodev.sass ../static/css/bulma.geodev.css",
-    "minify": "minify ../static/css/bulma.geodev.css > ../static/css/bulma.geodev.min.css"
+    "css-build": "node-sass geodev.sass ../geodev/static/css/bulma.geodev.css",
+    "minify": "minify ../geodev/static/css/bulma.geodev.css > ../geodev/static/css/bulma.geodev.min.css"
   },
   "author": "TelesCoop.fr",
   "license": "MIT",
