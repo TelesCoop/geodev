@@ -30,6 +30,7 @@
 <body class="{% block body_class %}{% endblock %}">
 {% wagtailuserbar %}
 {% include "components/navbar.html" %}
+{# TODO image should be displayed only on widescreen #}
 <img src="{% static 'img/top-background.svg' %}" style="position: fixed; top: 0; z-index: 100">
 <div class="body-content" id="body-content">
   {% block content %}{% endblock %}

@@ -73,6 +73,7 @@ $navbar-item-img-max-height: 47px
     &.is-large
       height: 1.2em !important
 
+
 // Import only what you need from Bulma
 @import "node_modules/bulma/sass/utilities/_all"
 @import "node_modules/bulma/sass/base/_all"
@@ -89,3 +90,11 @@ $navbar-item-img-max-height: 47px
 @import "node_modules/bulma/sass/layout/section"
 @import "node_modules/bulma/sass/layout/footer"
 @import "node_modules/bulma/sass/grid/columns"
+
++until-widescreen
+  .is-flex-direction-column-until-widescreen
+    flex-direction: column
+
++widescreen
+  .columns-widescreen
+    display: flex

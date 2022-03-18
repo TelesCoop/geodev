@@ -6836,3 +6836,11 @@ a.navbar-item,
   @media screen and (min-width: 1408px) {
     .columns.is-variable.is-8-fullhd {
       --columnGap: 2rem; } }
+
+@media screen and (max-width: 1215px) {
+  .is-flex-direction-column-until-widescreen {
+    flex-direction: column; } }
+
+@media screen and (min-width: 1216px) {
+  .columns-widescreen {
+    display: flex; } }

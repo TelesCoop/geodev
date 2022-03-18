@@ -1,20 +1,23 @@
 {% load static %}
 
 <footer class="footer">
-  <div class="is-flex is-justify-content-space-between container">
-    <div class="is-flex is-align-items-center">
-      <img src="{% static 'img/geodev.png' %}" width="206" height="38">
-      <a href="/legal-notice" class="button is-text">Mentions légales</a>
-      <a href="/legal-notice" class="button is-text">Données personnelles</a>
-      <a href="/legal-notice" class="button is-text">Je donne mon avis sur ce site</a>
-    </div>
-    <div class="is-flex is-align-items-center footer-logos">
-      <img src="{% static 'img/theia.png' %}" alt="Soutenu par Theia" width="62" height="65">
-      <img src="{% static 'img/logo_agropolisfondation.png' %}" alt="Soutenu par la fondation Agropolis" width="115"
-           height="41">
-      <img src="{% static 'img/logo-pia.png' %}"
-           width="75" height="75"
-           alt="Soutenu par le gouvernement au travers du programme Investir l'Avenir">
+  <div class="container">
+    <div class="columns-widescreen is-justify-content-space-between">
+      <div class="column is-8 is-flex is-align-items-center desktop is-flex-direction-column-until-widescreen"
+           style="margin: auto">
+        <img src="{% static 'img/geodev.png' %}" width="206" height="38">
+        <a href="/legal-notice" class="button is-text">Mentions légales</a>
+        <a href="/legal-notice" class="button is-text">Données personnelles</a>
+        <a href="/legal-notice" class="button is-text">Je donne mon avis sur ce site</a>
+      </div>
+      <div class="is-flex is-4 is-justify-content-center footer-logos is-align-items-center">
+        <img src="{% static 'img/theia.png' %}" alt="Soutenu par Theia" width="62" height="65">
+        <img src="{% static 'img/logo_agropolisfondation.png' %}" alt="Soutenu par la fondation Agropolis" width="115"
+             height="41">
+        <img src="{% static 'img/logo-pia.png' %}"
+             width="75" height="75"
+             alt="Soutenu par le gouvernement au travers du programme Investir l'Avenir">
+      </div>
     </div>
   </div>
 </footer>
