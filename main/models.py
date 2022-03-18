@@ -6,11 +6,14 @@ from django.db import models
 from django import forms
 from django.http import Http404
 from taggit.models import TagBase
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.contrib.settings.models import BaseSetting
 from wagtail.contrib.settings.registry import register_setting
-from wagtail.core.fields import RichTextField
+from wagtail.core import blocks
+from wagtail.core.fields import RichTextField, StreamField
+from wagtail.documents.blocks import DocumentChooserBlock
+from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
@@ -20,6 +23,111 @@ from main.countries import COUNTRIES
 from wagtail.core.models import Page
 
 SIMPLE_RICH_TEXT_FIELD_FEATURE = ["bold", "italic", "link"]
+COLOR_CHOICES = (
+    ("blue", "Bleue"),
+    ("pink", "Rose"),
+    ("white", "Blanche"),
+    ("none", "Sans couleur"),
+)
+
+
+def paragraph_block(additional_field, required):
+    return (
+        "paragraph",
+        blocks.RichTextBlock(
+            label="Contenu",
+            features=SIMPLE_RICH_TEXT_FIELD_FEATURE
+            + ["h3", "h4", "ol", "ul"]
+            + additional_field,
+            required=required,
+        ),
+    )
+
+
+class FreeBodyField(models.Model):
+    color_block = (
+        "color",
+        blocks.ChoiceBlock(
+            choices=COLOR_CHOICES,
+            default="none",
+            help_text="Couleur de fond",
+        ),
+    )
+
+    body = StreamField(
+        [
+            # Is h1
+            (
+                "heading",
+                blocks.CharBlock(form_classname="full title", label="Titre de la page"),
+            ),
+            (
+                "section",
+                blocks.StructBlock(
+                    [
+                        color_block,
+                        (
+                            "image",
+                            ImageChooserBlock(
+                                label="Image à côté du paragraphe", required=False
+                            ),
+                        ),
+                        (
+                            "position",
+                            blocks.ChoiceBlock(
+                                choices=[
+                                    ("right", "Droite"),
+                                    ("left", "Gauche"),
+                                ],
+                                required=False,
+                                help_text="Position de l'image",
+                            ),
+                        ),
+                        paragraph_block(["h2"], True),
+                        (
+                            "sub_section",
+                            blocks.ListBlock(
+                                blocks.StructBlock(
+                                    [
+                                        color_block,
+                                        paragraph_block([], False),
+                                        (
+                                            "columns",
+                                            blocks.ListBlock(
+                                                blocks.StructBlock(
+                                                    [
+                                                        color_block,
+                                                        paragraph_block([], False),
+                                                    ],
+                                                    label="Colonne",
+                                                ),
+                                                label="Colonnes",
+                                            ),
+                                        ),
+                                    ],
+                                    label="Sous section",
+                                ),
+                                label="Sous sections",
+                            ),
+                        ),
+                    ],
+                    label="Section",
+                ),
+            ),
+            ("image", ImageChooserBlock()),
+            ("pdf", DocumentChooserBlock()),
+        ],
+        blank=True,
+        verbose_name="Description",
+        help_text="Corps de la page",
+    )
+
+    panels = [
+        StreamFieldPanel("body", classname="full"),
+    ]
+
+    class Meta:
+        abstract = True
 
 
 class TimeStampedModel(models.Model):
@@ -104,11 +212,11 @@ class HomePage(Page):
         null=True,
         blank=True,
         features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
-        verbose_name="Introduction du block des ressources",
+        verbose_name="Introduction du bloc des ressources",
     )
     ressources_block_title = models.CharField(
         blank=True,
-        verbose_name="Titre du block des ressources",
+        verbose_name="Titre du bloc des ressources",
         max_length=64,
         default="Des ressources adaptées à votre profil",
     )
@@ -116,18 +224,18 @@ class HomePage(Page):
         null=True,
         blank=True,
         features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
-        verbose_name="Introduction du block des ressources",
+        verbose_name="Introduction du bloc des ressources",
     )
     ressources_block_explication = RichTextField(
         null=True,
         blank=True,
         features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
-        verbose_name="Explication du block des ressources",
+        verbose_name="Explication du bloc des ressources",
         help_text="Explication présente sous les listes des différents profils",
     )
     news_block_title = models.CharField(
         blank=True,
-        verbose_name="Titre du block des actualités",
+        verbose_name="Titre du bloc des actualités",
         max_length=64,
         default="Dernières actualités",
     )
@@ -194,6 +302,16 @@ class NewsListPage(RoutablePageMixin, Page):
             },
             template="main/news_page.html",
         )
+
+
+class ContentPage(Page, FreeBodyField):
+    class Meta:
+        verbose_name = "Page de contenu"
+        verbose_name_plural = "Pages de contenu"
+
+    subpage_types: List[str] = []
+
+    content_panels = Page.content_panels + FreeBodyField.panels
 
 
 class Map(Page):
