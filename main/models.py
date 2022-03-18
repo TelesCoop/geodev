@@ -8,6 +8,9 @@ from django.http import Http404
 from taggit.models import TagBase
 from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from wagtail.contrib.settings.models import BaseSetting
+from wagtail.contrib.settings.registry import register_setting
+from wagtail.core.fields import RichTextField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
@@ -15,6 +18,8 @@ from wagtail.snippets.models import register_snippet
 from main.countries import COUNTRIES
 
 from wagtail.core.models import Page
+
+SIMPLE_RICH_TEXT_FIELD_FEATURE = ["bold", "italic", "link"]
 
 
 class TimeStampedModel(models.Model):
@@ -35,7 +40,44 @@ class HomePage(Page):
     # HomePage can be created only on the root
     parent_page_types = ["wagtailcore.Page"]
 
-    content_panels = Page.content_panels
+    introduction = RichTextField(
+        null=True,
+        blank=True,
+        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
+        verbose_name="Introduction du block des ressources",
+    )
+    ressources_block_title = models.CharField(
+        blank=True,
+        verbose_name="Titre du block des ressources",
+        max_length=64,
+        default="Des ressources adaptées à votre profil",
+    )
+    ressources_block_introduction = RichTextField(
+        null=True,
+        blank=True,
+        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
+        verbose_name="Introduction du block des ressources",
+    )
+    ressources_block_explication = RichTextField(
+        null=True,
+        blank=True,
+        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
+        verbose_name="Explication du block des ressources",
+        help_text="Explication présente sous les listes des différents profils",
+    )
+    news_block_title = models.CharField(
+        blank=True,
+        verbose_name="Titre du block des actualités",
+        max_length=64,
+        default="Dernières actualités",
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("introduction"),
+    ]
+
+    class Meta:
+        verbose_name = "Page d'accueil"
 
 
 class RessourcesPage(RoutablePageMixin, Page):
@@ -111,6 +153,25 @@ class Map(Page):
 @register_snippet
 class Profile(models.Model):
     name = models.CharField(max_length=100)
+    description = RichTextField(
+        null=True,
+        blank=True,
+        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
+        verbose_name="Description",
+    )
+    icon = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="profiles",
+    )
+
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("description"),
+        ImageChooserPanel("icon"),
+    ]
 
     def __str__(self):
         return self.name
@@ -138,15 +199,44 @@ class ActualityType(TagBase):
 class Ressource(index.Indexed, TimeStampedModel):
     country = models.CharField(max_length=50, choices=COUNTRIES, verbose_name="Pays")
     name = models.CharField(verbose_name="Nom", max_length=100)
-    slug = models.SlugField(max_length=100, verbose_name="Slug (URL de la ressource)", unique=True, default="")
+    slug = models.SlugField(
+        max_length=100,
+        verbose_name="Slug (URL de la ressource)",
+        unique=True,
+        default="",
+    )
     thematics = models.ManyToManyField(
         Thematic, blank=True, verbose_name="Thématiques", related_name="ressources"
+    )
+    profiles = models.ManyToManyField(
+        Profile, blank=True, verbose_name="Profiles", related_name="ressources"
+    )
+    geo_dev_creation = models.BooleanField(
+        default=False, verbose_name="Créé par GeoDEV ?"
+    )
+    source_name = models.CharField(
+        verbose_name="Nom de la source", max_length=100, blank=True
+    )
+    source_link = models.CharField(
+        verbose_name="Lien de la source", max_length=100, blank=True
+    )
+    short_description = RichTextField(
+        null=True,
+        blank=True,
+        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
+        verbose_name="Description courte",
+        help_text="Sera affiché sur la carte de la ressource",
     )
 
     panels = [
         FieldPanel("name"),
+        FieldPanel("slug"),
         FieldPanel("country"),
         FieldPanel("thematics", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("profiles", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("geo_dev_creation"),
+        FieldPanel("source_name"),
+        FieldPanel("source_link"),
     ]
 
     def __str__(self):
@@ -166,7 +256,12 @@ class News(index.Indexed, TimeStampedModel):
         default=datetime.datetime.now,
         help_text="Permet de trier l'ordre d'affichage dans la page des actualités",
     )
-    slug = models.SlugField(max_length=100, verbose_name="Slug (URL de l'actualité)", unique=True, default="")
+    slug = models.SlugField(
+        max_length=100,
+        verbose_name="Slug (URL de l'actualité)",
+        unique=True,
+        default="",
+    )
     image = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
@@ -175,7 +270,11 @@ class News(index.Indexed, TimeStampedModel):
         related_name="+",
     )
     types = models.ManyToManyField(
-        ActualityType, blank=True, verbose_name="Type", related_name="news", help_text="Permet le filtrage des actualités"
+        ActualityType,
+        blank=True,
+        verbose_name="Type",
+        related_name="news",
+        help_text="Permet le filtrage des actualités",
     )
 
     search_fields = [
@@ -198,3 +297,16 @@ class News(index.Indexed, TimeStampedModel):
         verbose_name_plural = "Actualités / Evènements"
         verbose_name = "Actualité / Evènement"
         ordering = ["-publication_date"]
+
+
+@register_setting
+class NewsLetterSettings(BaseSetting):
+    newsLetter = models.URLField(
+        help_text="Lien d'inscription à la lettre d'information",
+        max_length=300,
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        verbose_name = "Inscription à la lettre d'information"
