@@ -27,6 +27,7 @@ $red: #FF3860
 
 // derived colors
 $primary: $purple
+$secondary: $orange
 $info: $blue
 $link: $purple
 $warning: $yellow
@@ -50,9 +51,11 @@ $risks-invert: findColorInvert($risks)
 $health-invert: findColorInvert($health)
 $cities-invert: findColorInvert($cities)
 $forest-invert: findColorInvert($forest)
-$custom-colors: ("agriculture": ($agriculture, $agriculture-invert), "floors": ($floors, $floors-invert), "biodiversity": ($biodiversity, $biodiversity-invert), "water": ($water, $water-invert), "risks": ($risks, $risks-invert), "health": ($health, $health-invert), "cities": ($cities, $cities-invert), "forest": ($forest, $forest-invert))
+$secondary-invert: findColorInvert($secondary)
+$custom-colors: ("agriculture": ($agriculture, $agriculture-invert), "floors": ($floors, $floors-invert), "biodiversity": ($biodiversity, $biodiversity-invert), "water": ($water, $water-invert), "risks": ($risks, $risks-invert), "health": ($health, $health-invert), "cities": ($cities, $cities-invert), "forest": ($forest, $forest-invert), "secondary": ($secondary, $secondary-invert))
 // Text colors
 $text: $purple
+$title-color: $text
 
 // other custom
 $gap: 24px
@@ -76,11 +79,13 @@ $navbar-item-img-max-height: 47px
 @import "node_modules/bulma/sass/helpers/color"
 @import "node_modules/bulma/sass/helpers/typography"
 @import "node_modules/bulma/sass/helpers/spacing"
+@import "node_modules/bulma/sass/helpers/flexbox"
 @import "node_modules/bulma/sass/elements/button"
 @import "node_modules/bulma/sass/elements/container"
 @import "node_modules/bulma/sass/elements/title"
 @import "node_modules/bulma/sass/form/_all"
 @import "node_modules/bulma/sass/components/navbar"
+@import "node_modules/bulma/sass/components/card"
 @import "node_modules/bulma/sass/layout/section"
 @import "node_modules/bulma/sass/layout/footer"
 @import "node_modules/bulma/sass/grid/columns"

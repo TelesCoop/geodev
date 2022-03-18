@@ -30,8 +30,8 @@
 <body class="{% block body_class %}{% endblock %}">
 {% wagtailuserbar %}
 {% include "components/navbar.html" %}
+<img src="{% static 'img/top-background.svg' %}" style="position: fixed; top: 0; z-index: 100">
 <div class="body-content" id="body-content">
-  <img src="{% static 'img/top-background.svg' %}" style="position: absolute; top: 0">
   {% block content %}{% endblock %}
 </div>
 {% include "components/footer.html" %}
