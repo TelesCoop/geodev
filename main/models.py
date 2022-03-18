@@ -74,6 +74,10 @@ class HomePage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel("introduction"),
+        FieldPanel("ressources_block_title"),
+        FieldPanel("ressources_block_introduction"),
+        FieldPanel("ressources_block_explication"),
+        FieldPanel("news_block_title"),
     ]
 
     class Meta:
