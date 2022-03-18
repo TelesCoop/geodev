@@ -61,3 +61,11 @@
 .body-content.is-succinct-pt {
     padding-top: 5rem;
 }
+
+.is-flex {
+    display: flex;
+}
+
+.footer-logos img + img {
+    margin-left: 25px
+}
