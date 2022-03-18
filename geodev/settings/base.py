@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "wagtail.contrib.routable_page",
+    "wagtail.contrib.modeladmin",
 ]
 
 MIDDLEWARE = [

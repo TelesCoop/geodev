@@ -13,7 +13,7 @@ class ProfileModelAdmin(ModelAdmin):
     menu_order = 200
     menu_icon = "group"
     add_to_settings_menu = False
-    search_fields = "name"
+    search_fields = ("name",)
 
 
 class RessourceModelAdmin(ModelAdmin):
@@ -21,7 +21,7 @@ class RessourceModelAdmin(ModelAdmin):
     menu_label = "Ressources"
     menu_icon = "folder-inverse"
     add_to_settings_menu = False
-    search_fields = "name"
+    search_fields = ("name",)
 
 
 class ThematicModelAdmin(ModelAdmin):
@@ -30,7 +30,7 @@ class ThematicModelAdmin(ModelAdmin):
     menu_icon = "tag"
     add_to_settings_menu = False
     form_fields_exclude = ("slug",)
-    search_fields = "name"
+    search_fields = ("name",)
 
 
 class RessourcesAdminGroup(ModelAdminGroup):
@@ -45,7 +45,7 @@ class NewsModelAdmin(ModelAdmin):
     menu_label = "Actualités"
     menu_icon = "folder-inverse"
     add_to_settings_menu = False
-    search_fields = "name"
+    search_fields = ("name",)
 
 
 class ActualityTypeModelAdmin(ModelAdmin):
@@ -54,7 +54,7 @@ class ActualityTypeModelAdmin(ModelAdmin):
     menu_icon = "tag"
     add_to_settings_menu = False
     form_fields_exclude = ("slug",)
-    search_fields = "name"
+    search_fields = ("name",)
 
 
 class ActualityAdminGroup(ModelAdminGroup):
