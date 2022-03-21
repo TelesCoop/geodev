@@ -6,8 +6,14 @@ from django.db import models
 from django import forms
 from django.http import Http404
 from taggit.models import TagBase
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from wagtail.contrib.settings.models import BaseSetting
+from wagtail.contrib.settings.registry import register_setting
+from wagtail.core import blocks
+from wagtail.core.fields import RichTextField, StreamField
+from wagtail.documents.blocks import DocumentChooserBlock
+from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
@@ -15,6 +21,113 @@ from wagtail.snippets.models import register_snippet
 from main.countries import COUNTRIES
 
 from wagtail.core.models import Page
+
+SIMPLE_RICH_TEXT_FIELD_FEATURE = ["bold", "italic", "link"]
+COLOR_CHOICES = (
+    ("blue", "Bleue"),
+    ("pink", "Rose"),
+    ("white", "Blanche"),
+    ("none", "Sans couleur"),
+)
+
+
+def paragraph_block(additional_field, required):
+    return (
+        "paragraph",
+        blocks.RichTextBlock(
+            label="Contenu",
+            features=SIMPLE_RICH_TEXT_FIELD_FEATURE
+            + ["h3", "h4", "ol", "ul"]
+            + additional_field,
+            required=required,
+        ),
+    )
+
+
+class FreeBodyField(models.Model):
+    color_block = (
+        "color",
+        blocks.ChoiceBlock(
+            choices=COLOR_CHOICES,
+            default="none",
+            help_text="Couleur de fond",
+        ),
+    )
+
+    body = StreamField(
+        [
+            # Is h1
+            (
+                "heading",
+                blocks.CharBlock(form_classname="full title", label="Titre de la page"),
+            ),
+            (
+                "section",
+                blocks.StructBlock(
+                    [
+                        color_block,
+                        (
+                            "image",
+                            ImageChooserBlock(
+                                label="Image à côté du paragraphe", required=False
+                            ),
+                        ),
+                        (
+                            "position",
+                            blocks.ChoiceBlock(
+                                choices=[
+                                    ("right", "Droite"),
+                                    ("left", "Gauche"),
+                                ],
+                                required=False,
+                                help_text="Position de l'image",
+                            ),
+                        ),
+                        paragraph_block(["h2"], True),
+                        (
+                            "sub_section",
+                            blocks.ListBlock(
+                                blocks.StructBlock(
+                                    [
+                                        color_block,
+                                        paragraph_block([], False),
+                                        (
+                                            "columns",
+                                            blocks.ListBlock(
+                                                blocks.StructBlock(
+                                                    [
+                                                        color_block,
+                                                        paragraph_block([], False),
+                                                    ],
+                                                    label="Colonne",
+                                                ),
+                                                label="Colonnes",
+                                            ),
+                                        ),
+                                    ],
+                                    label="Sous section",
+                                ),
+                                label="Sous sections",
+                            ),
+                        ),
+                    ],
+                    label="Section",
+                ),
+            ),
+            ("image", ImageChooserBlock()),
+            ("pdf", DocumentChooserBlock()),
+        ],
+        blank=True,
+        verbose_name="Description",
+        help_text="Corps de la page",
+    )
+
+    panels = [
+        StreamFieldPanel("body", classname="full"),
+    ]
+
+    class Meta:
+        abstract = True
 
 
 class TimeStampedModel(models.Model):
@@ -95,7 +208,48 @@ class HomePage(Page):
     # HomePage can be created only on the root
     parent_page_types = ["wagtailcore.Page"]
 
-    content_panels = Page.content_panels
+    introduction = RichTextField(
+        null=True,
+        blank=True,
+        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
+        verbose_name="Introduction du bloc des ressources",
+    )
+    ressources_block_title = models.CharField(
+        blank=True,
+        verbose_name="Titre du bloc des ressources",
+        max_length=64,
+        default="Des ressources adaptées à votre profil",
+    )
+    ressources_block_introduction = RichTextField(
+        null=True,
+        blank=True,
+        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
+        verbose_name="Introduction du bloc des ressources",
+    )
+    ressources_block_explication = RichTextField(
+        null=True,
+        blank=True,
+        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
+        verbose_name="Explication du bloc des ressources",
+        help_text="Explication présente sous les listes des différents profils",
+    )
+    news_block_title = models.CharField(
+        blank=True,
+        verbose_name="Titre du bloc des actualités",
+        max_length=64,
+        default="Dernières actualités",
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("introduction"),
+        FieldPanel("ressources_block_title"),
+        FieldPanel("ressources_block_introduction"),
+        FieldPanel("ressources_block_explication"),
+        FieldPanel("news_block_title"),
+    ]
+
+    class Meta:
+        verbose_name = "Page d'accueil"
 
 
 class RessourcesPage(RoutablePageMixin, Page):
@@ -150,6 +304,16 @@ class NewsListPage(RoutablePageMixin, Page):
         )
 
 
+class ContentPage(Page, FreeBodyField):
+    class Meta:
+        verbose_name = "Page de contenu"
+        verbose_name_plural = "Pages de contenu"
+
+    subpage_types: List[str] = []
+
+    content_panels = Page.content_panels + FreeBodyField.panels
+
+
 class Map(Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
@@ -171,6 +335,25 @@ class Map(Page):
 @register_snippet
 class Profile(models.Model):
     name = models.CharField(max_length=100)
+    description = RichTextField(
+        null=True,
+        blank=True,
+        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
+        verbose_name="Description",
+    )
+    icon = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="profiles",
+    )
+
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("description"),
+        ImageChooserPanel("icon"),
+    ]
 
     def __str__(self):
         return self.name
@@ -207,11 +390,35 @@ class Ressource(index.Indexed, TimeStampedModel):
     thematics = models.ManyToManyField(
         Thematic, blank=True, verbose_name="Thématiques", related_name="ressources"
     )
+    profiles = models.ManyToManyField(
+        Profile, blank=True, verbose_name="Profiles", related_name="ressources"
+    )
+    geo_dev_creation = models.BooleanField(
+        default=False, verbose_name="Créé par GeoDEV ?"
+    )
+    source_name = models.CharField(
+        verbose_name="Nom de la source", max_length=100, blank=True
+    )
+    source_link = models.CharField(
+        verbose_name="Lien de la source", max_length=100, blank=True
+    )
+    short_description = RichTextField(
+        null=True,
+        blank=True,
+        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
+        verbose_name="Description courte",
+        help_text="Sera affiché sur la carte de la ressource",
+    )
 
     panels = [
         FieldPanel("name"),
+        FieldPanel("slug"),
         FieldPanel("country"),
         FieldPanel("thematics", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("profiles", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("geo_dev_creation"),
+        FieldPanel("source_name"),
+        FieldPanel("source_link"),
     ]
 
     def __str__(self):
@@ -272,3 +479,16 @@ class News(index.Indexed, TimeStampedModel):
         verbose_name_plural = "Actualités / Evènements"
         verbose_name = "Actualité / Evènement"
         ordering = ["-publication_date"]
+
+
+@register_setting
+class NewsLetterSettings(BaseSetting):
+    newsLetter = models.URLField(
+        help_text="Lien d'inscription à la lettre d'information",
+        max_length=300,
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        verbose_name = "Inscription à la lettre d'information"
