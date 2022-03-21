@@ -1,0 +1,2 @@
+[prod]
+subdomain.my-website.com:my_ssh_port ansible_user=ubuntu
