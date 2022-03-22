@@ -17,11 +17,12 @@
         - ssh-allowed
 
     - name: Download employees file
-      get_url:
+      local_action:
+        module: get_url
         url: https://gitlab.com/telescoop-public/devops/company-settings/-/raw/main/employees.yaml
         dest: ./employees.yaml
         force: yes # file might have been updated
-      delegate_to: localhost
+      become_user: "{{ ansible_user_id }}"
 
     - name: Define employees variable from file
       include_vars:
@@ -56,6 +57,7 @@
         key: "{{ item.ssh_key }}"
         comment: "{{ item.name }}"
       loop: "{{ employees.employees }}"
+      when: not item.remove|default(false)
       loop_control:
         label: "{{ item.name }}"
 
@@ -66,6 +68,7 @@
         key: "{{ item.ssh_key }}"
         comment: "{{ item.name }}"
       loop: "{{ employees.employees }}"
+      when: not item.remove|default(false)
       loop_control:
         label: "{{ item.name }}"
 
