@@ -9,6 +9,7 @@ config = getconf.ConfigGetter(
 )
 SECRET_KEY = config.getstr("security.secret_key")
 ALLOWED_HOSTS = config.getlist("security.allowed_hosts", [])
+STATIC_ROOT = config.getstr("staticfiles.static_root")
 
 try:
     from .local import *  # noqa: F401,F403
