@@ -1,4 +1,6 @@
 Django>=3.2,<3.3
 getconf==1.11.1
+gunicorn==20.1.0
+ipython
 rollbar==0.16.2
 wagtail>=2.15,<2.16
