@@ -1,6 +1,14 @@
 from .base import *  # noqa: F401,F403
 
+import getconf
+
 DEBUG = False
+config = getconf.ConfigGetter(
+    "geodev",
+    ["/etc/telescoop/geodev/settings.ini", "./local_settings.ini"],
+)
+SECRET_KEY = config.getstr("security.secret_key")
+ALLOWED_HOSTS = config.getlist("security.allowed_hosts", [])
 
 try:
     from .local import *  # noqa: F401,F403
@@ -12,7 +20,7 @@ MIDDLEWARE.append(  # noqa: F405
 )
 
 ROLLBAR = {
-    "access_token": "43c4b59af5d14116a7077bc2612df1e0",
+    "access_token": config.getstr("bugs.rollbar_access_token"),
     "environment": "development" if DEBUG else "production",
     "root": BASE_DIR,  # noqa: F405
 }

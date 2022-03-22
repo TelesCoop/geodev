@@ -1,3 +1,4 @@
 Django>=3.2,<3.3
+getconf==1.11.1
 rollbar==0.16.2
 wagtail>=2.15,<2.16
