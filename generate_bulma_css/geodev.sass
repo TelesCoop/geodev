@@ -73,7 +73,6 @@ $navbar-item-img-max-height: 47px
     &.is-large
       height: 1.2em !important
 
-
 // Import only what you need from Bulma
 @import "node_modules/bulma/sass/utilities/_all"
 @import "node_modules/bulma/sass/base/_all"
@@ -84,9 +83,11 @@ $navbar-item-img-max-height: 47px
 @import "node_modules/bulma/sass/elements/button"
 @import "node_modules/bulma/sass/elements/container"
 @import "node_modules/bulma/sass/elements/title"
+@import "node_modules/bulma/sass/elements/image"
 @import "node_modules/bulma/sass/form/_all"
 @import "node_modules/bulma/sass/components/navbar"
 @import "node_modules/bulma/sass/components/card"
+@import "node_modules/bulma/sass/components/breadcrumb"
 @import "node_modules/bulma/sass/layout/section"
 @import "node_modules/bulma/sass/layout/footer"
 @import "node_modules/bulma/sass/grid/columns"
@@ -94,6 +95,10 @@ $navbar-item-img-max-height: 47px
 +until-widescreen
   .is-flex-direction-column-until-widescreen
     flex-direction: column
+
++until-fullhd
+  .top-left-image
+    display: none
 
 +widescreen
   .columns-widescreen

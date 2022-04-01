@@ -30,8 +30,16 @@
 <body class="{% block body_class %}{% endblock %}">
 {% wagtailuserbar %}
 {% include "components/navbar.html" %}
+
 {# TODO image should be displayed only on widescreen #}
-<img src="{% static 'img/top-background.svg' %}" style="position: fixed; top: 0; z-index: 100">
+<img src="{% static 'img/top-background.svg' %}" class="top-left-image" style="pointer-events: none">
+
+<h1>FLJKDKSJ</h1>
+{{ profiles }}
+{% if has_vue %}
+  <script src="{% static 'js/vue.3.2.31.min.js' %}"></script>
+{% endif %}
+
 <div class="body-content" id="body-content">
   {% block content %}{% endblock %}
 </div>

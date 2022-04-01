@@ -10,6 +10,12 @@
     font-weight: bold;
 }
 
+.top-left-image {
+    position: fixed;
+    top: 0;
+    z-index: 100;
+}
+
 /* NAVBAR */
 .navbar-end-container {
     display: flex;

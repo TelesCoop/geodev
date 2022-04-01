@@ -5,19 +5,23 @@ from typing import List
 from django.db import models
 from django import forms
 from django.http import Http404
+from django.templatetags.static import static
 from taggit.models import TagBase
+from unidecode import unidecode
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.contrib.settings.models import BaseSetting
 from wagtail.contrib.settings.registry import register_setting
 from wagtail.core import blocks
 from wagtail.core.fields import RichTextField, StreamField
+from wagtail.core.templatetags.wagtailcore_tags import pageurl
 from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
+from main.constants import THEMATICS, ZONES
 from main.countries import COUNTRIES
 
 from wagtail.core.models import Page
@@ -149,59 +153,61 @@ class HomePage(Page):
         context = super().get_context(request, *args, **kwargs)
         context["n_ressources"] = 148
         context["n_members"] = 80
-        context["profiles"] = [
-            {
-                "name": "décideurs",
-                "description": """Élu local ou gestionnaire de territoire, accédez aux
-                    produits, services et tableaux de bord, documents
-                    de synthèse pour
-                    <span class="has-text-weight-bold">aider vos prises de décision</span>.""",
-                "link": "/ressources",
-                "link_text": "Voir les ressources",
-            },
-            {
-                "name": "géomaticiens",
-                "description": """Cartographe ou gestionnaire de bases de données géographiques,
-                        accédez aux produits, applications et documents techniques pour
-                    <span class="has-text-weight-bold">faciliter et enrichir vos travaux</span>.""",
-                "link": "/ressources",
-                "link_text": "Voir les ressources",
-            },
-            {
-                "name": "Télédétecteurs",
-                "description": """Vous traitez des images satellitaires pour proposer
-                        des services et vos projets de recherche,
-                        <span class="has-text-weight-bold">
-                            accédez plus facilement aux images disponibles, outils de traitement,
-                            formations et ressources bibliographiques
-                        </span>.""",
-                "link": "/ressources",
-                "link_text": "Voir les ressources",
-            },
-        ]
-        context["news_list"] = [
-            {
-                "title": "Utilisations de la télédétection pour le suivi des forêts et eaux",
-                "summary": "Un atelier de réflexion entre la coordination de l’ART et les responsables de Centres d’Expertise Scientifique (CES) du Pôle Theia a eu lieu dans les locaux du CESBIO, à Toulouse le 1er octobre (...)",
-                "date": "06.03.2022",
-                "link": "/news/1",
-                "image": "/static/img/home-intro-image.svg",
-            },
-            {
-                "title": "Utilisations de la télédétection pour le suivi des forêts et eaux",
-                "summary": "Un atelier de réflexion entre la coordination de l’ART et les responsables de Centres d’Expertise Scientifique (CES) du Pôle Theia a eu lieu dans les locaux du CESBIO, à Toulouse le 1er octobre (...)",
-                "date": "06.03.2022",
-                "link": "/news/1",
-                "image": "/static/img/home-intro-image.svg",
-            },
-            {
-                "title": "Utilisations de la télédétection pour le suivi des forêts et eaux",
-                "summary": "Un atelier de réflexion entre la coordination de l’ART et les responsables de Centres d’Expertise Scientifique (CES) du Pôle Theia a eu lieu dans les locaux du CESBIO, à Toulouse le 1er octobre (...)",
-                "date": "06.03.2022",
-                "link": "/news/1",
-                "image": "/static/img/home-intro-image.svg",
-            },
-        ]
+        context["profiles"] = Profile.objects.all()
+        # context["profiles"] = [
+        #     {
+        #         "name": "décideurs",
+        #         "description": """Élu local ou gestionnaire de territoire, accédez aux
+        #             produits, services et tableaux de bord, documents
+        #             de synthèse pour
+        #             <span class="has-text-weight-bold">aider vos prises de décision</span>.""",
+        #         "link": "/ressources",
+        #         "link_text": "Voir les ressources",
+        #     },
+        #     {
+        #         "name": "géomaticiens",
+        #         "description": """Cartographe ou gestionnaire de bases de données géographiques,
+        #                 accédez aux produits, applications et documents techniques pour
+        #             <span class="has-text-weight-bold">faciliter et enrichir vos travaux</span>.""",
+        #         "link": "/ressources",
+        #         "link_text": "Voir les ressources",
+        #     },
+        #     {
+        #         "name": "Télédétecteurs",
+        #         "description": """Vous traitez des images satellitaires pour proposer
+        #                 des services et vos projets de recherche,
+        #                 <span class="has-text-weight-bold">
+        #                     accédez plus facilement aux images disponibles, outils de traitement,
+        #                     formations et ressources bibliographiques
+        #                 </span>.""",
+        #         "link": "/ressources",
+        #         "link_text": "Voir les ressources",
+        #     },
+        # ]
+        context["news_list"] = News.objects.all()[:3]
+        # [
+        #     {
+        #         "title": "Utilisations de la télédétection pour le suivi des forêts et eaux",
+        #         "summary": "Un atelier de réflexion entre la coordination de l’ART et les responsables de Centres d’Expertise Scientifique (CES) du Pôle Theia a eu lieu dans les locaux du CESBIO, à Toulouse le 1er octobre (...)",
+        #         "date": "06.03.2022",
+        #         "link": "/news/1",
+        #         "image": "/static/img/home-intro-image.svg",
+        #     },
+        #     {
+        #         "title": "Utilisations de la télédétection pour le suivi des forêts et eaux",
+        #         "summary": "Un atelier de réflexion entre la coordination de l’ART et les responsables de Centres d’Expertise Scientifique (CES) du Pôle Theia a eu lieu dans les locaux du CESBIO, à Toulouse le 1er octobre (...)",
+        #         "date": "06.03.2022",
+        #         "link": "/news/1",
+        #         "image": "/static/img/home-intro-image.svg",
+        #     },
+        #     {
+        #         "title": "Utilisations de la télédétection pour le suivi des forêts et eaux",
+        #         "summary": "Un atelier de réflexion entre la coordination de l’ART et les responsables de Centres d’Expertise Scientifique (CES) du Pôle Theia a eu lieu dans les locaux du CESBIO, à Toulouse le 1er octobre (...)",
+        #         "date": "06.03.2022",
+        #         "link": "/news/1",
+        #         "image": "/static/img/home-intro-image.svg",
+        #     },
+        # ]
         context["newsletter_link"] = "newsletter-link"
         return context
 
@@ -212,7 +218,7 @@ class HomePage(Page):
         null=True,
         blank=True,
         features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
-        verbose_name="Introduction du bloc des ressources",
+        verbose_name="Introduction",
     )
     ressources_block_title = models.CharField(
         blank=True,
@@ -276,6 +282,22 @@ class RessourcesPage(RoutablePageMixin, Page):
             },
             template="main/ressource_page.html",
         )
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["has_vue"] = True
+        context["profiles"] = json.dumps(
+            {
+                profile.slug: {"name": profile.name, "slug": profile.slug}
+                for profile in Profile.objects.all()
+            }
+        )
+        context["thematics"] = json.dumps(THEMATICS)
+        context["zones"] = json.dumps(ZONES)
+        print("###", ZONES)
+        context["selected_profile"] = request.GET.get("profile", "")
+        print("###", context["profiles"])
+        return context
 
 
 class NewsListPage(RoutablePageMixin, Page):
@@ -341,22 +363,26 @@ class Profile(models.Model):
         features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
         verbose_name="Description",
     )
-    icon = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="profiles",
-    )
 
     panels = [
         FieldPanel("name"),
         FieldPanel("description"),
-        ImageChooserPanel("icon"),
     ]
 
     def __str__(self):
         return self.name
+
+    @property
+    def icon_url(self):
+        return static(f"img/{self.slug}.svg")
+
+    @property
+    def slug(self):
+        return unidecode(self.name.lower())
+
+    @property
+    def ressources_link(self):
+        return f"{pageurl({}, RessourcesPage.objects.get())}?profile={self.slug}"
 
     class Meta:
         verbose_name = "Profil"
