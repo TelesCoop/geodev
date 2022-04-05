@@ -1,0 +1,77 @@
+{% load static %}
+
+<div v-if="!isMapView" class="resource-card-holder">
+  <div v-for="resource in filteredResources" class="card resource-card footer-at-bottom"
+       :class="resource.is_single_thematic ? 'has-background-' + resource.thematic + '-light' : 'has-background-std'">
+    <div class="card-content">
+      <div class="is-flex" style="justify-content: space-between; font-size: 11px">
+        <div>
+          <template v-if="resource.thematic == 'multiple'">
+            <span class="icon">
+              <img :src="'{% static 'img/thematics/unspecified.svg' %}'">
+            </span>
+            Plusieurs thématiques
+          </template>
+          <template v-else-if="resource.thematic == null">
+            <span>
+              <span class="icon">
+                <img :src="'{% static 'img/thematics/unspecified.svg' %}'">
+              </span>
+              Sans thématique
+            </span>
+          </template>
+          <template v-else>
+            <span class="icon">
+              <img :src="'{% static 'img/thematics' %}' + '/' + resource.thematic + '.svg'">
+            </span>
+            [[ thematicBySlug[resource.thematic].name ]]
+          </template>
+        </div>
+        <div v-if="resource.zone">
+          <span class="icon">
+            <img :src="'{% static 'img/zones' %}' + '/' + resource.zone + '.svg'">
+          </span>
+          [[ zoneBySlug[resource.zone].name ]]
+        </div>
+      </div>
+
+      <div class="my-5 has-text-centered">
+        <img v-if="resource.is_single_thematic"
+             :src="'{% static 'img/thematics' %}' + '/' + resource.thematic + '.svg'"
+             style="width: 107px ; height: 107px">
+        <img v-else :src="'{% static 'img/thematics/unspecified_color.svg' %}'"
+             style="width: 107px ; height: 107px">
+      </div>
+      <div>
+        <span class="has-text-weight-bold">[[ resource.resource_type ]]</span>
+      </div>
+      <h3 class="title is-5">[[ resource.name ]]</h3>
+      <p v-html="resource.short_description"></p>
+    </div>
+
+    <div class="card-footer" style="flex-direction: column; padding: 24px; border: none;">
+      <div>
+        <span>
+          <span class="icon"><img src="{% static 'img/source.svg' %}"
+                                  style="width: 12px; height: 12px;"></span>
+          Source : [[ resource.name ]]
+        </span>
+      </div>
+      <div v-if="resource.geo_dev_creation">
+        <span>
+          <span class="icon"><img src="{% static 'img/resource_is_geodev.svg' %}"
+                                  style="width: 12px; height: 12px;"></span>
+          Ressource GeoDEV
+        </span>
+      </div>
+      <div class="mt-2">
+        <a :href="[[ resource.link ]]" class="button is-secondary is-medium">
+          <span class="icon">
+            {% include "components/icon.html" with size="16" name="share-box" %}
+          </span>
+          <span>Accéder à la resource</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% load main_tags %}
+
+{% block content %}
+  <div class="container pt-3">
+    {% include "components/breadcrumbs.html" %}
+
+    <h1 class="title is-1">Les ressources</h1>
+  </div>
+  <div id="app">
+    {% include "elements/resources_page/filters.html" %}
+
+    <div class="section container">
+      <div v-if="!filteredResources.length" class="has-text-centered has-text-grey-dark is-size-2">
+        Aucune ressource correspondante
+      </div>
+
+      <div v-else>
+        <p class="has-text-weight-bold my-4">
+          [[ filteredResources.length ]] résultats correspondent à votre recherche
+        </p>
+        <div class="mb-6" style="display: flex; justify-content: center">
+          <div class="tabs is-toggle is-toggle-rounded">
+            <ul>
+              <li :class="isMapView ? 'is-active' : ''" @click="isMapView = !isMapView">
+                <a>
+                <span class="icon is-small" style="line-height: 0">
+                  {% include "components/icon.html" with name="earth" size="16" %}
+                </span>
+                  <span>Voir sur la carte</span>
+                </a>
+              </li>
+              <li :class="isMapView ? '' : 'is-active'" @click="isMapView = !isMapView">
+                <a>
+                <span class="icon is-small"
+                      style="line-height: 0">{% include "components/icon.html" with name="list-check" size="16" %}</span>
+                  <span>Voir la liste</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {% include "elements/resources_page/resources_list_view.html" %}
+
+      {% include "elements/resources_page/resources_map_view.html" %}
+
+    </div>
+  </div>
+
+{% endblock content %}
+
+{% block extra_js %}
+  <script>
+      var thematics = JSON.parse('{{ thematics | escapejs }}');
+      var thematicBySlug = {};
+      thematics.forEach(function (thematic) {
+          thematicBySlug[thematic.slug] = thematic;
+      });
+      var selectedThematics = {};
+      thematics.forEach(function (thematic) {
+          selectedThematics[thematic.slug] = false
+      });
+      var zones = JSON.parse('{{ zones | escapejs }}');
+      var zoneBySlug = {};
+      zones.forEach(function (zone) {
+          zoneBySlug[zone.slug] = zone;
+      });
+      var selectedZones = {};
+      zones.forEach(function (zone) {
+          selectedZones[zone.slug] = false;
+      });
+
+      Vue.createApp({
+          delimiters: ['[[', ']]'],
+          data() {
+              return {
+                  filteredResources: [],
+                  isMapView: false,
+                  isProfileLocked: {{ is_profile_locked }},
+                  profiles: JSON.parse('{{ profiles | escapejs }}'),
+                  resources: JSON.parse('{{ resources | escapejs }}'),
+                  selectedProfile: '{{ selected_profile }}',
+                  selectedThematics: selectedThematics,
+                  selectedZones: selectedZones,
+                  thematicBySlug: thematicBySlug,
+                  thematics: thematics,
+                  zoneBySlug: zoneBySlug,
+                  zones: zones,
+              }
+          },
+          methods: {
+              resetThematics() {
+                  Object.keys(this.selectedThematics).forEach(key => this.selectedThematics[key] = false);
+                  this.updateFilters();
+              },
+              resetZones() {
+                  Object.keys(this.selectedZones).forEach(key => this.selectedZones[key] = false);
+                  this.updateFilters();
+              },
+              selectProfile(profile) {
+                  this.selectedProfile = profile;
+                  this.updateFilters();
+              },
+              toggleThematic(thematic) {
+                  this.selectedThematics[thematic] = !this.selectedThematics[thematic];
+                  this.updateFilters();
+              },
+              toggleZone(zone) {
+                  this.selectedZones[zone] = !this.selectedZones[zone];
+                  this.updateFilters();
+              },
+              updateFilters() {
+                  console.log("### updateFilters", this.selectedProfile, this.selectedThematics, this.selectedZones);
+                  var filtered = [];
+                  this.resources.forEach((resource) => {
+                      console.log("### updateFilters", this.selectedProfile, this.selectedThematics, this.selectedZones);
+
+                      if (this.selectedProfile) {
+                          if (!resource.profiles.filter((profile) => {
+                              return profile === this.selectedProfile
+                          }).length) {
+                              console.log("### not valid profile for", resource.name, resource.profiles, this.selectedProfile);
+                              return;
+                          }
+                      }
+
+                      var atLeastOneCorresponding = false;
+                      console.log("### thematics??", this.selectedThematics, resource.thematics);
+                      var atLeastOneSelectedThematic = Object.values(this.selectedThematics).some(function (e) {
+                          return e
+                      });
+                      if (atLeastOneSelectedThematic) {
+                          console.log("### at least one selected thematic", this.selectedThematics, resource.thematics);
+                          resource.thematics.forEach((thematic) => {
+                              if (this.selectedThematics[thematic]) {
+                                  atLeastOneCorresponding = true;
+                                  console.log("### thematic", thematic, "is corresponding");
+                              }
+                          })
+
+                          if (!atLeastOneCorresponding) {
+                              console.log("### not valid thematic for", resource.name, resource.thematics, this.selectedThematics);
+                              return;
+                          }
+                      }
+
+                      var atLeastOneSelectedZone = Object.values(this.selectedZones).some(function (e) {
+                          return e
+                      });
+                      if (atLeastOneSelectedZone && resource.zone && !this.selectedZones[resource.zone]) {
+                          console.log("### not valid zone for", resource.name, resource.zone, this.selectedZones);
+                          return;
+                      }
+
+                      filtered.push(resource);
+                  });
+                  console.log("### updating filteredResources", filtered);
+                  this.filteredResources = filtered;
+              },
+          },
+          mounted() {
+              this.updateFilters();
+          },
+      }).mount('#app')
+  </script>
+{% endblock extra_js %}
+
+{% block extra_css %}
+  <style>
+      .i-am-profiles .button + .button {
+          margin-left: 8px;
+      }
+
+      .elements-holder {
+          margin-top: -10px;
+          margin-left: -16px;
+      }
+
+      .elements-holder > * {
+          margin-top: 10px;
+          margin-left: 16px;
+      }
+
+      .resource-card {
+          width: 317px;
+      }
+
+      .resource-card img {
+          height: 10px;
+          width: 10px;
+      }
+
+      .has-background-std {
+          background: #EEF3FC;
+      }
+
+      .resource-card-holder {
+          display: flex;
+          flex-wrap: wrap;
+          margin-left: -24px;
+          margin-top: -24px;
+      }
+
+      .resource-card-holder > * {
+          margin-left: 24px;
+          margin-top: 24px;
+      }
+
+      .footer-at-bottom {
+          display: flex;
+          flex-direction: column;
+      }
+
+      .footer-at-bottom .card-content {
+          flex: auto;
+      }
+  </style>
+{% endblock %}

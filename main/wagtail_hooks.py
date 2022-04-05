@@ -7,7 +7,9 @@ from wagtail.contrib.modeladmin.options import (
 )
 from wagtail.core import hooks
 
-from main.models import News, Ressource, Thematic, ActualityType, Profile
+from main.models.models import Profile, Thematic, ActualityType
+from main.models.resource import Resource
+from main.models.news import News
 
 
 @hooks.register("insert_global_admin_css", order=100)
@@ -28,7 +30,7 @@ class ProfileModelAdmin(ModelAdmin):
 
 
 class RessourceModelAdmin(ModelAdmin):
-    model = Ressource
+    model = Resource
     menu_label = "Ressources"
     menu_icon = "folder-inverse"
     add_to_settings_menu = False
