@@ -1,3 +1,5 @@
+from django.contrib.staticfiles.storage import ManifestStaticFilesStorage
+
 from .base import *  # noqa: F401,F403
 
 import getconf
@@ -28,3 +30,11 @@ ROLLBAR = {
 import rollbar  # noqa: E402
 
 rollbar.init(**ROLLBAR)
+
+
+# some {% static 'xxx' %} path dont exist, and we don't want to raise an error
+class MyFileStorage(ManifestStaticFilesStorage):
+    manifest_static = False
+
+
+STATICFILES_STORAGE = "geodev.settings.production.MyFileStorage"
