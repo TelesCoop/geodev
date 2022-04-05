@@ -4,7 +4,6 @@ from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 from wagtail.core.templatetags.wagtailcore_tags import pageurl
 
-from main.models import ResourcesPage
 from main.models.models import Profile
 from main.models.news import News
 from main.models.utils import SIMPLE_RICH_TEXT_FIELD_FEATURE
@@ -12,6 +11,8 @@ from main.models.utils import SIMPLE_RICH_TEXT_FIELD_FEATURE
 
 class HomePage(Page):
     def get_context(self, request, *args, **kwargs):
+        from main.models import ResourcesPage
+
         context = super().get_context(request, *args, **kwargs)
         context["n_ressources"] = 148
         context["n_members"] = 80
