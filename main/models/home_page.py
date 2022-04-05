@@ -2,7 +2,9 @@ from django.db import models
 from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
+from wagtail.core.templatetags.wagtailcore_tags import pageurl
 
+from main.models import ResourcesPage
 from main.models.models import Profile
 from main.models.news import News
 from main.models.utils import SIMPLE_RICH_TEXT_FIELD_FEATURE
@@ -14,36 +16,7 @@ class HomePage(Page):
         context["n_ressources"] = 148
         context["n_members"] = 80
         context["profiles"] = Profile.objects.all()
-        # context["profiles"] = [
-        #     {
-        #         "name": "décideurs",
-        #         "description": """Élu local ou gestionnaire de territoire, accédez aux
-        #             produits, services et tableaux de bord, documents
-        #             de synthèse pour
-        #             <span class="has-text-weight-bold">aider vos prises de décision</span>.""",
-        #         "link": "/ressources",
-        #         "link_text": "Voir les ressources",
-        #     },
-        #     {
-        #         "name": "géomaticiens",
-        #         "description": """Cartographe ou gestionnaire de bases de données géographiques,
-        #                 accédez aux produits, applications et documents techniques pour
-        #             <span class="has-text-weight-bold">faciliter et enrichir vos travaux</span>.""",
-        #         "link": "/ressources",
-        #         "link_text": "Voir les ressources",
-        #     },
-        #     {
-        #         "name": "Télédétecteurs",
-        #         "description": """Vous traitez des images satellitaires pour proposer
-        #                 des services et vos projets de recherche,
-        #                 <span class="has-text-weight-bold">
-        #                     accédez plus facilement aux images disponibles, outils de traitement,
-        #                     formations et ressources bibliographiques
-        #                 </span>.""",
-        #         "link": "/ressources",
-        #         "link_text": "Voir les ressources",
-        #     },
-        # ]
+        context["resources_link"] = pageurl({}, ResourcesPage.objects.get())
         context["news_list"] = News.objects.all()[:3]
         # [
         #     {

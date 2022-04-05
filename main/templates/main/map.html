@@ -1,67 +1,64 @@
-{% extends 'base.html' %}
-{% load static %}
-
 {% block extra_head %}
-    <script src="{% static 'js/mapbox-gl.js' %}"></script>
-    <link href="{% static 'css/mapbox-gl.css' %}" rel='stylesheet' />
+  <script src="{% static 'js/mapbox-gl.js' %}"></script>
+  <link href="{% static 'css/mapbox-gl.css' %}" rel='stylesheet'/>
 {% endblock extra_head %}
 
 {% block content %}
 
-<div class="container">
+  <div class="container">
     <h1 class="title">
-        Map
+      Map
     </h1>
     <div id='map' style='width: 100%; height: 600px;'></div>
-</div>
+  </div>
 
-<script>
-mapboxgl.accessToken = 'pk.eyJ1IjoibWF4aW1ldGVsZXNjb29wIiwiYSI6ImNrbHJrbWV6ajAzd20ycXB2YjZodzZ0ancifQ.VLDpa6x-j-3kh65_S-H_rA';
-const map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/maximetelescoop/ckz2nizcg007c14nt4j1x4nc9',
-    center: [22.3688733,1.9171377], // starting position [lng, lat]
-    zoom: 4
-});
+  <script>
+      mapboxgl.accessToken = 'pk.eyJ1IjoibWF4aW1ldGVsZXNjb29wIiwiYSI6ImNrbHJrbWV6ajAzd20ycXB2YjZodzZ0ancifQ.VLDpa6x-j-3kh65_S-H_rA';
+      const map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/maximetelescoop/ckz2nizcg007c14nt4j1x4nc9',
+          center: [22.3688733, 1.9171377], // starting position [lng, lat]
+          zoom: 4
+      });
 
-const ressourcesPerCountry = JSON.parse('{{ ressources_per_country | escapejs }}');
-const countryParameters = JSON.parse('{{ country_parameters | escapejs }}');
-console.log("###", ressourcesPerCountry, countryParameters);
+      const ressourcesPerCountry = JSON.parse('{{ ressources_per_country | escapejs }}');
+      const countryParameters = JSON.parse('{{ country_parameters | escapejs }}');
+      console.log("###", ressourcesPerCountry, countryParameters);
 
-// adding ressources per country to the map
-for (const params of Object.entries(ressourcesPerCountry)) {
-    const countryKey = params[0];
-    const ressources = params[1];
+      // adding ressources per country to the map
+      for (const params of Object.entries(ressourcesPerCountry)) {
+          const countryKey = params[0];
+          const ressources = params[1];
 
-    // building marker for country
-    const marker = document.createElement('div');
-    marker.className = "country-marker";
-    marker.innerText = ressources.length;
-    const countryParams = countryParameters[countryKey];
+          // building marker for country
+          const marker = document.createElement('div');
+          marker.className = "country-marker";
+          marker.innerText = ressources.length;
+          const countryParams = countryParameters[countryKey];
 
-    // building popup for marker
-    const popupHtml = document.createElement("div");
-    const title = document.createElement("h2");
-    title.innerText = countryParams.name + " - " + ressources.length + " ressources";
-    title.className = "title is-5";
-    popupHtml.appendChild(title);
-    const ressourcesEl = document.createElement("ul");
-    for (const ressource of ressources) {
-        const element = document.createElement("li");
-        element.innerText = ressource.name;
-        ressourcesEl.appendChild(element);
-    }
-    popupHtml.appendChild(ressourcesEl);
+          // building popup for marker
+          const popupHtml = document.createElement("div");
+          const title = document.createElement("h2");
+          title.innerText = countryParams.name + " - " + ressources.length + " ressources";
+          title.className = "title is-5";
+          popupHtml.appendChild(title);
+          const ressourcesEl = document.createElement("ul");
+          for (const ressource of ressources) {
+              const element = document.createElement("li");
+              element.innerText = ressource.name;
+              ressourcesEl.appendChild(element);
+          }
+          popupHtml.appendChild(ressourcesEl);
 
-    const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
-        popupHtml.innerHTML
-    );
+          const popup = new mapboxgl.Popup({offset: 25}).setHTML(
+              popupHtml.innerHTML
+          );
 
-    // add the marker with popup to the map
-    new mapboxgl.Marker(marker)
-        .setLngLat([countryParams.lng, countryParams.lat])
-        .setPopup(popup)
-        .addTo(map);
-}
-</script>
+          // add the marker with popup to the map
+          new mapboxgl.Marker(marker)
+              .setLngLat([countryParams.lng, countryParams.lat])
+              .setPopup(popup)
+              .addTo(map);
+      }
+  </script>
 {% endblock content %}

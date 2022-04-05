@@ -1,4 +1,4 @@
-COUNTRIES = (
+COUNTRY_CHOICES = (
     ("Afrique du Sud", "Afrique du Sud"),
     ("Algérie", "Algérie"),
     ("Angola", "Angola"),

@@ -54,4 +54,18 @@ class ResourcesPage(RoutablePageMixin, Page):
         context["resources"] = json.dumps(
             [ressource.to_dict() for ressource in Resource.objects.all()]
         )
+
+        # map data
+        context["ressources_per_country"] = json.dumps(
+            {
+                "CM": [
+                    {
+                        "name": "My Element",
+                    }
+                ]
+            }
+        )
+        context["country_parameters"] = json.dumps(
+            {"CM": {"lng": 13.6299563, "lat": 4.814121, "name": "Cameroun"}}
+        )
         return context
