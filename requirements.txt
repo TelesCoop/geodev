@@ -3,4 +3,5 @@ getconf==1.11.1
 gunicorn==20.1.0
 ipython
 rollbar==0.16.2
+Unidecode==1.3.4
 wagtail>=2.15,<2.16
