@@ -13,7 +13,6 @@ from wagtail.core.models import Page
 from wagtail.core.templatetags.wagtailcore_tags import pageurl
 from wagtail.snippets.models import register_snippet
 
-from main.models.resources_page import ResourcesPage
 from main.models.utils import FreeBodyField, SIMPLE_RICH_TEXT_FIELD_FEATURE
 
 
@@ -55,6 +54,8 @@ class Profile(models.Model):
 
     @property
     def ressources_link(self):
+        from main.models.resources_page import ResourcesPage
+
         return f"{pageurl({}, ResourcesPage.objects.get())}?profile={self.slug}"
 
     class Meta:
