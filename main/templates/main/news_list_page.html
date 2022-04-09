@@ -5,4 +5,59 @@
 {% load main_tags %}
 
 {% block content %}
+  <div class="container">
+    {% include "components/breadcrumbs.html" %}
+    <h1 class="title is-1">{{ page.title }}</h1>
+  </div>
+  <div>
+    <div id="app">
+      <div class="section has-background-info-light mt-6">
+        <div class="container">
+          <h2 class="title is-5">Filtrer les actualités</h2>
+          <div class="filter-holder">
+            <button class="button is-rounded" :class="isAllNews ? '' : 'is-outlined'">Toutes les actualités</button>
+
+            <button class="button is-rounded"
+                    :class="type.selected ? '' : 'is-outlined'"
+                    v-for="type in types">
+              [[ type.name ]]
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+      var newsList = JSON.parse('{{ news_list | escapejs }}');
+      Vue.createApp({
+          delimiters: ['[[', ']]'],
+          data() {
+              return {
+                  types: JSON.parse('{{ types | escapejs }}'),
+              }
+          },
+          methods: {},
+          mounted() {
+
+          },
+      }).mount('#app')
+  </script>
+{% endblock extra_js %}
+
+{% block extra_css %}
+  <style>
+      .filter-holder {
+          margin-left: -15px;
+          display: flex;
+          flex-wrap: wrap;
+      }
+
+      .filter-holder > button {
+          margin-left: 15px;
+      }
+  </style>
 {% endblock %}

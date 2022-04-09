@@ -47,24 +47,13 @@ class ResourcesPage(RoutablePageMixin, Page):
         )
         context["thematics"] = json.dumps(THEMATICS)
         context["zones"] = json.dumps(ZONES)
-        print("###", ZONES)
         context["selected_profile"] = request.GET.get("profile", "")
         context["is_profile_locked"] = int(bool(request.GET.get("profile", False)))
-        print("###", context["profiles"])
         context["resources"] = json.dumps(
             [ressource.to_dict() for ressource in Resource.objects.all()]
         )
 
         # map data
-        context["ressources_per_country"] = json.dumps(
-            {
-                "CM": [
-                    {
-                        "name": "My Element",
-                    }
-                ]
-            }
-        )
         context["country_parameters"] = json.dumps(
             {"CM": {"lng": 13.6299563, "lat": 4.814121, "name": "Cameroun"}}
         )

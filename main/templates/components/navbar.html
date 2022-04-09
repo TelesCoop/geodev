@@ -1,4 +1,5 @@
 {% load static %}
+{% load main_tags %}
 
 <div style="position: fixed; top: 0; left: 0; right: 0; z-index: 30; background: white">
   <div class="container">
@@ -38,7 +39,7 @@
               </a>
             </div>
           </div>
-          <a class="navbar-item">
+          <a href="{% news_page_url %}" class="navbar-item">
             Actualités
           </a>
           <a class="navbar-item">
@@ -53,7 +54,7 @@
               <a class="button is-small is-text">Inscription</a>
             </div>
             <div class="buttons mb-0">
-              <a class="button is-primary">
+              <a href="{{ resources_link }}" class="button is-primary">
                 <span class="icon">
                   {% include "components/icon.html" with size="16" name="map-line-2" %}
                 </span>

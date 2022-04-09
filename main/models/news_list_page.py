@@ -1,9 +1,12 @@
 from typing import List
 
+from django.forms import model_to_dict
 from django.http import Http404
+from rest_framework.utils import json
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.models import Page
 
+from main.models import ActualityType
 from main.models.news import News
 
 
@@ -31,3 +34,15 @@ class NewsListPage(RoutablePageMixin, Page):
             },
             template="main/news_page.html",
         )
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["has_vue"] = True
+        context["types"] = json.dumps(
+            [model_to_dict(type_) for type_ in ActualityType.objects.all()]
+        )
+        context["news_list"] = json.dumps(
+            [news.to_dict() for news in News.objects.all()]
+        )
+
+        return context

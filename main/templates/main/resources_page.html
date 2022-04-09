@@ -8,19 +8,20 @@
   <div class="container pt-3">
     {% include "components/breadcrumbs.html" %}
 
-    <h1 class="title is-1">Les ressources</h1>
+    <h1 class="title is-1">Les resources</h1>
   </div>
   <div id="app">
     {% include "elements/resources_page/filters.html" %}
 
     <div class="section container">
-      <div v-if="!filteredResources.length" class="has-text-centered has-text-grey-dark is-size-2">
-        Aucune ressource correspondante
-      </div>
-
       <div v-else>
         <p class="has-text-weight-bold my-4">
-          [[ filteredResources.length ]] résultats correspondent à votre recherche
+          <template v-if="filteredResources.length">
+            [[ filteredResources.length ]] résultats correspondent à votre recherche
+          </template>
+          <template v-else>
+            aucun résultat correspondant
+          </template>
         </p>
         <div class="mb-6" style="display: flex; justify-content: center">
           <div class="tabs is-toggle is-toggle-rounded">
@@ -83,8 +84,10 @@
                   isMapView: false,
                   isProfileLocked: {{ is_profile_locked }},
                   isMapViewEnables: false,
+                  map: null,
                   profiles: JSON.parse('{{ profiles | escapejs }}'),
                   resources: JSON.parse('{{ resources | escapejs }}'),
+                  countryParameters: JSON.parse('{{ country_parameters | escapejs }}'),
                   selectedProfile: '{{ selected_profile }}',
                   selectedThematics: selectedThematics,
                   selectedZones: selectedZones,
@@ -97,6 +100,7 @@
           methods: {
               enableMapView() {
                   // load mapbox js and css files
+                  // TODO this check should be removed
                   if (this.isMapViewEnabled) {
                       this.isMapView = true;
                       return;
@@ -112,15 +116,25 @@
 
                   var script = document.createElement('script');
                   script.onload = () => {
-                      this.loadMapData();
+                      this.initMap();
+                      this.updateMap();
                   };
                   script.src = '{% static 'js/mapbox-gl.js' %}';
                   document.head.appendChild(script); //or something of the likes
 
                   this.isMapView = true;
               },
-              loadMapData() {
+              initMap() {
                   console.log("### load map data");
+                  mapboxgl.accessToken = 'pk.eyJ1IjoibWF4aW1ldGVsZXNjb29wIiwiYSI6ImNrbHJrbWV6ajAzd20ycXB2YjZodzZ0ancifQ.VLDpa6x-j-3kh65_S-H_rA';
+
+                  this.map = new mapboxgl.Map({
+                      container: 'map',
+                      style: 'mapbox://styles/maximetelescoop/ckz2nizcg007c14nt4j1x4nc9',
+                      center: [22.3688733, 1.9171377], // starting position [lng, lat]
+                      zoom: 4
+                  });
+                  window.map = this.map;
               },
               resetThematics() {
                   Object.keys(this.selectedThematics).forEach(key => this.selectedThematics[key] = false);
@@ -189,7 +203,65 @@
                   });
                   console.log("### updating filteredResources", filtered);
                   this.filteredResources = filtered;
+
+                  if (this.isMapView) {
+                      this.updateMap();
+                  }
               },
+              updateMap() {
+                  // reset markers
+                  for (var marker of this.map._markers) {
+                      marker.remove();
+                  }
+
+                  // building a resourcePerCountry dict
+                  const resourcesPerCountry = {};
+                  for (const resource of Object.entries(this.filteredResources)) {
+                      // TODO change me
+                      resource.country = "CM";
+                      if (resourcesPerCountry[resource.country] == null) {
+                          resourcesPerCountry[resource.country] = [];
+                      }
+                      resourcesPerCountry[resource.country].push(resource)
+                  }
+                  // adding resources per country to the map
+                  for (const params of Object.entries(resourcesPerCountry)) {
+                      const countryKey = params[0];
+                      const resources = params[1];
+
+                      // building marker for country
+                      const marker = document.createElement('div');
+                      marker.className = "country-marker";
+                      const markerChild = document.createElement('div');
+                      markerChild.innerText = resources.length;
+                      marker.appendChild(markerChild);
+                      const countryParams = this.countryParameters[countryKey];
+
+                      // building popup for marker
+                      const popupHtml = document.createElement("div");
+                      const title = document.createElement("h2");
+                      title.innerText = countryParams.name + " - " + resources.length + " ressources";
+                      title.className = "title is-5";
+                      popupHtml.appendChild(title);
+                      const resourcesEl = document.createElement("ul");
+                      for (const resource of resources) {
+                          const element = document.createElement("li");
+                          element.innerText = resource.name;
+                          resourcesEl.appendChild(element);
+                      }
+                      popupHtml.appendChild(resourcesEl);
+
+                      const popup = new mapboxgl.Popup({offset: 25}).setHTML(
+                          popupHtml.innerHTML
+                      );
+
+                      // add the marker with popup to the map
+                      new mapboxgl.Marker(marker)
+                          .setLngLat([countryParams.lng, countryParams.lat])
+                          .setPopup(popup)
+                          .addTo(this.map);
+                  }
+              }
           },
           mounted() {
               this.updateFilters();
@@ -246,6 +318,31 @@
 
       .footer-at-bottom .card-content {
           flex: auto;
+      }
+
+      .country-marker {
+          background-image: url("{% static 'img/pin.svg' %}");
+          background-repeat: no-repeat;
+          width: 75px;
+          height: 90px;
+          text-align: center;
+          color: white;
+          font-size: 16px;
+          /* padding-top: 0.9em; */
+          font-weight: bold;
+          background-position: center;
+          background-size: contain;
+      }
+
+      .country-marker > div {
+          width: 45px;
+          height: 45px;
+          background: #5469B3;
+          text-align: center;
+          margin-top: 12px;
+          margin-left: 15px;
+          border-radius: 100%;
+          padding-top: 12px;
       }
   </style>
 {% endblock %}

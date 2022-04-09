@@ -6,16 +6,18 @@ from wagtail.core.fields import RichTextField
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
-from main.countries import COUNTRY_CHOICES
+from main.models.country import Country
 from main.models.models import Thematic, Profile
-from main.models.utils import TimeStampedModel, SIMPLE_RICH_TEXT_FIELD_FEATURE
+from main.models.utils import (
+    TimeStampedModel,
+    SIMPLE_RICH_TEXT_FIELD_FEATURE,
+    FreeBodyField,
+)
 
 
 @register_snippet
-class Resource(index.Indexed, TimeStampedModel):
-    country = models.CharField(
-        max_length=50, choices=COUNTRY_CHOICES, verbose_name="Pays"
-    )
+class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
+    countries = models.ManyToManyField(Country, verbose_name="Pays", blank=True)
     name = models.CharField(verbose_name="Nom", max_length=100)
     slug = models.SlugField(
         max_length=100,
@@ -60,7 +62,8 @@ class Resource(index.Indexed, TimeStampedModel):
         FieldPanel("name"),
         FieldPanel("slug"),
         FieldPanel("short_description"),
-        FieldPanel("country"),
+        FieldPanel("body"),
+        FieldPanel("countries", widget=forms.CheckboxSelectMultiple),
         FieldPanel("resource_type"),
         FieldPanel("thematics", widget=forms.CheckboxSelectMultiple),
         FieldPanel("profiles", widget=forms.CheckboxSelectMultiple),

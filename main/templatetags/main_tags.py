@@ -1,11 +1,10 @@
 from django.template.defaulttags import register
 
-from main.models.news_list_page import NewsListPage
-from main.models.resources_page import ResourcesPage
-
 
 @register.simple_tag()
 def ressource_page_url(ressource):
+    from main.models.resources_page import ResourcesPage
+
     try:
         ressource_page = ResourcesPage.objects.get()
     except ResourcesPage.DoesNotExist:
@@ -18,11 +17,16 @@ def ressource_page_url(ressource):
 
 
 @register.simple_tag()
-def news_page_url(news):
+def news_page_url(news=None):
+    from main.models.news_list_page import NewsListPage
+
     try:
         news_list_page = NewsListPage.objects.get()
     except NewsListPage.DoesNotExist:
         raise NewsListPage.DoesNotExist("A NewsListPage must be created")
+
+    if news is None:
+        return news_list_page.url
     url = news_list_page.url + news_list_page.reverse_subpage(
         "news",
         args=(str(news.slug),),

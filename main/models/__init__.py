@@ -10,3 +10,5 @@ from .models import (  # noqa: F401
 from .news import News  # noqa: F401
 from .resource import Resource  # noqa: F401
 from .resources_page import ResourcesPage  # noqa: F401
+from .country import Country, WorldZone  # noqa: F401
+from .news_list_page import NewsListPage  # noqa: F401

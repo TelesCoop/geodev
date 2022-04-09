@@ -2,6 +2,7 @@ import datetime
 
 from django import forms
 from django.db import models
+from django.forms import model_to_dict
 from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
@@ -9,6 +10,7 @@ from wagtail.snippets.models import register_snippet
 
 from main.models.models import ActualityType
 from main.models.utils import TimeStampedModel
+from main.templatetags.main_tags import news_page_url
 
 
 @register_snippet
@@ -55,6 +57,24 @@ class News(index.Indexed, TimeStampedModel):
 
     def __str__(self):
         return self.name
+
+    def link(self):
+        return news_page_url(self)
+
+    def to_dict(self):
+        to_return = model_to_dict(
+            self,
+            fields=[
+                "name",
+                "publication_date",
+                "slug",
+            ],
+        )
+        to_return["publication_date"] = self.publication_date.isoformat()
+        to_return["types"] = [type_.slug for type_ in self.types.all()]
+        # to_return["image_link"] = self.image.url
+
+        return to_return
 
     class Meta:
         verbose_name_plural = "Actualités / Evènements"
