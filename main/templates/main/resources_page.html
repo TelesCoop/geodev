@@ -14,7 +14,7 @@
     {% include "elements/resources_page/filters.html" %}
 
     <div class="section container">
-      <div v-else>
+      <div>
         <p class="has-text-weight-bold my-4">
           <template v-if="filteredResources.length">
             [[ filteredResources.length ]] résultats correspondent à votre recherche
@@ -75,6 +75,11 @@
       zones.forEach(function (zone) {
           selectedZones[zone.slug] = false;
       });
+      var countries = JSON.parse('{{ countries | escapejs }}');
+      var countryParameters = {};
+      countries.forEach(country => {
+          countryParameters[country.code] = country;
+      });
 
       Vue.createApp({
           delimiters: ['[[', ']]'],
@@ -87,7 +92,7 @@
                   map: null,
                   profiles: JSON.parse('{{ profiles | escapejs }}'),
                   resources: JSON.parse('{{ resources | escapejs }}'),
-                  countryParameters: JSON.parse('{{ country_parameters | escapejs }}'),
+                  countryParameters: countryParameters,
                   selectedProfile: '{{ selected_profile }}',
                   selectedThematics: selectedThematics,
                   selectedZones: selectedZones,
@@ -213,16 +218,17 @@
                   for (var marker of this.map._markers) {
                       marker.remove();
                   }
-
+                  console.log("### updateMap", this.filteredResources);
                   // building a resourcePerCountry dict
                   const resourcesPerCountry = {};
-                  for (const resource of Object.entries(this.filteredResources)) {
-                      // TODO change me
-                      resource.country = "CM";
-                      if (resourcesPerCountry[resource.country] == null) {
-                          resourcesPerCountry[resource.country] = [];
+                  for (const resource of this.filteredResources) {
+                      console.log("### updateMap resource", resource);
+                      for (const country of resource.countries) {
+                          if (resourcesPerCountry[country] == null) {
+                              resourcesPerCountry[country] = [];
+                          }
+                          resourcesPerCountry[country].push(resource)
                       }
-                      resourcesPerCountry[resource.country].push(resource)
                   }
                   // adding resources per country to the map
                   for (const params of Object.entries(resourcesPerCountry)) {
@@ -239,17 +245,37 @@
 
                       // building popup for marker
                       const popupHtml = document.createElement("div");
+                      const popupHolder = document.createElement("div");
+                      popupHolder.className = "country-popup";
                       const title = document.createElement("h2");
-                      title.innerText = countryParams.name + " - " + resources.length + " ressources";
-                      title.className = "title is-5";
-                      popupHtml.appendChild(title);
-                      const resourcesEl = document.createElement("ul");
+                      title.className = "mb-4";
+                      title.innerHTML = (
+                          "<span class='has-text-weight-bold'>" + resources.length + " ressources </span>" +
+                          "disponibles au <span class='has-text-weight-bold'>" + countryParams.name + "</span> :"
+                      );
+                      popupHolder.appendChild(title);
+                      const resourcesHolder = document.createElement("ul");
+                      resourcesHolder.className = "resources-holder";
                       for (const resource of resources) {
-                          const element = document.createElement("li");
-                          element.innerText = resource.name;
-                          resourcesEl.appendChild(element);
+                          const element = document.createElement("div");
+                          element.className = "card has-background-info-light";
+
+                          var elementContent = document.createElement("div");
+                          elementContent.className = "card-content";
+                          var elementTitle = document.createElement("h3");
+                          elementTitle.innerText = resource.name;
+                          elementTitle.className = "title is-5 has-text-weight-bold mb-4";
+                          elementContent.appendChild(elementTitle);
+                          var elementButton = document.createElement("a");
+                          elementButton.className = "button is-secondary";
+                          elementButton.innerText = "Plus d'information";
+                          elementContent.appendChild(elementButton);
+
+                          element.appendChild(elementContent);
+                          resourcesHolder.appendChild(element);
                       }
-                      popupHtml.appendChild(resourcesEl);
+                      popupHolder.appendChild(resourcesHolder);
+                      popupHtml.appendChild(popupHolder);
 
                       const popup = new mapboxgl.Popup({offset: 25}).setHTML(
                           popupHtml.innerHTML
@@ -257,7 +283,7 @@
 
                       // add the marker with popup to the map
                       new mapboxgl.Marker(marker)
-                          .setLngLat([countryParams.lng, countryParams.lat])
+                          .setLngLat([countryParams.longitude, countryParams.latitude])
                           .setPopup(popup)
                           .addTo(this.map);
                   }
@@ -324,13 +350,13 @@
           background-image: url("{% static 'img/pin.svg' %}");
           background-repeat: no-repeat;
           width: 75px;
-          height: 90px;
+          height: 180px;
           text-align: center;
           color: white;
           font-size: 16px;
           /* padding-top: 0.9em; */
           font-weight: bold;
-          background-position: center;
+          background-position: bottom 90px center;
           background-size: contain;
       }
 
@@ -343,6 +369,22 @@
           margin-left: 15px;
           border-radius: 100%;
           padding-top: 12px;
+      }
+
+      .mapboxgl-popup-content {
+          padding: 24px !important;
+          width: 442px;
+          max-height: 433px;
+      }
+
+      .resources-holder {
+          max-height: 351px;
+          overflow-y: auto;
+          margin-top: -19px;
+      }
+
+      .resources-holder > div {
+          margin-top: 19px;
       }
   </style>
 {% endblock %}

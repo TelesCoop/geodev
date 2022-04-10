@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import model_to_dict
 from wagtail.search import index
 from wagtail.search.index import Indexed
 from wagtail.snippets.models import register_snippet
@@ -25,8 +26,8 @@ class Country(models.Model, Indexed):
 
     name = models.CharField(verbose_name="Nom", max_length=60)
     code = models.CharField(verbose_name="code à deux lettres", max_length=20)
-    latitude = models.CharField(verbose_name="latitude du centre", max_length=20)
-    longitude = models.CharField(verbose_name="longitude du centre", max_length=20)
+    latitude = models.FloatField(verbose_name="latitude du centre")
+    longitude = models.FloatField(verbose_name="longitude du centre")
     zone = models.ForeignKey(WorldZone, on_delete=models.SET_NULL, null=True)
 
     search_fields = [
@@ -36,3 +37,8 @@ class Country(models.Model, Indexed):
 
     def __str__(self):
         return self.name
+
+    def to_dict(self):
+        to_return = model_to_dict(self)
+        to_return["zone"] = self.zone.code if self.zone else None
+        return to_return

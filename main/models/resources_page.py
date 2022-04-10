@@ -6,9 +6,10 @@ from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.models import Page
 
 from main.constants import THEMATICS, ZONES
-from main.models.resource import Resource
-from main.models.news import News
+from main.models.country import Country
 from main.models.models import Profile
+from main.models.news import News
+from main.models.resource import Resource
 
 
 class ResourcesPage(RoutablePageMixin, Page):
@@ -52,9 +53,7 @@ class ResourcesPage(RoutablePageMixin, Page):
         context["resources"] = json.dumps(
             [ressource.to_dict() for ressource in Resource.objects.all()]
         )
-
-        # map data
-        context["country_parameters"] = json.dumps(
-            {"CM": {"lng": 13.6299563, "lat": 4.814121, "name": "Cameroun"}}
+        context["countries"] = json.dumps(
+            [country.to_dict() for country in Country.objects.all()]
         )
         return context

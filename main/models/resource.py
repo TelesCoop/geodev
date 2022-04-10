@@ -76,7 +76,6 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         to_return = model_to_dict(
             self,
             fields=[
-                "country",
                 "name",
                 "slug",
                 "thematics",
@@ -98,6 +97,7 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
             to_return["thematic"] = "multiple"
         to_return["zone"] = "south_africa"
         to_return["resource_type"] = self.get_resource_type_display()
+        to_return["countries"] = [country.code for country in self.countries.all()]
         return to_return
 
     def __str__(self):
