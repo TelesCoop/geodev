@@ -7,7 +7,7 @@ from wagtail.contrib.modeladmin.options import (
 )
 from wagtail.core import hooks
 
-from main.models.models import Profile, Thematic, ActualityType
+from main.models.models import Profile, Thematic, ActualityType, ResourceType
 from main.models.resource import Resource
 from main.models.news import News
 
@@ -42,7 +42,14 @@ class ThematicModelAdmin(ModelAdmin):
     menu_label = "Thématiques"
     menu_icon = "tag"
     add_to_settings_menu = False
-    form_fields_exclude = ("slug",)
+    search_fields = ("name",)
+
+
+class ResourceTypeModelAdmin(ModelAdmin):
+    model = ResourceType
+    menu_label = "Types de ressource"
+    menu_icon = "tag"
+    add_to_settings_menu = False
     search_fields = ("name",)
 
 
@@ -50,7 +57,7 @@ class RessourcesAdminGroup(ModelAdminGroup):
     menu_label = "Ressources"
     menu_order = 201
     menu_icon = "doc-full"
-    items = (RessourceModelAdmin, ThematicModelAdmin)
+    items = (RessourceModelAdmin, ThematicModelAdmin, ResourceTypeModelAdmin)
 
 
 class NewsModelAdmin(ModelAdmin):

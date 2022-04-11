@@ -4,10 +4,9 @@ from django.forms import model_to_dict
 from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.core.fields import RichTextField
 from wagtail.search import index
-from wagtail.snippets.models import register_snippet
 
 from main.models.country import Country
-from main.models.models import Thematic, Profile
+from main.models.models import Thematic, Profile, ResourceType
 from main.models.utils import (
     TimeStampedModel,
     SIMPLE_RICH_TEXT_FIELD_FEATURE,
@@ -15,7 +14,6 @@ from main.models.utils import (
 )
 
 
-@register_snippet
 class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
     countries = models.ManyToManyField(Country, verbose_name="Pays", blank=True)
     name = models.CharField(verbose_name="Nom", max_length=100)
@@ -47,29 +45,20 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         verbose_name="Description courte",
         help_text="Sera affiché sur la carte de la ressource",
     )
-    resource_type = models.CharField(
-        verbose_name="Type de ressource",
-        choices=[
-            ("data", "Donnée"),
-            ("training", "Support de formation"),
-            ("product", "Produit thématique"),
-        ],
-        default="data",
-        max_length=20,
-    )
+    types = models.ManyToManyField(ResourceType, blank=True)
 
     panels = [
         FieldPanel("name"),
         FieldPanel("slug"),
         FieldPanel("short_description"),
         FieldPanel("body"),
-        FieldPanel("countries", widget=forms.CheckboxSelectMultiple),
-        FieldPanel("resource_type"),
+        FieldPanel("types", widget=forms.CheckboxSelectMultiple),
         FieldPanel("thematics", widget=forms.CheckboxSelectMultiple),
         FieldPanel("profiles", widget=forms.CheckboxSelectMultiple),
         FieldPanel("geo_dev_creation"),
         FieldPanel("source_name"),
         FieldPanel("source_link"),
+        FieldPanel("countries", widget=forms.CheckboxSelectMultiple),
     ]
 
     def to_dict(self):
@@ -96,8 +85,8 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         else:
             to_return["thematic"] = "multiple"
         to_return["zone"] = "south_africa"
-        to_return["resource_type"] = self.get_resource_type_display()
         to_return["countries"] = [country.code for country in self.countries.all()]
+        to_return["types"] = [type_.slug for type_ in self.types.all()]
         return to_return
 
     def __str__(self):

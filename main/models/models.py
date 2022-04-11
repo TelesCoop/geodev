@@ -63,18 +63,22 @@ class Profile(models.Model):
         verbose_name_plural = "Profils"
 
 
-@register_snippet
 class Thematic(TagBase):
     class Meta:
         verbose_name = "Thématique"
         verbose_name_plural = "Thématiques"
 
 
-@register_snippet
 class ActualityType(TagBase):
     class Meta:
         verbose_name = "Type d'actualité"
         verbose_name_plural = "Types d'actualité"
+
+
+class ResourceType(TagBase):
+    class Meta:
+        verbose_name = "Type de ressource"
+        verbose_name_plural = "Types de ressource"
 
 
 @register_setting

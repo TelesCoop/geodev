@@ -6,14 +6,12 @@ from django.forms import model_to_dict
 from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
-from wagtail.snippets.models import register_snippet
 
 from main.models.models import ActualityType
 from main.models.utils import TimeStampedModel
 from main.templatetags.main_tags import news_page_url
 
 
-@register_snippet
 class News(index.Indexed, TimeStampedModel):
     name = models.CharField(verbose_name="nom", max_length=255)
     publication_date = models.DateTimeField(
@@ -77,6 +75,6 @@ class News(index.Indexed, TimeStampedModel):
         return to_return
 
     class Meta:
-        verbose_name_plural = "Actualités / Evènements"
-        verbose_name = "Actualité / Evènement"
+        verbose_name = "Actualité"
+        verbose_name_plural = "Actualités"
         ordering = ["-publication_date"]

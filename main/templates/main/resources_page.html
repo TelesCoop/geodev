@@ -62,6 +62,11 @@
       thematics.forEach(function (thematic) {
           thematicBySlug[thematic.slug] = thematic;
       });
+      var resourceTypes = JSON.parse('{{ resource_types | escapejs }}');
+      var resourceTypeBySlug = {};
+      resourceTypes.forEach(function (resourceType) {
+          resourceTypeBySlug[resourceType.slug] = resourceType;
+      });
       var selectedThematics = {};
       thematics.forEach(function (thematic) {
           selectedThematics[thematic.slug] = false
@@ -137,7 +142,7 @@
                       container: 'map',
                       style: 'mapbox://styles/maximetelescoop/ckz2nizcg007c14nt4j1x4nc9',
                       center: [22.3688733, 1.9171377], // starting position [lng, lat]
-                      zoom: 4
+                      zoom: 2,
                   });
                   window.map = this.map;
               },
@@ -258,15 +263,33 @@
                       resourcesHolder.className = "resources-holder";
                       for (const resource of resources) {
                           const element = document.createElement("div");
-                          element.className = "card has-background-info-light";
+                          if (resource.is_single_thematic) {
+                              element.className = "card has-background-" + resource.thematic + "-light";
+                          } else {
+                              element.className = "card has-background-info-light";
+                          }
 
                           var elementContent = document.createElement("div");
                           elementContent.className = "card-content";
+                          var elementTop = document.createElement("div");
+                          elementTop.className = "resource-top-line";
+                          elementTop.style.display = "flex";
+                          elementTop.style.justifyContent = "space-between";
+                          var topLeft = document.createElement("div");
+                          topLeft.innerText = resource.thematics
+                              .map(thematic => this.thematicBySlug[thematic].name)
+                              .join(", ");
+                          var topRight = document.createElement("div");
+                          topRight.innerText = resource.types.map(type_ => resourceTypeBySlug[type_].name).join(", ");
+                          elementTop.appendChild(topLeft);
+                          elementTop.appendChild(topRight);
+                          elementContent.appendChild(elementTop);
                           var elementTitle = document.createElement("h3");
                           elementTitle.innerText = resource.name;
                           elementTitle.className = "title is-5 has-text-weight-bold mb-4";
                           elementContent.appendChild(elementTitle);
                           var elementButton = document.createElement("a");
+                          elementButton.href = resource.link;
                           elementButton.className = "button is-secondary";
                           elementButton.innerText = "Plus d'information";
                           elementContent.appendChild(elementButton);
@@ -385,6 +408,10 @@
 
       .resources-holder > div {
           margin-top: 19px;
+      }
+
+      .resource-top-line {
+          font-size: 0.75rem;
       }
   </style>
 {% endblock %}

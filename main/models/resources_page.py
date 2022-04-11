@@ -1,13 +1,14 @@
 import json
 from typing import List
 
+from django.forms import model_to_dict
 from django.http import Http404
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.models import Page
 
 from main.constants import THEMATICS, ZONES
 from main.models.country import Country
-from main.models.models import Profile
+from main.models.models import Profile, ResourceType
 from main.models.news import News
 from main.models.resource import Resource
 
@@ -47,6 +48,9 @@ class ResourcesPage(RoutablePageMixin, Page):
             }
         )
         context["thematics"] = json.dumps(THEMATICS)
+        context["resource_types"] = json.dumps(
+            [model_to_dict(type_) for type_ in ResourceType.objects.all()]
+        )
         context["zones"] = json.dumps(ZONES)
         context["selected_profile"] = request.GET.get("profile", "")
         context["is_profile_locked"] = int(bool(request.GET.get("profile", False)))
