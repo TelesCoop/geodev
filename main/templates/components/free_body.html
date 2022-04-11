@@ -1,0 +1,20 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<div class="content">
+  <div class="columns is-12 is-10-desktop">
+    {% for block in body %}
+      {% if block.block_type == 'heading' %}
+        <h1>{{ block.value }}</h1>
+      {% elif block.block_type == 'pdf' %}
+        {% include "components/pdf_link.html" with pdf=block.value %}
+      {% elif block.block_type == 'image' %}
+        {% image block.value.image original as image %}
+        <figure class="image">
+          <img src="{{ image.url }}">
+        </figure>
+      {% elif block.block_type == 'section' %}
+        {% include "components/section.html" with block=block %}
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
