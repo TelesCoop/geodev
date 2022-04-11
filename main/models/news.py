@@ -27,7 +27,7 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
         unique=True,
         default="",
     )
-    introduction = RichTextField(max_length=100)
+    introduction = RichTextField(max_length=250)
     image = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
@@ -61,8 +61,9 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
     def __str__(self):
         return self.name
 
+    @property
     def link(self):
-        return news_page_url(self)
+        return news_page_url(news=self)
 
     def to_dict(self):
         to_return = model_to_dict(
@@ -80,6 +81,7 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
         else:
             to_return["image_link"] = None
         to_return["introduction"] = str(self.introduction)
+        to_return["link"] = self.link
 
         return to_return
 

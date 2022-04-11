@@ -5,7 +5,17 @@
 {% load main_tags %}
 
 {% block content %}
-  <div class="container">
-    {% include "components/breadcrumbs.html" %}
+  <div class="has-background-info-light">
+    <div class="container pt-6">
+      {% include "components/breadcrumbs.html" %}
+
+      <div class="has-background-white" style="padding: 80px 8vw">
+        {{ news.publication_date }}
+        <h1 class="title is-1">{{ news.name }}</h1>
+
+        {% include "components/free_body.html" with body=news.body %}
+      </div>
+    </div>
   </div>
+
 {% endblock %}

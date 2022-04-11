@@ -84,3 +84,27 @@
 .footer-at-bottom .card-content {
     flex: auto;
 }
+
+@media screen and (max-width: 1733px) {
+    .top-left-image {
+        display: none;
+    }
+}
+
+.pdf-holder {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media (max-width: 576px) {
+    .pdf-holder {
+        flex-direction: column;
+    }
+
+    .pdf-holder a {
+        display: block;
+        margin-top: 12px;
+    }
+}

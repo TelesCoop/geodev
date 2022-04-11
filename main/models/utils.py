@@ -21,10 +21,10 @@ def paragraph_block(additional_field, required):
 
 SIMPLE_RICH_TEXT_FIELD_FEATURE = ["bold", "italic", "link"]
 COLOR_CHOICES = (
-    ("blue", "Bleue"),
-    ("pink", "Rose"),
+    ("blue-light", "Bleue"),
+    ("secondary-light", "Rose"),
     ("white", "Blanche"),
-    ("none", "Sans couleur"),
+    ("", "Sans couleur"),
 )
 
 
@@ -32,9 +32,11 @@ class FreeBodyField(models.Model):
     color_block = (
         "color",
         blocks.ChoiceBlock(
+            label="couleur",
             choices=COLOR_CHOICES,
             default="none",
             help_text="Couleur de fond",
+            required=False,
         ),
     )
 
@@ -49,6 +51,7 @@ class FreeBodyField(models.Model):
                 "section",
                 blocks.StructBlock(
                     [
+                        paragraph_block(["h2"], True),
                         color_block,
                         (
                             "image",
@@ -67,7 +70,6 @@ class FreeBodyField(models.Model):
                                 help_text="Position de l'image",
                             ),
                         ),
-                        paragraph_block(["h2"], True),
                         (
                             "sub_section",
                             blocks.ListBlock(
@@ -102,7 +104,7 @@ class FreeBodyField(models.Model):
             ("pdf", DocumentChooserBlock()),
         ],
         blank=True,
-        verbose_name="Description",
+        verbose_name="Contenu",
         help_text="Corps de la page",
     )
 

@@ -19,7 +19,7 @@ class ContentPage(Page, FreeBodyField):
         verbose_name = "Page de contenu"
         verbose_name_plural = "Pages de contenu"
 
-    subpage_types: List[str] = []
+    subpage_types: List[str] = ["ContentPage"]
 
     content_panels = Page.content_panels + FreeBodyField.panels
 
