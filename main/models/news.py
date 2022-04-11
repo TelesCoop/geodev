@@ -4,15 +4,17 @@ from django import forms
 from django.db import models
 from django.forms import model_to_dict
 from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.core.fields import RichTextField
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.images.views.serve import generate_image_url
 from wagtail.search import index
 
 from main.models.models import ActualityType
-from main.models.utils import TimeStampedModel
+from main.models.utils import TimeStampedModel, FreeBodyField
 from main.templatetags.main_tags import news_page_url
 
 
-class News(index.Indexed, TimeStampedModel):
+class News(index.Indexed, TimeStampedModel, FreeBodyField):
     name = models.CharField(verbose_name="nom", max_length=255)
     publication_date = models.DateTimeField(
         verbose_name="Date de publication",
@@ -25,6 +27,7 @@ class News(index.Indexed, TimeStampedModel):
         unique=True,
         default="",
     )
+    introduction = RichTextField(max_length=100)
     image = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
@@ -50,6 +53,8 @@ class News(index.Indexed, TimeStampedModel):
         FieldPanel("slug", classname="full"),
         FieldPanel("publication_date"),
         ImageChooserPanel("image"),
+        FieldPanel("introduction"),
+        FieldPanel("body"),
         FieldPanel("types", widget=forms.CheckboxSelectMultiple),
     ]
 
@@ -68,9 +73,10 @@ class News(index.Indexed, TimeStampedModel):
                 "slug",
             ],
         )
-        to_return["publication_date"] = self.publication_date.isoformat()
+        to_return["publication_date"] = self.publication_date.strftime("%d/%m/%Y")
         to_return["types"] = [type_.slug for type_ in self.types.all()]
-        # to_return["image_link"] = self.image.url
+        to_return["image_link"] = generate_image_url(self.image, "fill-432x220")
+        to_return["introduction"] = str(self.introduction)
 
         return to_return
 

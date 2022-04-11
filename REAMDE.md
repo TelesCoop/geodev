@@ -25,3 +25,9 @@ Les pays, profils et zones du monde sont configurables dans le sous-menu "Géné
 
 De la même manière que les thématiques de ressources, les zones du monde ne sont pas prévues pour être changées, hormis
 leur nom.
+
+### Utilisateurs admin
+
+La gestion des utilisateurs se fait depuis le sous-menu Paramètres, puis Utilisateurs. Le plus simple est ensuite de
+donner tous les droits aux administrateurs. Depuis l'édition ou l'ajout d'un utilisateur, aller dans l'onglet Rôles, et
+cocher toutes les cases.

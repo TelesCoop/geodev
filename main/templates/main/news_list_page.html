@@ -15,7 +15,9 @@
         <div class="container">
           <h2 class="title is-5">Filtrer les actualités</h2>
           <div class="filter-holder">
-            <button class="button is-rounded" :class="isAllNews ? '' : 'is-outlined'">Toutes les actualités</button>
+            <button class="button is-primary is-rounded" :class="isAllNews ? '' : 'has-background-white is-outlined'">
+              Toutes les actualités
+            </button>
 
             <button class="button is-rounded is-primary"
                     :class="type.selected ? '' : 'has-background-white is-outlined'"
@@ -23,6 +25,29 @@
                     v-for="type in types">
               [[ type.name ]]
             </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section container px-0">
+        <div class="card-holder">
+          <div v-for="news in newsList" class="card news-card footer-at-bottom">
+            <div class="card-image">
+              <img :src="news.image_link">
+            </div>
+            <div class="card-content pb-0">
+              <h2 class="title is-4 mb-0">[[ news.name ]]</h2>
+              <p class="is-size-7">[[ news.publication_date ]]</p>
+              <p class="mt-4" v-html="news.introduction"></p>
+            </div>
+
+            <div class="card-footer pt-0" style="flex-direction: column; padding: 24px; border: none;">
+              <div class="mt-4">
+                <a :href="[[ news.link ]]" class="button is-secondary is-medium">
+                  Lire la suite
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -34,14 +59,28 @@
 {% block extra_js %}
   <script>
       var newsList = JSON.parse('{{ news_list | escapejs }}');
+      var types = JSON.parse('{{ types | escapejs }}');
+      var selectedTypes = {};
+      types.for(function (type) {
+          selectedTypes[type] = false
+      });
+      console.log("### newsList", newsList);
       Vue.createApp({
           delimiters: ['[[', ']]'],
           data() {
               return {
-                  types: JSON.parse('{{ types | escapejs }}'),
+                  filteredNews: newsList,
+                  isAllNews: true,
+                  newsList: newsList,
+                  selectedTypes: selectedTypes,
+                  types: types,
               }
           },
-          methods: {},
+          methods: {
+              toggleType(type) {
+                  this.selectedTypes[type] = !this.selectedTypes[type];
+              },
+          },
           mounted() {
 
           },
@@ -61,8 +100,17 @@
           margin-left: 15px;
       }
 
+      .filter-holder .button.is-outlined:hover {
+          background: transparent !important;
+          color: #324176 !important;
+      }
+
       .button.has-background-white:focus {
           color: #324176 !important;
+      }
+
+      .news-card {
+          max-width: 432px;
       }
   </style>
 {% endblock %}
