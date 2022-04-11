@@ -19,10 +19,14 @@ server {
         return 444;
     }
 
-    # backend static stuff
     location /static  {
         autoindex off;
         alias {{ backend_static_path }};
+    }
+
+    location /media  {
+        autoindex off;
+        alias {{ backend_media_path }};
     }
 
     location / {
