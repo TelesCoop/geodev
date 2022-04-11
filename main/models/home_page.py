@@ -1,8 +1,10 @@
+from django.contrib.auth.models import User
 from django.db import models
 from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 
+from main.models.resource import Resource
 from main.models.models import Profile
 from main.models.news import News
 from main.models.utils import SIMPLE_RICH_TEXT_FIELD_FEATURE
@@ -11,8 +13,8 @@ from main.models.utils import SIMPLE_RICH_TEXT_FIELD_FEATURE
 class HomePage(Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context["n_ressources"] = 148
-        context["n_members"] = 80
+        context["n_ressources"] = Resource.objects.count()
+        context["n_members"] = User.objects.count()
         context["profiles"] = Profile.objects.all()
         context["news_list"] = News.objects.all()[:3]
         context["newsletter_link"] = "newsletter-link"
