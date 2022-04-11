@@ -7,6 +7,7 @@ from wagtail.contrib.modeladmin.options import (
 )
 from wagtail.core import hooks
 
+from main.models.country import WorldZone, Country
 from main.models.models import Profile, Thematic, ActualityType, ResourceType
 from main.models.resource import Resource
 from main.models.news import News
@@ -22,7 +23,7 @@ def global_admin_css():
 
 class ProfileModelAdmin(ModelAdmin):
     model = Profile
-    menu_label = "Profile type"
+    menu_label = "Profils"
     menu_order = 200
     menu_icon = "group"
     add_to_settings_menu = False
@@ -73,7 +74,6 @@ class ActualityTypeModelAdmin(ModelAdmin):
     menu_label = "Types d'actualité"
     menu_icon = "tag"
     add_to_settings_menu = False
-    form_fields_exclude = ("slug",)
     search_fields = ("name",)
 
 
@@ -84,6 +84,29 @@ class ActualityAdminGroup(ModelAdminGroup):
     items = (NewsModelAdmin, ActualityTypeModelAdmin)
 
 
+class WorldZoneModelAdmin(ModelAdmin):
+    model = WorldZone
+    menu_label = "Zones du monde"
+    menu_icon = "site"
+    add_to_settings_menu = False
+    search_fields = ("name",)
+
+
+class CountryModelAdmin(ModelAdmin):
+    model = Country
+    menu_label = "Pays"
+    menu_icon = "site"
+    add_to_settings_menu = False
+    search_fields = ("name",)
+
+
+class GeneralAdminGroup(ModelAdminGroup):
+    menu_label = "Général"
+    menu_order = 203
+    menu_icon = "cogs"
+    items = (ProfileModelAdmin, CountryModelAdmin, WorldZoneModelAdmin)
+
+
 modeladmin_register(RessourcesAdminGroup)
 modeladmin_register(ActualityAdminGroup)
-modeladmin_register(ProfileModelAdmin)
+modeladmin_register(GeneralAdminGroup)

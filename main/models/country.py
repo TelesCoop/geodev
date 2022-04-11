@@ -2,10 +2,8 @@ from django.db import models
 from django.forms import model_to_dict
 from wagtail.search import index
 from wagtail.search.index import Indexed
-from wagtail.snippets.models import register_snippet
 
 
-@register_snippet
 class WorldZone(models.Model):
     class Meta:
         verbose_name = "zone du monde"
@@ -18,7 +16,6 @@ class WorldZone(models.Model):
         return self.name
 
 
-@register_snippet
 class Country(models.Model, Indexed):
     class Meta:
         verbose_name = "pays"

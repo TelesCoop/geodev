@@ -3,3 +3,25 @@
 ## Configuration
 
 Le site est globalement configurable à l'URL [http://adresse-du-site.fr]/admin.
+
+De nombreux éléments contiennent un champ `slug`, cela correspond à un champ technique, qui doit être unique par type
+d'élément. En général, c'est le nom de l'élément, en anglais, en miniscule.
+
+### Les ressources
+
+Depuis le menu de gauche, il y a un sous-menu "Ressources". Ce sous-menu possède trois éléments :
+ressources, thématiques et types de ressources.
+
+A priori, les thématiques sont fixes. En tout cas, d'éventuels ajout ne bénéficieraient pas de logo. Les types de
+ressources sont plus flexibles car il n'y a pas d'image associée et peuvent donc être configués.
+
+### Les actualités
+
+De la même manière, les actualités sont configurés dans le sous-menu Actualités.
+
+### Pays, profils et zones du monde
+
+Les pays, profils et zones du monde sont configurables dans le sous-menu "Général".
+
+De la même manière que les thématiques de ressources, les zones du monde ne sont pas prévues pour être changées, hormis
+leur nom.

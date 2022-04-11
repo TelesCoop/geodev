@@ -17,8 +17,9 @@
           <div class="filter-holder">
             <button class="button is-rounded" :class="isAllNews ? '' : 'is-outlined'">Toutes les actualités</button>
 
-            <button class="button is-rounded"
-                    :class="type.selected ? '' : 'is-outlined'"
+            <button class="button is-rounded is-primary"
+                    :class="type.selected ? '' : 'has-background-white is-outlined'"
+                    @click="type.selected = !type.selected"
                     v-for="type in types">
               [[ type.name ]]
             </button>
@@ -58,6 +59,10 @@
 
       .filter-holder > button {
           margin-left: 15px;
+      }
+
+      .button.has-background-white:focus {
+          color: #324176 !important;
       }
   </style>
 {% endblock %}
