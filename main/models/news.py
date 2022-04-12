@@ -3,6 +3,7 @@ import datetime
 from django import forms
 from django.db import models
 from django.forms import model_to_dict
+from django.utils.text import slugify
 from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.core.fields import RichTextField
 from wagtail.images.edit_handlers import ImageChooserPanel
@@ -25,7 +26,9 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
         max_length=100,
         verbose_name="Slug (URL de l'actualité)",
         unique=True,
+        blank=True,
         default="",
+        help_text="ce champ est rempli automatiquement s'il est laissé vide",
     )
     introduction = RichTextField(max_length=250)
     image = models.ForeignKey(
@@ -84,6 +87,11 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
         to_return["link"] = self.link
 
         return to_return
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Actualité"

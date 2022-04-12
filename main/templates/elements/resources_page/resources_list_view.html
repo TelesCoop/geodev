@@ -2,29 +2,24 @@
 
 <div v-if="!isMapView" class="card-holder">
   <div v-for="resource in filteredResources" class="card resource-card footer-at-bottom"
-       :class="resource.is_single_thematic ? 'has-background-' + resource.thematic + '-light' : 'has-background-std'">
+       :class="resource.thematic ? 'has-background-' + resource.thematic + '-light' : 'has-background-std'">
     <div class="card-content">
       <div class="is-flex" style="justify-content: space-between; font-size: 11px">
         <div>
-          <template v-if="resource.thematic == 'multiple'">
-            <span class="icon">
-              <img :src="'{% static 'img/thematics/unspecified.svg' %}'">
-            </span>
-            Plusieurs thématiques
-          </template>
-          <template v-else-if="resource.thematic == null">
-            <span>
-              <span class="icon">
-                <img :src="'{% static 'img/thematics/unspecified.svg' %}'">
-              </span>
-              Sans thématique
-            </span>
-          </template>
-          <template v-else>
+          <template v-if="resource.thematic">
             <span class="icon">
               <img :src="'{% static 'img/thematics' %}' + '/' + resource.thematic + '.svg'">
             </span>
             [[ thematicBySlug[resource.thematic].name ]]
+          </template>
+          <template v-else>
+            <span>
+              <span class="icon">
+                <img :src="'{% static 'img/thematics/unspecified.svg' %}'">
+              </span>
+              <template v-if="resource.thematics.length">Plusieurs thématiques</template>
+              <template v-else>Sans thématique</template>
+            </span>
           </template>
         </div>
         <div v-if="resource.zone">
@@ -36,7 +31,7 @@
       </div>
 
       <div class="my-5 has-text-centered">
-        <img v-if="resource.is_single_thematic"
+        <img v-if="resource.thematic"
              :src="'{% static 'img/thematics' %}' + '/' + resource.thematic + '.svg'"
              style="width: 107px ; height: 107px">
         <img v-else :src="'{% static 'img/thematics/unspecified_color.svg' %}'"

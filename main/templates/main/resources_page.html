@@ -263,7 +263,7 @@
                       resourcesHolder.className = "resources-holder";
                       for (const resource of resources) {
                           const element = document.createElement("div");
-                          if (resource.is_single_thematic) {
+                          if (resource.thematic) {
                               element.className = "card has-background-" + resource.thematic + "-light";
                           } else {
                               element.className = "card has-background-info-light";
@@ -436,6 +436,10 @@
       .button.is-forest.is-outlined:focus {
           background: transparent !important;
           color: #058566 !important;
+      }
+
+      .button:hover .icon img, .button:focus .icon img {
+          filter: brightness(0) invert(1);
       }
   </style>
 {% endblock %}
