@@ -89,3 +89,12 @@ class NewsLetterSettings(BaseSetting):
 
     class Meta:
         verbose_name = "Inscription à la lettre d'information"
+
+
+class Contact(models.Model):
+    firstname = models.CharField(max_length=50)
+    email = models.CharField(max_length=50)
+    country = models.CharField(max_length=50)
+    lastname = models.CharField(max_length=50)
+    subject = models.CharField(max_length=40)
+    message = models.TextField()

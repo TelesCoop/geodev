@@ -13,6 +13,8 @@ server {
     access_log /var/log/nginx/access_{{ public_hostnames[0].replace('.', '_') }}.log;
     error_log /var/log/nginx/error_{{ public_hostnames[0].replace('.', '_') }}.log;
 
+    client_max_body_size 10M;
+
     # http://stackoverflow.com/questions/15238506/djangos-suspiciousoperation-invalid-http-host-header
     # Deny illegal Host headers
     if ($host !~* ^({{ "|".join(public_hostnames) }})$ ) {

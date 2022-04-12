@@ -25,73 +25,78 @@
             <div class="card-content">
               <h2 class="title is-2">Formulaire de contact</h2>
               <p>Les champs comprenant une astérisque (*) sont obligatoires.</p>
-              <div class="columns mt-5">
-                <div class="column is-6">
-                  <div class="field">
-                    <label for="firstname" class="label">Prénom *</label>
-                    <div class="control">
-                      <input name="firstname" id="firstname" class="input" type="text" placeholder="Jean">
+
+              <form action="" method="post">
+                {% csrf_token %}
+
+                <div class="columns mt-5">
+                  <div class="column is-6">
+                    <div class="field">
+                      <label for="firstname" class="label">Prénom *</label>
+                      <div class="control">
+                        <input name="firstname" id="firstname" class="input" type="text" placeholder="Jean">
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label for="email" class="label">Adresse e-mail *</label>
+                      <div class="control">
+                        <input name="email" id="email" class="input" type="email" placeholder="exemple@mail.com">
+                      </div>
                     </div>
                   </div>
-                  <div class="field">
-                    <label for="email" class="label">Adresse e-mail *</label>
-                    <div class="control">
-                      <input name="email" id="email" class="input" type="email" placeholder="exemple@mail.com">
+                  <div class="column is-6">
+                    <div class="field">
+                      <label for="lastname" class="label">Nom *</label>
+                      <div class="control">
+                        <input name="lastname" id="lastname" class="input" type="text" placeholder="Dupont">
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label for="country" class="label">Pays *</label>
+                      <div class="control">
+                        <input name="country" id="country" class="input" type="text" placeholder="France">
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="column is-6">
-                  <div class="field">
-                    <label for="lastname" class="label">Nom *</label>
-                    <div class="control">
-                      <input name="lastname" id="lastname" class="input" type="text" placeholder="Dupont">
+
+                <div class="field">
+                  <label for="subject" class="label">Quelle est la raison de votre prise de contact ?</label>
+                  <div class="control">
+                    <div class="select">
+                      <select name="subject" id="subject">
+                        <option value="Proposition de collaboration">Proposition de collaboration</option>
+                        <option value="Partage d'actualités">Partage d'actualités</option>
+                        <option value="Adhésion au réseau">Adhésion au réseau</option>
+                        <option value="Demande d'informations sur l'ART GeoDEV">Demande d'informations sur l'ART GeoDEV
+                        </option>
+                        <option value="Avis sur ce site web">Avis sur ce site web</option>
+                        <option value="Autre">Autre</option>
+                      </select>
                     </div>
                   </div>
-                  <div class="field">
-                    <label for="email" class="label">Pays *</label>
-                    <div class="control">
-                      <input name="email" id="email" class="input" type="text" placeholder="France">
-                    </div>
+                </div>
+
+                <div class="field">
+                  <label for="message" class="label">Message</label>
+                  <div class="control">
+                    <textarea name="message" id="message" class="textarea" placeholder="Textarea"></textarea>
                   </div>
                 </div>
-              </div>
 
-              <div class="field">
-                <label for="subject" class="label">Quelle est la raison de votre prise de contact ?</label>
-                <div class="control">
-                  <div class="select">
-                    <select name="subject" id="subject">
-                      <option value="Proposition de collaboration">Proposition de collaboration</option>
-                      <option value="Partage d'actualités">Partage d'actualités</option>
-                      <option value="Adhésion au réseau">Adhésion au réseau</option>
-                      <option value="Demande d'informations sur l'ART GeoDEV">Demande d'informations sur l'ART GeoDEV
-                      </option>
-                      <option value="Avis sur ce site web">Avis sur ce site web</option>
-                      <option value="Autre">Autre</option>
-                    </select>
+                <div class="field mt-5">
+                  <div class="control">
+                    <label class="checkbox">
+                      <input name="agree" type="checkbox">
+                      J'autorise ce site à conserver mes données transmises via ce formulaire
+                    </label>
                   </div>
                 </div>
-              </div>
 
-              <div class="field">
-                <label for="message" class="label">Message</label>
-                <div class="control">
-                  <textarea name="message" id="message" class="textarea" placeholder="Textarea"></textarea>
+                <div style="text-align: right" class="mt-5">
+                  <input type="submit" class="button is-secondary" value="Envoyer">
                 </div>
-              </div>
-
-              <div class="field mt-5">
-                <div class="control">
-                  <label class="checkbox">
-                    <input name="agree" type="checkbox">
-                    J'autorise ce site à conserver mes données transmises via ce formulaire
-                  </label>
-                </div>
-              </div>
-
-              <div style="text-align: right" class="mt-5">
-                <input type="submit" class="button is-secondary" value="Envoyer">
-              </div>
+              </form>
             </div>
           </div>
         </div>
