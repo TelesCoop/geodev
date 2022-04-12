@@ -74,7 +74,7 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
                 "slug",
             ],
         )
-        to_return["publication_date"] = self.publication_date.strftime("%d/%m/%Y")
+        to_return["publication_date"] = self.publication_date.strftime("%d %B %Y")
         to_return["types"] = [type_.slug for type_ in self.types.all()]
         if self.image:
             to_return["image_link"] = generate_image_url(self.image, "fill-432x220")
