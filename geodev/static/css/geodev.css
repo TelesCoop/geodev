@@ -108,3 +108,8 @@
         margin-top: 12px;
     }
 }
+
+.content .section {
+    padding-right: 0;
+    padding-left: 0;
+}
