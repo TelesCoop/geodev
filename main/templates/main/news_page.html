@@ -10,7 +10,7 @@
       {% include "components/breadcrumbs.html" %}
 
       <div class="has-background-white" style="padding: 80px 8vw">
-        {{ news.publication_date }}
+        {{ news.publication_date | date }}
         <h1 class="title is-1">{{ news.name }}</h1>
 
         {% include "components/free_body.html" with body=news.body %}

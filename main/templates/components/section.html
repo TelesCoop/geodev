@@ -1,6 +1,6 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
-<div class="section {% if block.value.color %}has-background-{{ block.value.color }}{% endif %}">
+<div class="{% if block.value.color %}section has-background-{{ block.value.color }}{% endif %}">
 
   {% if block.value.image %}
     <div class="columns">
