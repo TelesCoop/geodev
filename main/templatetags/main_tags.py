@@ -2,16 +2,16 @@ from django.template.defaulttags import register
 
 
 @register.simple_tag()
-def ressource_page_url(ressource):
+def resource_page_url(resource):
     from main.models.resources_page import ResourcesPage
 
     try:
-        ressource_page = ResourcesPage.objects.get()
+        resource_page = ResourcesPage.objects.get()
     except ResourcesPage.DoesNotExist:
         raise ResourcesPage.DoesNotExist("A RessourcePage must be created")
-    url = ressource_page.url + ressource_page.specific.reverse_subpage(
-        "ressource",
-        args=(str(ressource.slug),),
+    url = resource_page.url + resource_page.specific.reverse_subpage(
+        "resource",
+        args=(str(resource.slug),),
     )
     return url
 

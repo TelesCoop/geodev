@@ -86,6 +86,11 @@
           countryParameters[country.code] = country;
       });
 
+      function startsWith(str, other) {
+          return str.indexOf(other) === 0;
+      }
+
+
       Vue.createApp({
           delimiters: ['[[', ']]'],
           data() {
@@ -94,10 +99,12 @@
                   isMapView: false,
                   isProfileLocked: {{ is_profile_locked }},
                   isMapViewEnables: false,
+                  isOnlyGeoDev: false,
                   map: null,
                   profiles: JSON.parse('{{ profiles | escapejs }}'),
                   resources: JSON.parse('{{ resources | escapejs }}'),
                   countryParameters: countryParameters,
+                  searchInput: '',
                   selectedProfile: '{{ selected_profile }}',
                   selectedThematics: selectedThematics,
                   selectedZones: selectedZones,
@@ -167,7 +174,7 @@
                   this.updateFilters();
               },
               updateFilters() {
-                  console.log("### updateFilters", this.selectedProfile, this.selectedThematics, this.selectedZones);
+                  console.log("### updateFilters", this.isOnlyGeoDev, this.resources, this.thematicBySlug);
                   var filtered = [];
                   this.resources.forEach((resource) => {
                       console.log("### updateFilters", this.selectedProfile, this.selectedThematics, this.selectedZones);
@@ -207,6 +214,24 @@
                       if (atLeastOneSelectedZone && resource.zone && !this.selectedZones[resource.zone]) {
                           console.log("### not valid zone for", resource.name, resource.zone, this.selectedZones);
                           return;
+                      }
+
+                      if (this.searchInput) {
+                          var searchInput = this.searchInput.toLowerCase();
+                          var words = resource.name.toLowerCase().split(" ");
+                          if (!words.some(function (word) {
+                              return startsWith(word, searchInput)
+                          })) {
+                              console.log("### does not match serch input", resource.name, this.searchInput);
+                              return;
+                          }
+                      }
+
+                      console.log("### isOnlyGeoDev ?", this.isOnlyGeoDev, resource);
+                      if (this.isOnlyGeoDev) {
+                          if (!resource.geo_dev_creation) {
+                              return false;
+                          }
                       }
 
                       filtered.push(resource);

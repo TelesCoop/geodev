@@ -50,7 +50,7 @@ class Profile(models.Model):
         return unidecode(self.name.lower())
 
     @property
-    def ressources_link(self):
+    def resources_link(self):
         from main.models.resources_page import ResourcesPage
 
         return f"{pageurl({}, ResourcesPage.objects.get())}?profile={self.slug}"

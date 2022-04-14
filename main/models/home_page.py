@@ -4,16 +4,17 @@ from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 
-from main.models.resource import Resource
-from main.models.models import Profile
-from main.models.news import News
-from main.models.utils import SIMPLE_RICH_TEXT_FIELD_FEATURE
 
+class HomePage(Page, models.Model):
+    from main.models.utils import SIMPLE_RICH_TEXT_FIELD_FEATURE
 
-class HomePage(Page):
     def get_context(self, request, *args, **kwargs):
+        from main.models.resource import Resource
+        from main.models.models import Profile
+        from main.models.news import News
+
         context = super().get_context(request, *args, **kwargs)
-        context["n_ressources"] = Resource.objects.count()
+        context["n_resources"] = Resource.objects.count()
         context["n_members"] = User.objects.count()
         context["profiles"] = Profile.objects.all()
         context["news_list"] = News.objects.all()[:3]
@@ -29,19 +30,19 @@ class HomePage(Page):
         features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
         verbose_name="Introduction",
     )
-    ressources_block_title = models.CharField(
+    resources_block_title = models.CharField(
         blank=True,
         verbose_name="Titre du bloc des ressources",
         max_length=64,
         default="Des ressources adaptées à votre profil",
     )
-    ressources_block_introduction = RichTextField(
+    resources_block_introduction = RichTextField(
         null=True,
         blank=True,
         features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
         verbose_name="Introduction du bloc des ressources",
     )
-    ressources_block_explication = RichTextField(
+    resources_block_explication = RichTextField(
         null=True,
         blank=True,
         features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
@@ -57,9 +58,9 @@ class HomePage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel("introduction"),
-        FieldPanel("ressources_block_title"),
-        FieldPanel("ressources_block_introduction"),
-        FieldPanel("ressources_block_explication"),
+        FieldPanel("resources_block_title"),
+        FieldPanel("resources_block_introduction"),
+        FieldPanel("resources_block_explication"),
         FieldPanel("news_block_title"),
     ]
 

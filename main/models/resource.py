@@ -93,9 +93,9 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
             to_return["thematic"] = self.main_thematic.slug
         else:
             to_return["thematic"] = "multiple"
-        zones = {country.zone.slug for country in self.countries.all()}
+        zones = {country.zone.code for country in self.countries.all() if country.zone}
         if len(zones) == 1:
-            to_return["zone"] = "south_africa"
+            to_return["zone"] = next(iter(zones))
         else:
             to_return["zone"] = None
         to_return["countries"] = [country.code for country in self.countries.all()]
@@ -117,9 +117,9 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
 
     @property
     def link(self):
-        from main.templatetags.main_tags import ressource_page_url
+        from main.templatetags.main_tags import resource_page_url
 
-        return ressource_page_url(self)
+        return resource_page_url(self)
 
     class Meta:
         verbose_name_plural = "Ressources"

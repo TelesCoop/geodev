@@ -2,11 +2,11 @@
 
 <div v-if="!isMapView" class="card-holder">
   <div v-for="resource in filteredResources" class="card resource-card footer-at-bottom"
-       :class="resource.thematic ? 'has-background-' + resource.thematic + '-light' : 'has-background-std'">
+       :class="(resource.thematic && resource.thematic != 'multiple') ? 'has-background-' + resource.thematic + '-light' : 'has-background-std'">
     <div class="card-content">
       <div class="is-flex" style="justify-content: space-between; font-size: 11px">
         <div>
-          <template v-if="resource.thematic">
+          <template v-if="resource.thematic && resource.thematic != 'multiple'">
             <span class="icon">
               <img :src="'{% static 'img/thematics' %}' + '/' + resource.thematic + '.svg'">
             </span>
@@ -31,7 +31,7 @@
       </div>
 
       <div class="my-5 has-text-centered">
-        <img v-if="resource.thematic"
+        <img v-if="resource.thematic && resource.thematic != 'multiple'"
              :src="'{% static 'img/thematics' %}' + '/' + resource.thematic + '.svg'"
              style="width: 107px ; height: 107px">
         <img v-else :src="'{% static 'img/thematics/unspecified_color.svg' %}'"
