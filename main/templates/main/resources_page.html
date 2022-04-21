@@ -285,7 +285,7 @@
                   for (const resource of this.filteredResources) {
                       for (const country of resource.countries) {
                           // if zone(s) are selected, do not display countries outside of zones
-                          if (!atLeastOneSelectedZone || this.selectedZones[country.zone]) {
+                          if (!atLeastOneSelectedZone || !this.selectedZones[country.zone]) {
                               if (resourcesPerCountry[country] == null) {
                                   resourcesPerCountry[country] = [];
                               }
