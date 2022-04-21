@@ -68,12 +68,14 @@ class Thematic(TagBase):
 
 class ActualityType(TagBase):
     class Meta:
+        ordering = ("name",)
         verbose_name = "Type d'actualité"
         verbose_name_plural = "Types d'actualité"
 
 
 class ResourceType(TagBase):
     class Meta:
+        ordering = ("name",)
         verbose_name = "Type de ressource"
         verbose_name_plural = "Types de ressource"
 

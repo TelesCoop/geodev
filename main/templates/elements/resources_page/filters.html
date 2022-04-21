@@ -6,23 +6,14 @@
     <div class="columns">
       <div class="column is-4 i-am-profiles">
         <h3 class="title is-4">Je suis</h3>
-        <template v-if="selectedProfile || isProfileLocked">
-          <button class="button is-rounded is-secondary">[[ profiles[selectedProfile].name ]]</button>
-        </template>
-        <template v-else>
-          <button v-for="profile in profiles" class="button is-rounded is-secondary is-outlined"
-                  @click="selectProfile(profile.slug)">
-            [[ profile.name ]]
-          </button>
-        </template>
-        <div v-if="!isProfileLocked" class="mt-2">
-          <button class="button is-primary" @click="selectProfile('')">
-            <span class="icon">
-              {% include "components/icon.html" with size="16" name="settings-2" %}
-            </span>
-            <span>Changer de profil</span>
-          </button>
-        </div>
+
+        <button v-for="profile in profiles"
+                :class="selectedProfiles[profile.slug] ? '' : 'is-outlined'"
+                @click="toggleProfile(profile.slug)"
+                class="button is-rounded is-secondary">
+          [[ profile.name ]]
+        </button>
+
         <h3 class="title is-4 mt-4">Les ressources qui m'intéressent</h3>
         Par défaut, nous vous proposerons des <span>produits, documents et projets</span>.
         <div class="mt-2">

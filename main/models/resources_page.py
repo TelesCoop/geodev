@@ -56,7 +56,6 @@ class ResourcesPage(RoutablePageMixin, Page):
             [model_to_dict(zone) for zone in WorldZone.objects.all()]
         )
         context["selected_profile"] = request.GET.get("profile", "")
-        context["is_profile_locked"] = int(bool(request.GET.get("profile", False)))
         context["resources"] = json.dumps(
             [ressource.to_dict() for ressource in Resource.objects.all()]
         )

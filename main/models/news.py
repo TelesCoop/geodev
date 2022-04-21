@@ -10,6 +10,7 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.images.views.serve import generate_image_url
 from wagtail.search import index
 
+from main.models.country import Country, WorldZone
 from main.models.models import ActualityType
 from main.models.utils import TimeStampedModel, FreeBodyField
 from main.templatetags.main_tags import news_page_url
@@ -51,6 +52,14 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
         related_name="news",
         help_text="Permet le filtrage des actualités",
     )
+    countries = models.ManyToManyField(
+        Country, verbose_name="Pays liés", help_text="Ce champ n'est pas encore utilisé"
+    )
+    zones = models.ManyToManyField(
+        WorldZone,
+        verbose_name="Zones du monde liées",
+        help_text="Ce champ n'est pas encore utilisé",
+    )
 
     search_fields = [
         index.SearchField("name", partial_match=True),
@@ -66,6 +75,8 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
         FieldPanel("is_geodev"),
         FieldPanel("body"),
         FieldPanel("types", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("zones", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("countries", widget=forms.CheckboxSelectMultiple),
     ]
 
     def __str__(self):
