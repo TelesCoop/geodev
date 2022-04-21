@@ -75,6 +75,7 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         to_return = model_to_dict(
             self,
             fields=[
+                "id",
                 "name",
                 "slug",
                 "thematics",

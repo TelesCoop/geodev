@@ -272,8 +272,12 @@
                   }
                   console.log("### updateMap", isShowingCountries, this.filteredResources);
                   // building a resourcePerCountry dict
-                  const resourcesPerCountry = {};
-                  const resourcesPerZone = {};
+                  var resourcesPerCountry = {};
+                  var resourcesPerZone = {};
+                  var addedResourcePerZone = {};
+                  zones.forEach(zone => {
+                      addedResourcePerZone[zone] = {}
+                  });
                   var atLeastOneSelectedZone = Object.values(this.selectedZones).some(function (e) {
                       return e
                   });
@@ -291,7 +295,10 @@
                                   if (resourcesPerZone[zone] == null) {
                                       resourcesPerZone[zone] = [];
                                   }
-                                  resourcesPerZone[zone].push(resource)
+                                  if (!addedResourcePerZone[zone][resource.id]) {
+                                      addedResourcePerZone[zone][resource.id] = true;
+                                      resourcesPerZone[zone].push(resource);
+                                  }
                               }
                           }
                       }
