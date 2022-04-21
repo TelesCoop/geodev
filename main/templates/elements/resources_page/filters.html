@@ -55,10 +55,10 @@
         <h3 class="title is-4">Les zones qui m'intéressent</h3>
         <div class="elements-holder">
           <button v-for="zone in zones" class="button is-rounded is-secondary"
-                  :class="selectedZones[zone.slug] ? '' : 'is-outlined'"
-                  @click="toggleZone(zone.slug)">
+                  :class="selectedZones[zone.code] ? '' : 'is-outlined'"
+                  @click="toggleZone(zone.code)">
           <span class="icon">
-              <img :src="'{% static 'img/zones' %}' + '/' + zone.slug + '.svg'">
+              <img :src="'{% static 'img/zones' %}' + '/' + zone.code + '.svg'">
           </span>
             <span>[[ zone.name ]]</span>
           </button>

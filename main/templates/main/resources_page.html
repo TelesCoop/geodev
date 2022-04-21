@@ -74,16 +74,20 @@
       var zones = JSON.parse('{{ zones | escapejs }}');
       var zoneBySlug = {};
       zones.forEach(function (zone) {
-          zoneBySlug[zone.slug] = zone;
+          zoneBySlug[zone.code] = zone;
       });
       var selectedZones = {};
       zones.forEach(function (zone) {
-          selectedZones[zone.slug] = false;
+          selectedZones[zone.code] = false;
       });
       var countries = JSON.parse('{{ countries | escapejs }}');
       var countryParameters = {};
       countries.forEach(country => {
           countryParameters[country.code] = country;
+      });
+      var zoneParameters = {};
+      zones.forEach(zone => {
+          zoneParameters[zone.code] = zone;
       });
 
       function startsWith(str, other) {
@@ -152,6 +156,10 @@
                       zoom: 2,
                   });
                   window.map = this.map;
+                  this.map.on('zoom', () => {
+                      this.updateMap();
+                  });
+                  map.addControl(new mapboxgl.NavigationControl({showCompass: false}));
               },
               resetThematics() {
                   Object.keys(this.selectedThematics).forEach(key => this.selectedThematics[key] = false);
@@ -244,25 +252,43 @@
                   }
               },
               updateMap() {
+                  const isShowingCountries = this.map.getZoom() > 2.5;
                   // reset markers
                   for (var marker of this.map._markers) {
                       marker.remove();
                   }
-                  console.log("### updateMap", this.filteredResources);
+                  console.log("### updateMap", isShowingCountries, this.filteredResources);
                   // building a resourcePerCountry dict
                   const resourcesPerCountry = {};
+                  const resourcesPerZone = {};
                   for (const resource of this.filteredResources) {
-                      console.log("### updateMap resource", resource);
                       for (const country of resource.countries) {
                           if (resourcesPerCountry[country] == null) {
                               resourcesPerCountry[country] = [];
                           }
-                          resourcesPerCountry[country].push(resource)
+                          resourcesPerCountry[country].push(resource);
+                          const zone = countryParameters[country].zone;
+                          if (zone) {
+                              if (resourcesPerZone[zone] == null) {
+                                  resourcesPerZone[zone] = [];
+                              }
+                              resourcesPerZone[zone].push(resource)
+                          }
                       }
                   }
+
+                  let resourceBase = resourcesPerZone;
+                  let parametersBase = zoneParameters;
+                  if (isShowingCountries) {
+                      resourceBase = resourcesPerCountry;
+                      parametersBase = countryParameters;
+                  }
+
+                  console.log("### updateMap", resourceBase, parametersBase);
+
                   // adding resources per country to the map
-                  for (const params of Object.entries(resourcesPerCountry)) {
-                      const countryKey = params[0];
+                  for (const params of Object.entries(resourceBase)) {
+                      const localityKey = params[0];
                       const resources = params[1];
 
                       // building marker for country
@@ -271,7 +297,7 @@
                       const markerChild = document.createElement('div');
                       markerChild.innerText = resources.length;
                       marker.appendChild(markerChild);
-                      const countryParams = this.countryParameters[countryKey];
+                      const localityParams = parametersBase[localityKey];
 
                       // building popup for marker
                       const popupHtml = document.createElement("div");
@@ -280,8 +306,9 @@
                       const title = document.createElement("h2");
                       title.className = "mb-4";
                       title.innerHTML = (
-                          "<span class='has-text-weight-bold'>" + resources.length + " ressources </span>" +
-                          "disponibles au <span class='has-text-weight-bold'>" + countryParams.name + "</span> :"
+                          "<span class='has-text-weight-bold'>" + resources.length + " ressources </span>"
+                          + "disponibles " + (isShowingCountries ? 'au' : 'en')
+                          + "<span class='has-text-weight-bold'>" + localityParams.name + "</span> :"
                       );
                       popupHolder.appendChild(title);
                       const resourcesHolder = document.createElement("ul");
@@ -331,7 +358,7 @@
 
                       // add the marker with popup to the map
                       new mapboxgl.Marker(marker)
-                          .setLngLat([countryParams.longitude, countryParams.latitude])
+                          .setLngLat([localityParams.longitude, localityParams.latitude])
                           .setPopup(popup)
                           .addTo(this.map);
                   }

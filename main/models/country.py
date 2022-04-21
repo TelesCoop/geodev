@@ -6,11 +6,14 @@ from wagtail.search.index import Indexed
 
 class WorldZone(models.Model):
     class Meta:
+        ordering = ("name",)
         verbose_name = "zone du monde"
         verbose_name_plural = "zones du monde"
 
     name = models.CharField(verbose_name="Nom", max_length=60)
     code = models.CharField(verbose_name="code (ne pas changer !)", max_length=20)
+    latitude = models.FloatField(verbose_name="latitude du centre")
+    longitude = models.FloatField(verbose_name="longitude du centre")
 
     def __str__(self):
         return self.name
@@ -18,6 +21,7 @@ class WorldZone(models.Model):
 
 class Country(models.Model, Indexed):
     class Meta:
+        ordering = ("name",)
         verbose_name = "pays"
         verbose_name_plural = "pays"
 
