@@ -276,7 +276,7 @@
                   var resourcesPerZone = {};
                   var addedResourcePerZone = {};
                   zones.forEach(zone => {
-                      addedResourcePerZone[zone] = {}
+                      addedResourcePerZone[zone.code] = {}
                   });
                   var atLeastOneSelectedZone = Object.values(this.selectedZones).some(function (e) {
                       return e
