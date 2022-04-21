@@ -96,6 +96,7 @@
       Object.keys(profiles).forEach(profileSlug => {
           selectedProfiles[profileSlug] = false;
       });
+      var markers = [];
       if ('{{ selected_profile }}') {
           selectedProfiles['{{ selected_profile }}'] = true;
       }
@@ -147,7 +148,6 @@
                   document.head.appendChild(script); //or something of the likes
               },
               initMap() {
-                  console.log("### load map data");
                   mapboxgl.accessToken = 'pk.eyJ1IjoibWF4aW1ldGVsZXNjb29wIiwiYSI6ImNrbHJrbWV6ajAzd20ycXB2YjZodzZ0ancifQ.VLDpa6x-j-3kh65_S-H_rA';
 
                   this.map = new mapboxgl.Map({
@@ -173,7 +173,6 @@
               toggleProfile(profile) {
                   this.selectedProfiles[profile] = !this.selectedProfiles[profile];
                   this.updateFilters();
-                  console.log("### toggleProfile", this.selectedProfiles);
               },
               toggleThematic(thematic) {
                   this.selectedThematics[thematic] = !this.selectedThematics[thematic];
@@ -184,11 +183,8 @@
                   this.updateFilters();
               },
               updateFilters() {
-                  console.log("### updateFilters", this.selectedProfiles, this.isOnlyGeoDev, this.resources, this.thematicBySlug);
                   var filtered = [];
                   this.resources.forEach((resource) => {
-                      console.log("### updateFilters", this.selectedProfiles, this.selectedThematics, this.selectedZones);
-
                       var atLeastOneSelectedProfile = Object.values(this.selectedProfiles).some(function (e) {
                           return e
                       });
@@ -198,33 +194,27 @@
                           resource.profiles.forEach((profile) => {
                               if (this.selectedProfiles[profile]) {
                                   atLeastOneCorresponding = true;
-                                  console.log("### profile", profile, "is corresponding");
                               }
                           })
 
                           if (!atLeastOneCorresponding) {
-                              console.log("### not valid profile for", resource.name, resource.profiles, this.selectedProfiles);
                               return;
                           }
 
                       }
 
                       atLeastOneCorresponding = false;
-                      console.log("### thematics??", this.selectedThematics, resource.thematics);
                       var atLeastOneSelectedThematic = Object.values(this.selectedThematics).some(function (e) {
                           return e
                       });
                       if (atLeastOneSelectedThematic) {
-                          console.log("### at least one selected thematic", this.selectedThematics, resource.thematics);
                           resource.thematics.forEach((thematic) => {
                               if (this.selectedThematics[thematic]) {
                                   atLeastOneCorresponding = true;
-                                  console.log("### thematic", thematic, "is corresponding");
                               }
                           })
 
                           if (!atLeastOneCorresponding) {
-                              console.log("### not valid thematic for", resource.name, resource.thematics, this.selectedThematics);
                               return;
                           }
                       }
@@ -233,7 +223,6 @@
                           return e
                       });
                       if (atLeastOneSelectedZone && resource.zone && !this.selectedZones[resource.zone]) {
-                          console.log("### not valid zone for", resource.name, resource.zone, this.selectedZones);
                           return;
                       }
 
@@ -243,12 +232,10 @@
                           if (!words.some(function (word) {
                               return startsWith(word, searchInput)
                           })) {
-                              console.log("### does not match serch input", resource.name, this.searchInput);
                               return;
                           }
                       }
 
-                      console.log("### isOnlyGeoDev ?", this.isOnlyGeoDev, resource);
                       if (this.isOnlyGeoDev) {
                           if (!resource.geo_dev_creation) {
                               return false;
@@ -267,10 +254,11 @@
               updateMap() {
                   const isShowingCountries = this.map.getZoom() > 2.5;
                   // reset markers
-                  for (var marker of this.map._markers) {
+                  for (var marker of markers) {
                       marker.remove();
                   }
-                  console.log("### updateMap", isShowingCountries, this.filteredResources);
+                  markers = [];
+                  console.log("### updateMap", isShowingCountries, this.filteredResources, markers);
                   // building a resourcePerCountry dict
                   var resourcesPerCountry = {};
                   var resourcesPerZone = {};
@@ -284,8 +272,8 @@
 
                   for (const resource of this.filteredResources) {
                       for (const country of resource.countries) {
-                          // if zone(s) are selected, do not display countries outside of zones
-                          if (!atLeastOneSelectedZone || !this.selectedZones[country.zone]) {
+                          // if zone(s) are selected, do not display countries and zones outside of zones
+                          if (!atLeastOneSelectedZone || this.selectedZones[countryParameters[country].zone]) {
                               if (resourcesPerCountry[country] == null) {
                                   resourcesPerCountry[country] = [];
                               }
@@ -310,8 +298,6 @@
                       resourceBase = resourcesPerCountry;
                       parametersBase = countryParameters;
                   }
-
-                  console.log("### updateMap", resourceBase, parametersBase);
 
                   // adding resources per country to the map
                   for (const params of Object.entries(resourceBase)) {
@@ -387,10 +373,12 @@
                       );
 
                       // add the marker with popup to the map
-                      new mapboxgl.Marker(marker)
-                          .setLngLat([localityParams.longitude, localityParams.latitude])
-                          .setPopup(popup)
-                          .addTo(this.map);
+                      markers.push(
+                          new mapboxgl.Marker(marker)
+                              .setLngLat([localityParams.longitude, localityParams.latitude])
+                              .setPopup(popup)
+                              .addTo(this.map)
+                      );
                   }
               }
           },
