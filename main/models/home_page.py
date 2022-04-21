@@ -17,7 +17,14 @@ class HomePage(Page, models.Model):
         context["n_resources"] = Resource.objects.count()
         context["n_members"] = User.objects.count()
         context["profiles"] = Profile.objects.all()
-        context["news_list"] = News.objects.all()[:3]
+        first_news = News.objects.filter(is_geodev=True).first()
+        if not first_news:
+            first_news = News.objects.filter().first()
+        if first_news:
+            news_list = [first_news] + list(News.objects.exclude(id=first_news.id)[:2])
+        else:
+            news_list = News.objects.all()[:3]
+        context["news_list"] = news_list
         context["newsletter_link"] = "newsletter-link"
         return context
 

@@ -25,12 +25,19 @@ class NewsListPage(RoutablePageMixin, Page):
             news = News.objects.get(slug=news_slug)
         except (News.DoesNotExist, News.MultipleObjectsReturned):
             raise Http404
+
+        modal_images = []
+        for block in news.body:
+            if block.block_type == "image":
+                modal_images.append(block.value)
+
         return self.render(
             request,
             context_overrides={
                 "news": news,
                 # There is only one NewsListPage if there is only one language
                 "news_page": NewsListPage.objects.first(),
+                "modal_images": modal_images,
             },
             template="main/news_page.html",
         )

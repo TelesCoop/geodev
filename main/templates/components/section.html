@@ -31,8 +31,8 @@
   {% endif %}
 
   {% for sub_block in block.value.sub_section %}
-    <div class="section {% if sub_block.value.color %}has-background-{{ sub_block.value.color }}{% endif %}">
-      {% include_block sub_block.value.paragraph %}
+    <div class="section px-0 {% if sub_block.color %}has-background-{{ sub_block.color }}{% endif %}">
+      {% include_block sub_block.paragraph %}
       {% if sub_block.columns %}
         <div class="columns">
           {% for column in sub_block.columns %}

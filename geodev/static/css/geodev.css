@@ -1,17 +1,10 @@
 .top-left-image {
     position: fixed;
     top: 0;
-    z-index: 100;
+    z-index: 35;
 }
 
 /* NAVBAR */
-.navbar-end-container {
-    display: flex;
-    padding-top: 4px;
-    flex-direction: column;
-    justify-content: center;
-}
-
 .logo-holder {
     display: flex;
     flex-direction: column;
@@ -21,14 +14,6 @@
 
 .navbar.is-succinct .navbar-additional-logo {
     display: none
-}
-
-.navbar.is-succinct .navbar-additional-buttons {
-    display: none
-}
-
-.navbar.is-succinct .navbar-end-container {
-    display: contents;
 }
 
 .navbar.is-succinct .logo-holder {
@@ -107,4 +92,12 @@
         display: block;
         margin-top: 12px;
     }
+}
+
+.modal-background {
+    z-index: 100;
+}
+
+.modal-content {
+    z-index: 101;
 }

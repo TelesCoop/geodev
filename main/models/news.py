@@ -33,10 +33,16 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
     introduction = RichTextField(max_length=250)
     image = models.ForeignKey(
         "wagtailimages.Image",
+        verbose_name="Miniature",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
+    )
+    is_geodev = models.BooleanField(
+        verbose_name="Est une nouvelle GeoDEV",
+        help_text="La première actualité mise en avant sur la page d'accueil est la dernière actualité GeoDEV",
+        default=False,
     )
     types = models.ManyToManyField(
         ActualityType,
@@ -57,6 +63,7 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
         FieldPanel("publication_date"),
         ImageChooserPanel("image"),
         FieldPanel("introduction"),
+        FieldPanel("is_geodev"),
         FieldPanel("body"),
         FieldPanel("types", widget=forms.CheckboxSelectMultiple),
     ]

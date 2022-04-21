@@ -91,6 +91,18 @@ class NewsLetterSettings(BaseSetting):
         verbose_name = "Inscription à la lettre d'information"
 
 
+@register_setting
+class AnalyticsScriptSetting(BaseSetting):
+    script = models.TextField(
+        help_text="Script d'analytics",
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        verbose_name = "Script de suivi du traffic"
+
+
 class Contact(models.Model):
     firstname = models.CharField(max_length=50)
     email = models.CharField(max_length=50)

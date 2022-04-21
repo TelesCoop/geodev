@@ -7,10 +7,8 @@
     {% elif block.block_type == 'pdf' %}
       {% include "components/pdf_link.html" with pdf=block.value %}
     {% elif block.block_type == 'image' %}
-      {% image block.value.image original as image %}
-      <figure class="image">
-        <img src="{{ image.url }}">
-      </figure>
+      {% image block.value original as image %}
+      {% include "components/clickable_image.html" with image=image %}
     {% elif block.block_type == 'section' %}
       {% include "components/section.html" with block=block %}
     {% endif %}

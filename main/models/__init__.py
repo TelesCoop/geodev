@@ -6,6 +6,7 @@ from .models import (  # noqa: F401
     Thematic,
     ActualityType,
     NewsLetterSettings,
+    AnalyticsScriptSetting,
 )
 from .news import News  # noqa: F401
 from .resource import Resource  # noqa: F401
