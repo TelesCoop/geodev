@@ -85,7 +85,6 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
                 "short_description",
             ],
         )
-        to_return["link"] = self.link
         to_return["profiles"] = [profile.slug for profile in self.profiles.all()]
         to_return["thematics"] = [thematic.slug for thematic in self.thematics.all()]
         if len(to_return["thematics"]) == 1:
