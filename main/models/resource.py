@@ -111,7 +111,7 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
             self.slug = slugify(self.name)
         # if "GLOBAL" country is selected, select all countries
         for country in self.countries:
-            if country.name == "GLOBAL":
+            if country.name == "0_GLOBAL":
                 for country in Country.objects.all():
                     self.countries.add(country)
         super().save(*args, **kwargs)

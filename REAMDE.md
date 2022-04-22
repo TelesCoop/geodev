@@ -26,8 +26,8 @@ Les pays, profils et zones du monde sont configurables dans le sous-menu "Géné
 De la même manière que les thématiques de ressources, les zones du monde ne sont pas prévues pour être changées, hormis
 leur nom.
 
-> Il existe un pays qui s'appelle `GLOBAL`. Pour associer une ressource à tous les pays, il suffit de sélectionner
-> `GLOBAL`, et la ressource sera associée à tous les pays.
+> Il existe un pays qui s'appelle `0_GLOBAL`. Pour associer une ressource à tous les pays, il suffit de sélectionner
+> `0_GLOBAL`, et la ressource sera associée à tous les pays.
 
 ### Utilisateurs admin
 
