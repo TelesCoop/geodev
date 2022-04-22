@@ -39,6 +39,7 @@ class MyFileStorage(ManifestStaticFilesStorage):
 
 STATICFILES_STORAGE = "geodev.settings.production.MyFileStorage"
 
+INSTALLED_APPS.append("telescoop_backup")  # noqa: F405
 BACKUP_ACCESS = config.getstr("backup.backup_access")  # S3 ACCESS
 BACKUP_SECRET = config.getstr("backup.backup_access")  # S3 SECRET KEY
 BACKUP_BUCKET = "geodev-backup"  # S3 Bucket
