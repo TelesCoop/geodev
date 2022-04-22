@@ -10,6 +10,8 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.images.views.serve import generate_image_url
 from wagtail.search import index
 
+from main.models.resource import Resource
+from main.models.models import Thematic
 from main.models.country import Country, WorldZone
 from main.models.models import ActualityType
 from main.models.utils import TimeStampedModel, FreeBodyField
@@ -53,13 +55,27 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
         help_text="Permet le filtrage des actualités",
     )
     countries = models.ManyToManyField(
-        Country, verbose_name="Pays liés", help_text="Ce champ n'est pas encore utilisé"
+        Country,
+        verbose_name="Pays liés",
+        blank=True,
+        help_text="Ce champ n'est pas encore utilisé",
     )
     zones = models.ManyToManyField(
         WorldZone,
+        blank=True,
         verbose_name="Zones du monde liées",
         help_text="Ce champ n'est pas encore utilisé",
     )
+    thematics = models.ManyToManyField(
+        Thematic,
+        blank=True,
+        verbose_name="Thématiques liées",
+        help_text="Ce champ n'est pas encore utilisé",
+    )
+    resources = models.ManyToManyField(
+        Resource, blank=True, verbose_name="Ressources liées"
+    )
+    news = models.ManyToManyField("self", blank=True, verbose_name="Actualités liées")
 
     search_fields = [
         index.SearchField("name", partial_match=True),
@@ -76,6 +92,9 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
         FieldPanel("body"),
         FieldPanel("types", widget=forms.CheckboxSelectMultiple),
         FieldPanel("zones", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("thematics", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("resources", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("news", widget=forms.CheckboxSelectMultiple),
         FieldPanel("countries", widget=forms.CheckboxSelectMultiple),
     ]
 
@@ -86,10 +105,11 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
     def link(self):
         return news_page_url(news=self)
 
-    def to_dict(self):
+    def to_dict(self, include_linked=True):
         to_return = model_to_dict(
             self,
             fields=[
+                "id",
                 "name",
                 "publication_date",
                 "slug",
@@ -103,6 +123,15 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
             to_return["image_link"] = None
         to_return["introduction"] = str(self.introduction)
         to_return["link"] = self.link
+
+        if include_linked:
+            # without this check, there could be an infinite loop in linked news
+            to_return["resources"] = [
+                resource.to_dict() for resource in self.resources.all()
+            ]
+            to_return["news"] = [
+                news_.to_dict(include_linked=False) for news_ in self.news.all()
+            ]
 
         return to_return
 

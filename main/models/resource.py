@@ -38,7 +38,7 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         help_text="ce champ n'est utilisé que lorsque plusieurs thématiques sont sélectionnées",
     )
     profiles = models.ManyToManyField(
-        Profile, blank=True, verbose_name="Profiles", related_name="ressources"
+        Profile, blank=True, verbose_name="Profils", related_name="ressources"
     )
     geo_dev_creation = models.BooleanField(
         default=False, verbose_name="Créé par GeoDEV ?"
@@ -47,7 +47,13 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         verbose_name="Nom de la source", max_length=100, blank=True
     )
     source_link = models.CharField(
-        verbose_name="Lien de la source", max_length=100, blank=True
+        verbose_name="Lien vers la source", max_length=100, blank=True
+    )
+    file = models.FileField(
+        verbose_name="Fichier source",
+        blank=True,
+        null=True,
+        help_text="S'il est défini, le lien vers la source est ignoré",
     )
     short_description = RichTextField(
         null=True,
@@ -68,6 +74,7 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         FieldPanel("geo_dev_creation"),
         FieldPanel("source_name"),
         FieldPanel("source_link"),
+        FieldPanel("file"),
         FieldPanel("countries", widget=forms.CheckboxSelectMultiple),
     ]
 
@@ -98,6 +105,8 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
             to_return["zone"] = next(iter(zones))
         else:
             to_return["zone"] = None
+        to_return["link"] = self.link
+        to_return["is_download"] = self.is_download
         to_return["countries"] = [country.code for country in self.countries.all()]
         to_return["types"] = [type_.slug for type_ in self.types.all()]
         return to_return
@@ -105,15 +114,32 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
     def __str__(self):
         return self.name
 
+    def get_main_thematic(self):
+        if self.main_thematic:
+            return self.main_thematic
+        if self.thematics.count() == 1:
+            return self.thematics.first()
+        return None
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
-        # if "GLOBAL" country is selected, select all countries
-        for country in self.countries:
-            if country.name == "0_GLOBAL":
-                for country in Country.objects.all():
-                    self.countries.add(country)
         super().save(*args, **kwargs)
+        # if "0_GLOBAL" country is selected, select all countries
+        if self.countries.filter(name="0_GLOBAL"):
+            for country in Country.objects.all():
+                self.countries.add(country)
+
+    @property
+    def link(self):
+        if self.file:
+            return self.file.url
+        if self.source_link:
+            return self.source_link
+
+    @property
+    def is_download(self):
+        return bool(self.file)
 
     class Meta:
         verbose_name_plural = "Ressources"

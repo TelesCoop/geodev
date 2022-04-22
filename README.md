@@ -15,6 +15,8 @@ ressources, thématiques et types de ressources.
 A priori, les thématiques sont fixes. En tout cas, d'éventuels ajout ne bénéficieraient pas de logo. Les types de
 ressources sont plus flexibles car il n'y a pas d'image associée et peuvent donc être configués.
 
+Une ressource doit avoir un fichier lié ou un lien.
+
 ### Les actualités
 
 De la même manière, les actualités sont configurés dans le sous-menu Actualités.

@@ -21,7 +21,7 @@ class WorldZone(models.Model):
 
 class Country(models.Model, Indexed):
     class Meta:
-        ordering = ("name",)
+        ordering = ("zone__name", "name")
         verbose_name = "pays"
         verbose_name_plural = "pays"
 
@@ -37,7 +37,10 @@ class Country(models.Model, Indexed):
     ]
 
     def __str__(self):
-        return self.name
+        if self.zone:
+            return f"{self.zone.name} - {self.name}"
+        else:
+            return self.name
 
     def to_dict(self):
         to_return = model_to_dict(self)

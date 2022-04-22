@@ -15,15 +15,13 @@
         </button>
 
         <h3 class="title is-4 mt-4">Les ressources qui m'intéressent</h3>
-        Par défaut, nous vous proposerons des <span>produits, documents et projets</span>.
-        <div class="mt-2">
-          <button class="button is-primary">
-            <span class="icon">
-              {% include "components/icon.html" with size="16" name="settings-2" %}
-            </span>
-            <span>Personnaliser</span>
-          </button>
-        </div>
+
+        <button v-for="type in resourceTypes"
+                :class="selectedResourceTypes[type.slug] ? '' : 'is-outlined'"
+                @click="toggleType(type.slug)"
+                class="button is-rounded is-primary">
+          [[ type.name ]]
+        </button>
       </div>
       <div class="column is-4">
         <h3 class="title is-4">Les thématiques qui m'intéressent</h3>

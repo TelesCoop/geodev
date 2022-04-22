@@ -102,3 +102,12 @@
 .modal-content {
     z-index: 101;
 }
+
+.resource-card {
+    width: 317px;
+}
+
+.resource-card img {
+    height: 10px;
+    width: 10px;
+}

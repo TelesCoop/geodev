@@ -1,0 +1,115 @@
+{% load static %}
+
+<style>
+    .i-am-profiles .button + .button {
+        margin-left: 8px;
+    }
+
+    .elements-holder {
+        margin-top: -10px;
+        margin-left: -16px;
+    }
+
+    .elements-holder > * {
+        margin-top: 10px;
+        margin-left: 16px;
+    }
+
+    .has-background-std {
+        background: #EEF3FC;
+    }
+
+    .country-marker {
+        background-image: url("{% static 'img/pin.svg' %}");
+        background-repeat: no-repeat;
+        width: 75px;
+        height: 180px;
+        text-align: center;
+        color: white;
+        font-size: 16px;
+        /* padding-top: 0.9em; */
+        font-weight: bold;
+        background-position: bottom 90px center;
+        background-size: contain;
+    }
+
+    .country-marker > div {
+        width: 45px;
+        height: 45px;
+        background: #5469B3;
+        text-align: center;
+        margin-top: 12px;
+        margin-left: 15px;
+        border-radius: 100%;
+        padding-top: 12px;
+    }
+
+    .mapboxgl-popup-content {
+        padding: 24px !important;
+        width: 442px;
+        max-height: 433px;
+    }
+
+    .resources-holder {
+        max-height: 351px;
+        overflow-y: auto;
+        margin-top: -19px;
+    }
+
+    .resources-holder > div {
+        margin-top: 19px;
+    }
+
+    .resource-top-line {
+        font-size: 0.75rem;
+    }
+
+    .button.is-secondary.is-outlined:focus {
+        background: transparent !important;
+        color: #E56934 !important;
+    }
+
+    .button.is-agriculture.is-outlined:focus {
+        background: transparent !important;
+        color: #9F6B04 !important;
+    }
+
+    .button.is-floors.is-outlined:focus {
+        background: transparent !important;
+        color: #7A2906 !important;
+    }
+
+    .button.is-biodiversity.is-outlined:focus {
+        background: transparent !important;
+        color: #3C7E07 !important;
+    }
+
+    .button.is-water.is-outlined:focus {
+        background: transparent !important;
+        color: #0F7BC2 !important;
+    }
+
+    .button.is-risks.is-outlined:focus {
+        background: transparent !important;
+        color: #EA3576 !important;
+    }
+
+    .button.is-health.is-outlined:focus {
+        background: transparent !important;
+        color: #3748E1 !important;
+    }
+
+    .button.is-cities.is-outlined:focus {
+        background: transparent !important;
+        color: #693BB3 !important;
+    }
+
+    .button.is-forest.is-outlined:focus {
+        background: transparent !important;
+        color: #058566 !important;
+    }
+
+    .button.is-outlined:hover .icon img, .button:not(.is-outlined) .icon img {
+        filter: brightness(0) invert(1);
+    }
+</style>

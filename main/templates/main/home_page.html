@@ -79,24 +79,7 @@
     <div class="columns">
       {% for news in news_list %}
         <div class="column {% if forloop.counter == 1 %}is-6{% else %}is-3{% endif %}">
-          <a href="{% news_page_url news %}">
-            <div class="card">
-              <div class="card-image">
-                {% image news.image original as news_image %}
-                <figure class="image has-ratio {% if forloop.counter == 1 %}is-3by1{% else %}is-4by3{% endif %}"
-                        style="background-image: url('{{ news_image.url }}'); background-size: cover; background-position: center">
-                </figure>
-              </div>
-              <div class="card-content">
-                <h3 class="title is-5">{{ news.name }}</h3>
-                <p class="is-size-7 has-text-primary">{{ news.publication_date | date }}</p>
-                <p>{{ news.introduction|richtext }}</p>
-                <div class="mt-3">
-                  <a href="{{ news.link }}" class="button is-secondary">Lire la suite</a>
-                </div>
-              </div>
-            </div>
-          </a>
+          {% include "components/news_card.html" with news=news is_small=forloop.counter0 large_by_default=1 %}
         </div>
       {% endfor %}
     </div>
