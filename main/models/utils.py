@@ -93,6 +93,7 @@ class FreeBodyField(models.Model):
                                     ],
                                     label="Sous section",
                                 ),
+                                default=[],
                                 label="Sous sections",
                             ),
                         ),

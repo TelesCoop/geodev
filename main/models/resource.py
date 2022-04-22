@@ -17,6 +17,9 @@ from main.models.utils import (
 
 class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
     countries = models.ManyToManyField(Country, verbose_name="Pays", blank=True)
+    is_global = models.BooleanField(
+        verbose_name="Concerne tous les pays", default=False
+    )
     name = models.CharField(verbose_name="Nom", max_length=100)
     slug = models.SlugField(
         max_length=100,
@@ -75,6 +78,7 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         FieldPanel("source_name"),
         FieldPanel("source_link"),
         FieldPanel("file"),
+        FieldPanel("is_global"),
         FieldPanel("countries", widget=forms.CheckboxSelectMultiple),
     ]
 
@@ -83,6 +87,7 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
             self,
             fields=[
                 "id",
+                "is_global",
                 "name",
                 "slug",
                 "thematics",
@@ -125,10 +130,6 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-        # if "0_GLOBAL" country is selected, select all countries
-        if self.countries.filter(name="0_GLOBAL"):
-            for country in Country.objects.all():
-                self.countries.add(country)
 
     @property
     def link(self):

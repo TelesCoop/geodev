@@ -9,8 +9,8 @@ from wagtail.core import hooks
 
 from main.models.country import WorldZone, Country
 from main.models.models import Profile, Thematic, ActualityType, ResourceType
-from main.models.resource import Resource
 from main.models.news import News
+from main.models.resource import Resource
 
 
 @hooks.register("insert_global_admin_css", order=100)

@@ -250,8 +250,23 @@
                       var atLeastOneSelectedZone = Object.values(this.selectedZones).some(function (e) {
                           return e
                       });
+                      // if zone is explicitely set for resource, check that zone is selected
                       if (atLeastOneSelectedZone && resource.zone && !this.selectedZones[resource.zone]) {
                           return;
+                      }
+                      // check at least one country is in a selected zone
+                      if (atLeastOneSelectedZone && !resource.global && !resource.zone) {
+                          atLeastOneCorresponding = false;
+
+                          resource.countries.forEach(country => {
+                              var zone = countryParameters[country].zone;
+                              if (zone && this.selectedZones[zone]) {
+                                  atLeastOneCorresponding = true;
+                              }
+                          });
+                          if (!atLeastOneCorresponding) {
+                              return;
+                          }
                       }
 
                       //  SEARCH INPUT
@@ -301,7 +316,11 @@
                   });
 
                   for (const resource of this.filteredResources) {
-                      for (const country of resource.countries) {
+                      var resourceCountries = resource.countries;
+                      if (resource.is_global) {
+                          resourceCountries = countries.map(country => country.code);
+                      }
+                      for (const country of resourceCountries) {
                           // if zone(s) are selected, do not display countries and zones outside of zones
                           if (!atLeastOneSelectedZone || this.selectedZones[countryParameters[country].zone]) {
                               if (resourcesPerCountry[country] == null) {
