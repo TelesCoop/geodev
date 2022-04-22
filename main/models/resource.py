@@ -116,12 +116,6 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
                     self.countries.add(country)
         super().save(*args, **kwargs)
 
-    @property
-    def link(self):
-        from main.templatetags.main_tags import resource_page_url
-
-        return resource_page_url(self)
-
     class Meta:
         verbose_name_plural = "Ressources"
         verbose_name = "Ressource"

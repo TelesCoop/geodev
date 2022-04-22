@@ -23,22 +23,6 @@ class ResourcesPage(RoutablePageMixin, Page):
     subpage_types: List[str] = []
     max_count_per_parent = 1
 
-    @route(r"^(.*)/$", name="resource")
-    def access_resource_page(self, request, news_slug):
-        try:
-            ressource = Resource.objects.get(slug=news_slug)
-        except (News.DoesNotExist, News.MultipleObjectsReturned):
-            raise Http404
-        return self.render(
-            request,
-            context_overrides={
-                "ressource": ressource,
-                # There is only one RessourcesPage if there is only one language
-                "resource_page": ResourcesPage.objects.first(),
-            },
-            template="main/resource_page.html",
-        )
-
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
         context["has_vue"] = True
