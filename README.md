@@ -36,3 +36,10 @@ leur nom.
 La gestion des utilisateurs se fait depuis le sous-menu Paramètres, puis Utilisateurs. Le plus simple est ensuite de
 donner tous les droits aux administrateurs. Depuis l'édition ou l'ajout d'un utilisateur, aller dans l'onglet Rôles, et
 cocher toutes les cases.
+
+### Les pages annexes (mentions légales, données personnelles)
+
+Ces pages peuvent être ajoutées / modifiées en créant / modifiant une page de contenu avec comme slug :
+
+- `mentions-legales` pour les mentions légales
+- `donnees-personnelles` pour les données personnelles
