@@ -30,7 +30,7 @@
           <button v-for="thematic in thematics" class="button is-rounded"
                   :class="'is-' + thematic.slug + ' ' + (selectedThematics[thematic.slug] ? '' : 'is-outlined')"
                   @click="toggleThematic(thematic.slug)">
-          <span class="icon">
+            <span class="icon">
               <img :src="'{% static 'img/thematics' %}' + '/' + thematic.slug + '.svg'">
             </span>
             <span>[[ thematic.name ]]</span>
@@ -47,9 +47,9 @@
           <button v-for="zone in zones" class="button is-rounded is-secondary"
                   :class="selectedZones[zone.code] ? '' : 'is-outlined'"
                   @click="toggleZone(zone.code)">
-          <span class="icon">
+            <div class="icon" style="display: flex; align-items: flex-start; justify-content: center;">
               <img :src="'{% static 'img/zones' %}' + '/' + zone.code + '.svg'">
-          </span>
+            </div>
             <span>[[ zone.name ]]</span>
           </button>
           <button @click="resetZones" class="button is-text is-rounded">Toutes</button>
