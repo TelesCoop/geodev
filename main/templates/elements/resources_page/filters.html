@@ -15,13 +15,14 @@
         </button>
 
         <h3 class="title is-4 mt-4">Les ressources qui m'intéressent</h3>
-
-        <button v-for="type in resourceTypes"
-                :class="selectedResourceTypes[type.slug] ? '' : 'is-outlined'"
-                @click="toggleType(type.slug)"
-                class="button is-rounded is-primary">
-          [[ type.name ]]
-        </button>
+        <div class="tag-holder">
+          <button v-for="type in resourceTypes"
+                  :class="selectedResourceTypes[type.slug] ? '' : 'is-outlined'"
+                  @click="toggleType(type.slug)"
+                  class="button is-rounded is-primary">
+            [[ type.name ]]
+          </button>
+        </div>
       </div>
       <div class="column is-4">
         <h3 class="title is-4">Les thématiques qui m'intéressent</h3>

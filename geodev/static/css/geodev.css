@@ -45,7 +45,7 @@
     display: flex;
 }
 
-.footer-logos img + img {
+.footer-logos * + * {
     margin-left: 25px
 }
 
@@ -110,4 +110,16 @@
 .resource-card img {
     height: 10px;
     width: 10px;
+}
+
+.tag-holder {
+    margin-left: -8px;
+    margin-top: -8px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tag-holder * {
+    margin-left: 8px;
+    margin-top: 8px;
 }

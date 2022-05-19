@@ -38,9 +38,9 @@
           <div class="my-5 has-text-centered">
             <img v-if="resource.thematic && resource.thematic != 'multiple'"
                  :src="'{% static 'img/thematics' %}' + '/' + resource.thematic + '.svg'"
-                 style="width: 107px ; height: 107px">
+                 style="width: 107px ; height: 107px; opacity: 0.5">
             <img v-else :src="'{% static 'img/thematics/unspecified_color.svg' %}'"
-                 style="width: 107px ; height: 107px">
+                 style="width: 107px ; height: 107px; opacity: 0.5">
           </div>
           <div>
             <span class="has-text-weight-bold">[[ resource.resource_type ]]</span>

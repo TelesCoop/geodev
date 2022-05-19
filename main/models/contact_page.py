@@ -47,7 +47,7 @@ class ContactPage(Page):
 
         context = self.get_context(request)
         context["form"] = form
-
+        context["review_selected"] = bool(request.GET.get("review"))
         return render(
             request,
             "main/contact_page.html",

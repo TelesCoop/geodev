@@ -70,7 +70,9 @@
                         <option value="Adhésion au réseau">Adhésion au réseau</option>
                         <option value="Demande d'informations sur l'ART GeoDEV">Demande d'informations sur l'ART GeoDEV
                         </option>
-                        <option value="Avis sur ce site web">Avis sur ce site web</option>
+                        <option value="Avis sur ce site web" {% if review_selected %}selected{% endif %}>Avis sur ce
+                          site web
+                        </option>
                         <option value="Autre">Autre</option>
                       </select>
                     </div>
@@ -117,7 +119,7 @@
               {{ page.specific.newsletter_text | richtext }}
             </div>
             <div class="mt-5">
-              <a href="{{ settings.main.NewsLetterSettings.newsLetter }}" class="button is-secondary">
+              <a target="_blank" href="{{ settings.main.NewsLetterSettings.newsLetter }}" class="button is-secondary">
                 Accéder au formulaire
               </a>
             </div>

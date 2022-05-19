@@ -12,8 +12,17 @@
   src: url("/static/fonts/inter/inter-v8-latin-700.eot");
   src: local(""), url("/static/fonts/inter/inter-v8-latin-700.eot?#iefix") format("embedded-opentype"), url("/static/fonts/inter/inter-v8-latin-700.woff2") format("woff2"), url("/static/fonts/inter/inter-v8-latin-700.woff") format("woff"), url("/static/fonts/inter/inter-v8-latin-700.ttf") format("truetype"), url("/static/fonts/inter/inter-v8-latin-700.svg#Inter") format("svg"); }
 
+.content h3 {
+  margin-bottom: 1em !important; }
+
 .button .icon, .button .icon.is-small, .button .icon.is-medium, .button .icon.is-large {
   height: 1.2em !important; }
+
+.breadcrumb a {
+  text-decoration: underline; }
+
+.breadcrumb li.is-active a {
+  text-decoration: none; }
 
 /* Bulma Utilities */
 .button, .input, .textarea, .select select, .file-cta,
@@ -3530,7 +3539,7 @@ a.has-text-secondary-dark:hover, a.has-text-secondary-dark:focus {
 .content h4,
 .content h5,
 .content h6 {
-  color: #363636;
+  color: #324176;
   font-weight: 600;
   line-height: 1.125; }
 
@@ -4499,7 +4508,7 @@ a.has-text-secondary-dark:hover, a.has-text-secondary-dark:focus {
     font-size: 14px; }
 
 .label {
-  color: #363636;
+  color: #324176;
   display: block;
   font-size: 1rem;
   font-weight: 700; }
