@@ -47,9 +47,9 @@
           <button v-for="zone in zones" class="button is-rounded is-secondary"
                   :class="selectedZones[zone.code] ? '' : 'is-outlined'"
                   @click="toggleZone(zone.code)">
-            <div class="icon" style="display: flex; align-items: flex-start; justify-content: center;">
+            <span class="icon" style="">
               <img :src="'{% static 'img/zones' %}' + '/' + zone.code + '.svg'">
-            </div>
+            </span>
             <span>[[ zone.name ]]</span>
           </button>
           <button @click="resetZones" class="button is-text is-rounded">Toutes</button>
