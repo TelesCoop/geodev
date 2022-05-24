@@ -4,7 +4,7 @@
   <template v-for="resource in filteredResources"
             :key="resource.slug">
     <a :href="[[ resource.link ]]"
-       :download="resource.is_download"
+       :download="resource.is_download ? resource.download_name : null"
        :target="resource.is_download ? '_self' : '_blank'">
       <div class="card resource-card footer-at-bottom"
            :class="(resource.thematic && resource.thematic != 'multiple') ? 'has-background-' + resource.thematic + '-light' : 'has-background-std'">

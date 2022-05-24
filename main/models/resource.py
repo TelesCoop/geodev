@@ -111,6 +111,10 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         else:
             to_return["zone"] = None
         to_return["link"] = self.link
+        if self.file:
+            to_return["download_name"] = self.file.name
+        else:
+            to_return["download_name"] = None
         to_return["is_download"] = self.is_download
         to_return["countries"] = [country.code for country in self.countries.all()]
         to_return["types"] = [type_.slug for type_ in self.types.all()]
