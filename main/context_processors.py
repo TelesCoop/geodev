@@ -5,8 +5,16 @@ from main.models import ResourcesPage
 
 
 def general_context(_):
+    try:
+        home_page = Page.objects.get(content_type__model="homepage")
+    except Page.DoesNotExist:
+        home_page = None
+    try:
+        resources_link = pageurl({}, ResourcesPage.objects.get())
+    except ResourcesPage.DoesNotExist:
+        resources_link = None
     context = {
-        "resources_link": pageurl({}, ResourcesPage.objects.get()),
-        "home_page": Page.objects.get(content_type__model="homepage"),
+        "resources_link": resources_link,
+        "home_page": home_page,
     }
     return context
