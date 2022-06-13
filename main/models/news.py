@@ -127,9 +127,6 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
             to_return["resources"] = [
                 resource.to_dict() for resource in self.resources.all()
             ]
-            to_return["news"] = [
-                news_.to_dict(include_linked=False) for news_ in self.news.all()
-            ]
 
         return to_return
 
