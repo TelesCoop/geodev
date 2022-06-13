@@ -75,7 +75,6 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
     resources = models.ManyToManyField(
         Resource, blank=True, verbose_name="Ressources liées"
     )
-    news = models.ManyToManyField("self", blank=True, verbose_name="Actualités liées")
 
     search_fields = [
         index.SearchField("name", partial_match=True),
@@ -94,7 +93,6 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
         FieldPanel("zones", widget=forms.CheckboxSelectMultiple),
         FieldPanel("thematics", widget=forms.CheckboxSelectMultiple),
         FieldPanel("resources", widget=forms.CheckboxSelectMultiple),
-        FieldPanel("news", widget=forms.CheckboxSelectMultiple),
         FieldPanel("countries", widget=forms.CheckboxSelectMultiple),
     ]
 
