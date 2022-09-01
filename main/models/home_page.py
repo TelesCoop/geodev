@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.admin.panels import FieldPanel
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 
@@ -43,12 +43,6 @@ class HomePage(Page, models.Model):
         max_length=64,
         default="Des ressources adaptées à votre profil",
     )
-    resources_block_introduction = RichTextField(
-        null=True,
-        blank=True,
-        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
-        verbose_name="Introduction du bloc des ressources",
-    )
     resources_block_explication = RichTextField(
         null=True,
         blank=True,
@@ -66,7 +60,6 @@ class HomePage(Page, models.Model):
     content_panels = Page.content_panels + [
         FieldPanel("introduction"),
         FieldPanel("resources_block_title"),
-        FieldPanel("resources_block_introduction"),
         FieldPanel("resources_block_explication"),
         FieldPanel("news_block_title"),
     ]

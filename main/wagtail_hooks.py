@@ -1,5 +1,6 @@
 from django.templatetags.static import static
 from django.utils.html import format_html
+from wagtail.admin.panels import FieldPanel
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin,
     ModelAdminGroup,
@@ -44,6 +45,11 @@ class ThematicModelAdmin(ModelAdmin):
     menu_icon = "tag"
     add_to_settings_menu = False
     search_fields = ("name",)
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("slug"),
+        FieldPanel("icon"),
+    ]
 
 
 class ResourceTypeModelAdmin(ModelAdmin):

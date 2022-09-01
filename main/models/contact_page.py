@@ -2,7 +2,7 @@ from typing import List
 
 from django.core.exceptions import ValidationError
 from django.shortcuts import render
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.admin.panels import FieldPanel
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 

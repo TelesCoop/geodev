@@ -4,16 +4,15 @@ from django import forms
 from django.db import models
 from django.forms import model_to_dict
 from django.utils.text import slugify
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.admin.panels import FieldPanel
 from wagtail.core.fields import RichTextField
-from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.images.views.serve import generate_image_url
 from wagtail.search import index
 
-from main.models.resource import Resource
-from main.models.models import Thematic
 from main.models.country import Country, WorldZone
 from main.models.models import ActualityType
+from main.models.models import Thematic
+from main.models.resource import Resource
 from main.models.utils import TimeStampedModel, FreeBodyField
 from main.templatetags.main_tags import news_page_url
 
@@ -85,15 +84,15 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
         FieldPanel("name"),
         FieldPanel("slug", classname="full"),
         FieldPanel("publication_date"),
-        ImageChooserPanel("image"),
+        FieldPanel("image"),
         FieldPanel("introduction"),
         FieldPanel("is_geodev"),
         FieldPanel("body"),
         FieldPanel("types", widget=forms.CheckboxSelectMultiple),
         FieldPanel("zones", widget=forms.CheckboxSelectMultiple),
         FieldPanel("thematics", widget=forms.CheckboxSelectMultiple),
-        FieldPanel("resources", widget=forms.CheckboxSelectMultiple),
-        FieldPanel("countries", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("resources", widget=forms.SelectMultiple),
+        FieldPanel("countries", widget=forms.SelectMultiple),
     ]
 
     def __str__(self):

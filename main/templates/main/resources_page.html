@@ -62,6 +62,8 @@
       thematics.forEach(function (thematic) {
           thematicBySlug[thematic.slug] = thematic;
       });
+      console.log("### thematics", thematics)
+      console.log("### thematics", thematicBySlug)
       var resourceTypes = JSON.parse('{{ resource_types | escapejs }}');
       var resourceTypeBySlug = {};
       var selectedResourceTypes = {};
@@ -170,6 +172,10 @@
                   Object.keys(this.selectedThematics).forEach(key => this.selectedThematics[key] = false);
                   this.updateFilters();
               },
+              resetTypes() {
+                  Object.keys(this.selectedResourceTypes).forEach(key => this.selectedResourceTypes[key] = false);
+                  this.updateFilters();
+              },
               resetZones() {
                   Object.keys(this.selectedZones).forEach(key => this.selectedZones[key] = false);
                   this.updateFilters();
@@ -247,27 +253,30 @@
                       }
 
                       // ZONES
-                      var atLeastOneSelectedZone = Object.values(this.selectedZones).some(function (e) {
-                          return e
-                      });
-                      // if zone is explicitely set for resource, check that zone is selected
-                      if (atLeastOneSelectedZone && resource.zone && !this.selectedZones[resource.zone]) {
-                          return;
-                      }
-                      // check at least one country is in a selected zone
-                      if (atLeastOneSelectedZone && !resource.global && !resource.zone) {
-                          atLeastOneCorresponding = false;
-
-                          resource.countries.forEach(country => {
-                              var zone = countryParameters[country].zone;
-                              if (zone && this.selectedZones[zone]) {
-                                  atLeastOneCorresponding = true;
-                              }
+                      if (!resource.is_global) {
+                          var atLeastOneSelectedZone = Object.values(this.selectedZones).some(function (e) {
+                              return e
                           });
-                          if (!atLeastOneCorresponding) {
+                          // if zone is explicitely set for resource, check that zone is selected
+                          if (atLeastOneSelectedZone && resource.zone && !this.selectedZones[resource.zone]) {
                               return;
                           }
+                          // check at least one country is in a selected zone
+                          if (atLeastOneSelectedZone && !resource.global && !resource.zone) {
+                              atLeastOneCorresponding = false;
+
+                              resource.countries.forEach(country => {
+                                  var zone = countryParameters[country].zone;
+                                  if (zone && this.selectedZones[zone]) {
+                                      atLeastOneCorresponding = true;
+                                  }
+                              });
+                              if (!atLeastOneCorresponding) {
+                                  return;
+                              }
+                          }
                       }
+
 
                       //  SEARCH INPUT
                       if (this.searchInput) {
@@ -390,6 +399,7 @@
                           elementTop.style.display = "flex";
                           elementTop.style.justifyContent = "space-between";
                           var topLeft = document.createElement("div");
+                          console.log("### thematics 2", resource.thematics, this.thematicBySlug);
                           topLeft.innerText = resource.thematics
                               .map(thematic => this.thematicBySlug[thematic].name)
                               .join(", ");

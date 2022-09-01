@@ -13,7 +13,7 @@
             <div>
               <template v-if="resource.thematic && resource.thematic != 'multiple'">
             <span class="icon">
-              <img :src="'{% static 'img/thematics' %}' + '/' + resource.thematic + '.svg'">
+              <img :src="thematicBySlug[resource.thematic].icon">
             </span>
                 [[ thematicBySlug[resource.thematic].name ]]
               </template>

@@ -2,7 +2,7 @@ from django import forms
 from django.db import models
 from django.forms import model_to_dict
 from django.utils.text import slugify
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.admin.panels import FieldPanel
 from wagtail.core.fields import RichTextField
 from wagtail.search import index
 
@@ -47,10 +47,10 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         default=False, verbose_name="Créé par GeoDEV ?"
     )
     source_name = models.CharField(
-        verbose_name="Nom de la source", max_length=100, blank=True
+        verbose_name="Producteur de la ressource", max_length=100, blank=True
     )
     source_link = models.CharField(
-        verbose_name="Lien vers la source", max_length=100, blank=True
+        verbose_name="Lien vers la Ressource (URL)", max_length=100, blank=True
     )
     file = models.FileField(
         verbose_name="Fichier source",
@@ -63,6 +63,7 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         blank=True,
         features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
         verbose_name="Description courte",
+        max_length=200,
     )
     types = models.ManyToManyField(ResourceType, blank=True)
 
@@ -79,7 +80,7 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         FieldPanel("profiles", widget=forms.CheckboxSelectMultiple),
         FieldPanel("geo_dev_creation"),
         FieldPanel("is_global"),
-        FieldPanel("countries", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("countries", widget=forms.SelectMultiple),
     ]
 
     def to_dict(self):

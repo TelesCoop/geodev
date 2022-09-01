@@ -32,13 +32,10 @@
   </div>
   <div class="has-background-info-light">
     <div class="section container">
-      <div style="max-width: 500px; margin: auto">
+      <div style="margin: auto">
         <h2 class="title is-3 has-text-centered">
           {{ page.specific.resources_block_title|richtext }}
         </h2>
-        <p class="has-text-centered">
-          {{ page.specific.resources_block_introduction|richtext }}
-        </p>
       </div>
       <div class="columns mt-5">
         {% for profile in profiles %}
@@ -83,6 +80,9 @@
           {% include "components/news_card.html" with news=news is_small=forloop.counter0 large_by_default=1 %}
         </div>
       {% endfor %}
+    </div>
+    <div class="has-text-centered mt-5">
+      <a href="{{ news_list_link }}" class="button is-medium is-secondary">Toutes les actualités</a>
     </div>
   </div>
   <div class="has-background-secondary-light">

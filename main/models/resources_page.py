@@ -2,15 +2,13 @@ import json
 from typing import List
 
 from django.forms import model_to_dict
-from django.http import Http404
-from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from wagtail.contrib.routable_page.models import RoutablePageMixin
 from wagtail.core.models import Page
 
-from main.constants import THEMATICS
+from main.models import Thematic
 from main.models.country import Country
 from main.models.country import WorldZone
 from main.models.models import Profile, ResourceType
-from main.models.news import News
 from main.models.resource import Resource
 
 
@@ -32,7 +30,9 @@ class ResourcesPage(RoutablePageMixin, Page):
                 for profile in Profile.objects.all()
             }
         )
-        context["thematics"] = json.dumps(THEMATICS)
+        context["thematics"] = json.dumps(
+            [thematic.to_dict() for thematic in Thematic.objects.all()]
+        )
         context["resource_types"] = json.dumps(
             [model_to_dict(type_) for type_ in ResourceType.objects.all()]
         )

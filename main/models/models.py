@@ -4,12 +4,13 @@ from django.db import models
 from django.templatetags.static import static
 from taggit.models import TagBase
 from unidecode import unidecode
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.admin.panels import FieldPanel
 from wagtail.contrib.settings.models import BaseSetting
 from wagtail.contrib.settings.registry import register_setting
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 from wagtail.core.templatetags.wagtailcore_tags import pageurl
+from wagtail.documents.models import Document
 
 from main.models.utils import FreeBodyField, SIMPLE_RICH_TEXT_FIELD_FEATURE
 
@@ -64,6 +65,20 @@ class Thematic(TagBase):
     class Meta:
         verbose_name = "Thématique"
         verbose_name_plural = "Thématiques"
+
+    icon = models.ForeignKey(Document, on_delete=models.SET_NULL, null=True)
+
+    def to_dict(self):
+        to_return = {
+            "name": self.name,
+            "slug": self.slug,
+        }
+        if self.icon:
+            to_return["icon"] = self.icon.url
+        else:
+            to_return["icon"] = f"/static/img/thematics/{self.slug}.svg"
+
+        return to_return
 
 
 class ActualityType(TagBase):

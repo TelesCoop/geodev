@@ -1,5 +1,5 @@
 from django.db import models
-from wagtail.admin.edit_handlers import StreamFieldPanel
+from wagtail.admin.panels import FieldPanel
 from wagtail.core import blocks
 from wagtail.core.fields import StreamField
 from wagtail.documents.blocks import DocumentChooserBlock
@@ -107,10 +107,11 @@ class FreeBodyField(models.Model):
         blank=True,
         verbose_name="Contenu",
         help_text="Corps de la page",
+        use_json_field=True,
     )
 
     panels = [
-        StreamFieldPanel("body", classname="full"),
+        FieldPanel("body", classname="full"),
     ]
 
     class Meta:
