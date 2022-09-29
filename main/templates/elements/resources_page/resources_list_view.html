@@ -28,9 +28,9 @@
               </template>
             </div>
             <div v-if="resource.zone">
-          <span class="icon">
-            <img :src="'{% static 'img/zones' %}' + '/' + resource.zone + '.svg'">
-          </span>
+              <span class="icon">
+                <img :src="resource.zone.icon">
+              </span>
               [[ zoneBySlug[resource.zone].name ]]
             </div>
           </div>

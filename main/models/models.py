@@ -66,7 +66,7 @@ class Thematic(TagBase):
         verbose_name = "Thématique"
         verbose_name_plural = "Thématiques"
 
-    icon = models.ForeignKey(Document, on_delete=models.SET_NULL, null=True)
+    icon = models.ForeignKey(Document, on_delete=models.SET_NULL, null=True, blank=True)
 
     def to_dict(self):
         to_return = {

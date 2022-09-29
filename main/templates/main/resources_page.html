@@ -26,19 +26,19 @@
         <div class="mb-6" style="display: flex; justify-content: center">
           <div class="tabs is-toggle is-toggle-rounded">
             <ul>
+              <li :class="isMapView ? '' : 'is-active'" @click="isMapView = false">
+                <a>
+                <span class="icon is-small"
+                      style="line-height: 0">{% include "components/icon.html" with name="list-check" size="16" %}</span>
+                  <span>Voir la liste</span>
+                </a>
+              </li>
               <li :class="isMapView ? 'is-active' : ''" @click="enableMapView()">
                 <a>
                 <span class="icon is-small" style="line-height: 0">
                   {% include "components/icon.html" with name="earth" size="16" %}
                 </span>
                   <span>Voir sur la carte</span>
-                </a>
-              </li>
-              <li :class="isMapView ? '' : 'is-active'" @click="isMapView = false">
-                <a>
-                <span class="icon is-small"
-                      style="line-height: 0">{% include "components/icon.html" with name="list-check" size="16" %}</span>
-                  <span>Voir la liste</span>
                 </a>
               </li>
             </ul>

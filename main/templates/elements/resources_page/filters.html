@@ -3,14 +3,14 @@
 <div class="section has-background-secondary-light">
   <div class="container">
     <h2 class="title is-3 mb-2">Ma recherche</h2>
-    <div>
-      <h3 class="title is-4 mb-1 has-text-centered">Je suis</h3>
-      <div style="display: flex; justify-content: space-between; max-width: 500px; margin: auto">
+    <div class="mb-4">
+      <h3 class="title is-3 mb-1 has-text-centered">Je suis</h3>
+      <div style="display: flex; justify-content: space-between; max-width: 620px; margin: auto">
         <button v-for="profile in profiles"
                 :class="selectedProfiles[profile.slug] ? '' : 'is-outlined'"
                 @click="toggleProfile(profile.slug)"
-                class="button is-rounded is-secondary"
-                style="width: 135px">
+                class="button is-large is-rounded is-secondary"
+                style="width: 190px">
           [[ profile.name ]]
         </button>
       </div>
@@ -53,9 +53,17 @@
                   :class="selectedZones[zone.code] ? '' : 'is-outlined'"
                   @click="toggleZone(zone.code)">
             <span class="icon" style="">
-              <img :src="'{% static 'img/zones' %}' + '/' + zone.code + '.svg'">
+              <img :src="zone.icon">
             </span>
             <span>[[ zone.name ]]</span>
+          </button>
+          <button class="button is-rounded is-secondary"
+                  :class="selectedZones[0] ? '' : 'is-outlined'"
+                  @click="toggleZone(0)">
+            <span class="icon" style="">
+              <img src="{% static 'img/zones/world.svg' %}">
+            </span>
+            <span>Monde entier</span>
           </button>
           <button @click="resetZones" class="button is-text is-rounded">Toutes</button>
         </div>

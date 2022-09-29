@@ -40,10 +40,19 @@
                   </div>
                 </div>
               {% else %}
-                <a class="navbar-item {% if child_page.slug in request.path %} active {% endif %}"
-                   href="{{ child_page.url }}">
-                  {{ child_page.title }}
-                </a>
+                {% if child_page.url == '/actualites/' %}
+                  <div class="navbar-item {% if child_page.slug in request.path %} active {% endif %}">
+                    <a class="button is-primary"
+                       href="{{ child_page.url }}">
+                      {{ child_page.title }}
+                    </a>
+                  </div>
+                {% else %}
+                  <a class="navbar-item {% if child_page.slug in request.path %} active {% endif %}"
+                     href="{{ child_page.url }}">
+                    {{ child_page.title }}
+                  </a>
+                {% endif %}
               {% endif %}
             {% endif %}
           {% endfor %}

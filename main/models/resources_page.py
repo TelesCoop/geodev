@@ -37,7 +37,7 @@ class ResourcesPage(RoutablePageMixin, Page):
             [model_to_dict(type_) for type_ in ResourceType.objects.all()]
         )
         context["zones"] = json.dumps(
-            [model_to_dict(zone) for zone in WorldZone.objects.all()]
+            [zone.to_dict() for zone in WorldZone.objects.all()]
         )
         context["selected_profile"] = request.GET.get("profile", "")
         context["resources"] = json.dumps(
