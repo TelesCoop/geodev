@@ -100,6 +100,12 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         )
         to_return["profiles"] = [profile.slug for profile in self.profiles.all()]
         to_return["thematics"] = [thematic.slug for thematic in self.thematics.all()]
+        to_return["is_description_long"] = (
+            is_description_long := len(self.short_description) >= 250
+        )
+        to_return["short_description_max_250"] = self.short_description[:250]
+        if is_description_long:
+            to_return["short_description_max_250"] += "..."
         if len(to_return["thematics"]) == 1:
             to_return["thematic"] = to_return["thematics"][0]
         elif len(to_return["thematics"]) > 1 and self.main_thematic:

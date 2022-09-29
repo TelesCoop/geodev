@@ -33,7 +33,6 @@ class ContactPage(Page):
     ]
 
     def serve(self, request, *args, **kwargs):
-        print("### method", request.method)
         if request.method == "POST":
             form = ContactForm(request.POST)
             form.full_clean()

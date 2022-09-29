@@ -62,8 +62,6 @@
       thematics.forEach(function (thematic) {
           thematicBySlug[thematic.slug] = thematic;
       });
-      console.log("### thematics", thematics)
-      console.log("### thematics", thematicBySlug)
       var resourceTypes = JSON.parse('{{ resource_types | escapejs }}');
       var resourceTypeBySlug = {};
       var selectedResourceTypes = {};
@@ -399,7 +397,6 @@
                           elementTop.style.display = "flex";
                           elementTop.style.justifyContent = "space-between";
                           var topLeft = document.createElement("div");
-                          console.log("### thematics 2", resource.thematics, this.thematicBySlug);
                           topLeft.innerText = resource.thematics
                               .map(thematic => this.thematicBySlug[thematic].name)
                               .join(", ");
@@ -416,7 +413,7 @@
                           titleLink.appendChild(elementTitle);
                           elementContent.appendChild(titleLink);
                           var elementIntro = document.createElement("p");
-                          elementIntro.innerHTML = resource.short_description;
+                          elementIntro.innerHTML = resource.short_description_max_250;
                           elementContent.appendChild(elementIntro);
                           var elementButton = document.createElement("a");
                           elementButton.href = resource.link;
