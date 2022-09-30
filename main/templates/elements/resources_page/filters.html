@@ -36,7 +36,7 @@
                   :class="'is-' + thematic.slug + ' ' + (selectedThematics[thematic.slug] ? '' : 'is-outlined')"
                   @click="toggleThematic(thematic.slug)">
             <span class="icon">
-              <img :src="'{% static 'img/thematics' %}' + '/' + thematic.slug + '.svg'">
+              <img :src="thematic.icon">
             </span>
             <span>[[ thematic.name ]]</span>
           </button>
