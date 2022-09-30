@@ -5,22 +5,22 @@
   {% if block.value.image %}
     <div class="columns">
       {% if block.value.position == "left" %}
-        <div class="column is-3">
+        <div class="column is-4">
           {% image block.value.image original as image %}
-          <figure class="image">
+          <figure class="m-0">
             <img src="{{ image.url }}">
           </figure>
         </div>
       {% endif %}
 
-      <div class="column is-9">
+      <div class="column is-8">
         {% include_block block.value.paragraph %}
       </div>
 
       {% if block.value.position == "right" %}
-        <div class="column is-3">
+        <div class="column is-4">
           {% image block.value.image original as image %}
-          <figure class="image">
+          <figure class="m-0">
             <img src="{{ image.url }}">
           </figure>
         </div>
