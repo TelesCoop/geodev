@@ -68,15 +68,15 @@ class Thematic(TagBase):
 
     icon = models.ForeignKey(Document, on_delete=models.SET_NULL, null=True, blank=True)
 
-    def to_dict(self):
-        to_return = {
-            "name": self.name,
-            "slug": self.slug,
-        }
+    @property
+    def icon_or_default(self):
         if self.icon:
-            to_return["icon"] = self.icon.url
+            return self.icon.url
         else:
-            to_return["icon"] = f"/static/img/thematics/{self.slug}.svg"
+            return f"/static/img/thematics/{self.slug}.svg"
+
+    def to_dict(self):
+        to_return = {"name": self.name, "slug": self.slug, "icon": self.icon_or_default}
 
         return to_return
 

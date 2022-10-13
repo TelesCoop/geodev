@@ -20,7 +20,7 @@
               <template v-else>
             <span>
               <span class="icon">
-                <img :src="'{% static 'img/thematics/unspecified.svg' %}'">
+                <img v-if="resource.thematics.length < 2" :src="'{% static 'img/thematics/unspecified.svg' %}'">
               </span>
               <template v-if="resource.thematics.length">Plusieurs thématiques</template>
               <template v-else>Sans thématique</template>
@@ -43,8 +43,12 @@
             <img v-if="resource.thematic && resource.thematic != 'multiple'"
                  :src="'{% static 'img/thematics' %}' + '/' + resource.thematic + '.svg'"
                  style="width: 107px ; height: 107px; opacity: 0.5">
-            <img v-else :src="'{% static 'img/thematics/unspecified_color.svg' %}'"
-                 style="width: 107px ; height: 107px; opacity: 0.5">
+            <template v-else>
+              <img v-if="resource.thematics.length >= 2" :src="'{% static 'img/thematics/multiple.svg' %}'"
+                   style="width: 107px ; height: 107px; opacity: 0.5">
+              <img v-else :src="'{% static 'img/thematics/unspecified_color.svg' %}'"
+                   style="width: 107px ; height: 107px; opacity: 0.5">
+            </template>
           </div>
           <div>
             <span class="has-text-weight-bold">[[ resource.resource_type ]]</span>

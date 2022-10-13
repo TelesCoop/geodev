@@ -15,13 +15,16 @@
           <div>
             {% if main_thematic %}
               <span class="icon">
-                <img src="{% static 'img/thematics' %}/{{ main_thematic.slug }}.svg">
+                <img src="{{ main_thematic.icon_or_default }}">
               </span>
               {{ main_thematic.name }}
             {% else %}
               <span>
                 <span class="icon">
+                {% if resource.thematics.count %}
+                {% else %}
                   <img src="{% static 'img/thematics/unspecified.svg' %}">
+                {% endif %}
                 </span>
                 {% if resource.thematics.count %}
                   Plusieurs thématiques
@@ -43,10 +46,15 @@
 
         <div class="my-5 has-text-centered">
           {% if main_thematic %}
-            <img :src="thematic.icon" style="width: 107px ; height: 107px">
+            <img src="{{ main_thematic.icon_or_default }}" style="width: 107px ; height: 107px">>
           {% else %}
-            <img src="{% static 'img/thematics/unspecified_color.svg' %}"
-                 style="width: 107px ; height: 107px">
+            {% if resource.thematics.count %}
+              <img src="{% static 'img/thematics/multiple.svg' %}"
+                   style="width: 107px ; height: 107px">
+            {% else %}
+              <img src="{% static 'img/thematics/unspecified_color.svg' %}"
+                   style="width: 107px ; height: 107px">
+            {% endif %}
           {% endif %}
         </div>
         <div>

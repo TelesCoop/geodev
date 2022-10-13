@@ -62,6 +62,7 @@
       thematics.forEach(function (thematic) {
           thematicBySlug[thematic.slug] = thematic;
       });
+      console.log("### thematicBySlug", thematicBySlug);
       var resourceTypes = JSON.parse('{{ resource_types | escapejs }}');
       var resourceTypeBySlug = {};
       var selectedResourceTypes = {};

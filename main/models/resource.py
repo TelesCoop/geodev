@@ -156,4 +156,4 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
     class Meta:
         verbose_name_plural = "Ressources"
         verbose_name = "Ressource"
-        ordering = ["-created"]
+        ordering = ("name",)
