@@ -63,7 +63,7 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         blank=True,
         features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
         verbose_name="Description courte",
-        max_length=200,
+        max_length=1000,
     )
     types = models.ManyToManyField(ResourceType, blank=True)
 
