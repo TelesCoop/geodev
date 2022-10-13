@@ -59,6 +59,13 @@ $climat-invert: findColorInvert($climat)
 $mnt-invert: findColorInvert($mnt)
 $secondary-invert: findColorInvert($secondary)
 $custom-colors: ("agriculture": ($agriculture, $agriculture-invert), "floors": ($floors, $floors-invert), "biodiversity": ($biodiversity, $biodiversity-invert), "water": ($water, $water-invert), "risks": ($risks, $risks-invert), "health": ($health, $health-invert), "cities": ($cities, $cities-invert), "forest": ($forest, $forest-invert), "littoral": ($littoral, $littoral-invert), "climat": ($climat, $climat-invert), "mnt": ($mnt, $mnt-invert), "secondary": ($secondary, $secondary-invert))
+
+
+@each $name, $components in $custom-colors
+  .button.is-#{$name}.is-outlined:focus
+    background: transparent !important
+    color: nth($components, 1) !important
+
 // Text colors
 $text: $purple
 $title-color: $text

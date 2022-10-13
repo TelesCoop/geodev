@@ -12,6 +12,54 @@
   src: url("/static/fonts/inter/inter-v8-latin-700.eot");
   src: local(""), url("/static/fonts/inter/inter-v8-latin-700.eot?#iefix") format("embedded-opentype"), url("/static/fonts/inter/inter-v8-latin-700.woff2") format("woff2"), url("/static/fonts/inter/inter-v8-latin-700.woff") format("woff"), url("/static/fonts/inter/inter-v8-latin-700.ttf") format("truetype"), url("/static/fonts/inter/inter-v8-latin-700.svg#Inter") format("svg"); }
 
+.button.is-agriculture.is-outlined:focus {
+  background: transparent !important;
+  color: #9F6B04 !important; }
+
+.button.is-floors.is-outlined:focus {
+  background: transparent !important;
+  color: #7A2906 !important; }
+
+.button.is-biodiversity.is-outlined:focus {
+  background: transparent !important;
+  color: #3C7E07 !important; }
+
+.button.is-water.is-outlined:focus {
+  background: transparent !important;
+  color: #0F7BC2 !important; }
+
+.button.is-risks.is-outlined:focus {
+  background: transparent !important;
+  color: #EA3576 !important; }
+
+.button.is-health.is-outlined:focus {
+  background: transparent !important;
+  color: #3748E1 !important; }
+
+.button.is-cities.is-outlined:focus {
+  background: transparent !important;
+  color: #693BB3 !important; }
+
+.button.is-forest.is-outlined:focus {
+  background: transparent !important;
+  color: #058566 !important; }
+
+.button.is-littoral.is-outlined:focus {
+  background: transparent !important;
+  color: #333399 !important; }
+
+.button.is-climat.is-outlined:focus {
+  background: transparent !important;
+  color: #fe0000 !important; }
+
+.button.is-mnt.is-outlined:focus {
+  background: transparent !important;
+  color: #7a1fa0 !important; }
+
+.button.is-secondary.is-outlined:focus {
+  background: transparent !important;
+  color: #E56934 !important; }
+
 .content h3 {
   margin-bottom: 1em !important; }
 

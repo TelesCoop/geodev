@@ -43,8 +43,7 @@
 
         <div class="my-5 has-text-centered">
           {% if main_thematic %}
-            <img src="{% static 'img/thematics' %}/{{ main_thematic.slug }}.svg"
-                 style="width: 107px ; height: 107px">
+            <img :src="thematic.icon" style="width: 107px ; height: 107px">
           {% else %}
             <img src="{% static 'img/thematics/unspecified_color.svg' %}"
                  style="width: 107px ; height: 107px">
