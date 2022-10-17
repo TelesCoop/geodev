@@ -41,7 +41,7 @@
            :target="resource.is_download ? '_self' : '_blank'">
           <div class="my-5 has-text-centered">
             <img v-if="resource.thematic && resource.thematic != 'multiple'"
-                 :src="'{% static 'img/thematics' %}' + '/' + resource.thematic + '.svg'"
+                 :src="thematicBySlug[resource.thematic].icon"
                  style="width: 107px ; height: 107px; opacity: 0.5">
             <template v-else>
               <img v-if="resource.thematics.length >= 2" :src="'{% static 'img/thematics/multiple.svg' %}'"
