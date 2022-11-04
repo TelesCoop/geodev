@@ -53,6 +53,9 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
         related_name="news",
         help_text="Permet le filtrage des actualités",
     )
+    is_global = models.BooleanField(
+        verbose_name="Concerne tous les pays", default=False
+    )
     countries = models.ManyToManyField(
         Country,
         verbose_name="Pays liés",
@@ -89,10 +92,11 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
         FieldPanel("is_geodev"),
         FieldPanel("body"),
         FieldPanel("types", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("is_global"),
         FieldPanel("zones", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("countries", widget=forms.SelectMultiple),
         FieldPanel("thematics", widget=forms.CheckboxSelectMultiple),
         FieldPanel("resources", widget=forms.SelectMultiple),
-        FieldPanel("countries", widget=forms.SelectMultiple),
     ]
 
     def __str__(self):

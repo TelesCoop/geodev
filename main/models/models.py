@@ -25,6 +25,20 @@ class ContentPage(Page, FreeBodyField):
     content_panels = Page.content_panels + FreeBodyField.panels
 
 
+class ResourceType(TagBase):
+    class Meta:
+        ordering = ("name",)
+        verbose_name = "Type de ressource"
+        verbose_name_plural = "Types de ressource"
+
+
+class ActualityType(TagBase):
+    class Meta:
+        ordering = ("name",)
+        verbose_name = "Type d'actualité"
+        verbose_name_plural = "Types d'actualité"
+
+
 class Profile(models.Model):
     name = models.CharField(max_length=100)
     description = RichTextField(
@@ -33,10 +47,12 @@ class Profile(models.Model):
         features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
         verbose_name="Description",
     )
+    types = models.ManyToManyField(ResourceType, verbose_name="types de ressource")
 
     panels = [
         FieldPanel("name"),
         FieldPanel("description"),
+        FieldPanel("types"),
     ]
 
     def __str__(self):
@@ -79,20 +95,6 @@ class Thematic(TagBase):
         to_return = {"name": self.name, "slug": self.slug, "icon": self.icon_or_default}
 
         return to_return
-
-
-class ActualityType(TagBase):
-    class Meta:
-        ordering = ("name",)
-        verbose_name = "Type d'actualité"
-        verbose_name_plural = "Types d'actualité"
-
-
-class ResourceType(TagBase):
-    class Meta:
-        ordering = ("name",)
-        verbose_name = "Type de ressource"
-        verbose_name_plural = "Types de ressource"
 
 
 @register_setting

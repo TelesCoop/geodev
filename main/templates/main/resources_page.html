@@ -104,8 +104,12 @@
           selectedProfiles['{{ selected_profile }}'] = true;
       }
 
+      function normalize(str) {
+          return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      }
+
       function startsWith(str, other) {
-          return str.indexOf(other) === 0;
+          return normalize(str).indexOf(normalize(other)) === 0;
       }
 
 

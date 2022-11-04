@@ -8,7 +8,7 @@
 
 {% block content %}
   <div class="container">
-    <div class="section pt-0">
+    <div class="section pt-0 pb-4">
       <div class="columns" style="justify-content: space-between">
         <div class="column is-6" style="max-width: 550px">
           <h1 class="title is-2">GeoDEV, le réseau d’animation régionale Pays du Sud du Pôle
@@ -31,12 +31,12 @@
     </div>
   </div>
   <div class="has-background-info-light">
-    <div class="container section">
+    <div class="container section py-2">
       <h2 class="title is-3 mt-3">{{ page.specific.news_block_title|richtext }}</h2>
       <div class="columns">
         {% for news in news_list %}
           <div class="column {% if forloop.counter == 1 %}is-6{% else %}is-3{% endif %}">
-            {% include "components/news_card.html" with news=news is_small=forloop.counter0 large_by_default=1 %}
+            {% include "components/news_card.html" with news=news is_small=forloop.counter0 large_by_default=1 full_height=1 %}
           </div>
         {% endfor %}
       </div>

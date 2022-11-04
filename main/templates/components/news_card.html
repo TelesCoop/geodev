@@ -3,7 +3,8 @@
 {% load wagtailcore_tags %}
 
 <a href="{% news_page_url news %}">
-  <div class="card" {% if width %} style="width: {{ width }}px;"{% endif %}>
+  <div class="card" {% if width %} style="width: {{ width }}px;"{% endif %}
+                    {% if full_height %} style="height: 100%" {% endif %}>
     <div class="card-image">
       {% image news.image original as news_image %}
       <figure class="image has-ratio

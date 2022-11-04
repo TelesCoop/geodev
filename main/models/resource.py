@@ -50,7 +50,7 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         verbose_name="Producteur de la ressource", max_length=100, blank=True
     )
     source_link = models.CharField(
-        verbose_name="Lien vers la Ressource (URL)", max_length=100, blank=True
+        verbose_name="Lien vers la Ressource (URL)", max_length=200, blank=True
     )
     file = models.FileField(
         verbose_name="Fichier source",
