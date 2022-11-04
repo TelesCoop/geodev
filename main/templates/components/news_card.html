@@ -8,7 +8,7 @@
     <div class="card-image">
       {% image news.image original as news_image %}
       <figure class="image has-ratio
-              {% if large_by_default %}{% if is_small %}is-4by3{% else %}is-3by1{% endif %}{% else %}is-4by3{% endif %}"
+              {% if large_by_default %}{% if is_small %}is-4by3{% else %}is-2by1{% endif %}{% else %}is-4by3{% endif %}"
               style="background-image: url('{{ news_image.url }}'); background-size: cover; background-position: center">
       </figure>
     </div>
