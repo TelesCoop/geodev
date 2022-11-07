@@ -6,7 +6,7 @@ from wagtail.admin.panels import FieldPanel
 from wagtail.core.fields import RichTextField
 from wagtail.search import index
 
-from main.models.country import Country
+from main.models.country import Country, WorldZone
 from main.models.models import Thematic, Profile, ResourceType
 from main.models.utils import (
     TimeStampedModel,
@@ -17,6 +17,7 @@ from main.models.utils import (
 
 class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
     countries = models.ManyToManyField(Country, verbose_name="Pays", blank=True)
+    zones = models.ManyToManyField(WorldZone, verbose_name="Zones", blank=True)
     is_global = models.BooleanField(
         verbose_name="Concerne tous les pays", default=False
     )
@@ -80,6 +81,7 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         FieldPanel("profiles", widget=forms.CheckboxSelectMultiple),
         FieldPanel("geo_dev_creation"),
         FieldPanel("is_global"),
+        FieldPanel("zones", widget=forms.CheckboxSelectMultiple),
         FieldPanel("countries", widget=forms.SelectMultiple),
     ]
 
@@ -136,6 +138,13 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
         if self.thematics.count() == 1:
             return self.thematics.first()
         return None
+
+    def add_countries_from_zone(self):
+        # add all countries of all selected zones
+        for zone in self.zones.all():
+            for country in zone.country_set.all():
+                self.countries.add(country)
+        super().save()
 
     def save(self, *args, **kwargs):
         if not self.slug:

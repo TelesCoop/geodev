@@ -56,8 +56,10 @@
           <h3 class="title is-5">[[ resource.name ]]</h3>
         </a>
         <p v-if="resource.showFullDescription"
+           style="word-break: break-word"
            v-html="resource.short_description"></p>
         <p v-if="!resource.showFullDescription"
+           style="word-break: break-word"
            v-html="resource.short_description_max_250"></p>
         <span v-if="resource.is_description_long"
               class="button is-info is-small is-outlined"

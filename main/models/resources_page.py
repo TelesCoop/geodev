@@ -46,4 +46,10 @@ class ResourcesPage(RoutablePageMixin, Page):
         context["countries"] = json.dumps(
             [country.to_dict() for country in Country.objects.all()]
         )
+        context["resource_types_per_profile"] = json.dumps(
+            {
+                profile.slug: [type_.slug for type_ in profile.types.all()]
+                for profile in Profile.objects.all()
+            }
+        )
         return context

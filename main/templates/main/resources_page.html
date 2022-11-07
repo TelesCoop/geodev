@@ -126,6 +126,7 @@
                   countryParameters: countryParameters,
                   searchInput: '',
                   resourceTypes: resourceTypes,
+                  resourceTypesPerProfile: JSON.parse('{{ resource_types_per_profile | escapejs }}'),
                   selectedProfiles: selectedProfiles,
                   selectedResourceTypes: selectedResourceTypes,
                   selectedThematics: selectedThematics,
@@ -449,6 +450,18 @@
           },
           mounted() {
               this.updateFilters();
+          },
+          computed: {
+              isResourceTypeActive() {
+                  return (name) => {
+                      var profiles = Object.entries(this.selectedProfiles).filter(entry => entry[1])
+                      if (profiles.length !== 1) {
+                          return true
+                      }
+                      var profile = profiles[0][0]
+                      return this.resourceTypesPerProfile[profile].indexOf(name) !== -1
+                  }
+              }
           },
       }).mount('#app')
   </script>

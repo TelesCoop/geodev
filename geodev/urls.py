@@ -16,7 +16,7 @@ urlpatterns = [
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
     path("backup/", include("telescoop_backup.urls")),
-    path("feed/news/latest", LatestNewsFeed()),
+    path("feed", LatestNewsFeed()),
     re_path(
         r"^images/([^/]*)/(\d*)/([^/]*)/[^/]*$",
         ServeView.as_view(),

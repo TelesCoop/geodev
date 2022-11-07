@@ -20,7 +20,7 @@
         <h3 class="title is-4">Les ressources qui m'intéressent</h3>
         <div class="tag-holder">
           <button v-for="type in resourceTypes"
-                  :class="selectedResourceTypes[type.slug] ? '' : 'is-outlined'"
+                  :class="{'is-outlined': selectedResourceTypes[type.slug], 'is-disabled': !isResourceTypeActive(type.slug)}"
                   @click="toggleType(type.slug)"
                   class="button is-rounded is-primary">
             [[ type.name ]]
@@ -62,7 +62,7 @@
             <span class="icon" style="">
               <img src="{% static 'img/zones/world.svg' %}">
             </span>
-            <span>Monde entier</span>
+            <span>Ressources globales</span>
           </button>
           <button @click="resetZones" class="button is-text is-rounded">Toutes</button>
         </div>

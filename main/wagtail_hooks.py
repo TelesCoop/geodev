@@ -7,6 +7,7 @@ from wagtail.contrib.modeladmin.options import (
     modeladmin_register,
 )
 from wagtail.core import hooks
+from wagtail.contrib.modeladmin.views import EditView, CreateView
 
 from main.models.country import WorldZone, Country
 from main.models.models import Profile, Thematic, ActualityType, ResourceType
@@ -31,12 +32,34 @@ class ProfileModelAdmin(ModelAdmin):
     search_fields = ("name",)
 
 
+class RelatedCountriesEditView(EditView):
+    def dispatch(self, request, *args, **kwargs):
+        to_return = super().dispatch(request, *args, **kwargs)
+        instance: Resource = self.instance
+        instance.add_countries_from_zone()
+        return to_return
+
+
+class RelatedCountriesCreateView(CreateView):
+    def dispatch(self, request, *args, **kwargs):
+        to_return = super().dispatch(request, *args, **kwargs)
+        try:
+            instance: Resource = self.get_instance()
+            instance.add_countries_from_zone()
+        except ValueError:
+            pass
+        return to_return
+
+
 class RessourceModelAdmin(ModelAdmin):
     model = Resource
     menu_label = "Ressources"
     menu_icon = "folder-inverse"
     add_to_settings_menu = False
     search_fields = ("name",)
+
+    edit_view_class = RelatedCountriesEditView
+    create_view_class = RelatedCountriesCreateView
 
 
 class ThematicModelAdmin(ModelAdmin):
@@ -73,6 +96,9 @@ class NewsModelAdmin(ModelAdmin):
     menu_icon = "folder-inverse"
     add_to_settings_menu = False
     search_fields = ("name",)
+
+    edit_view_class = RelatedCountriesEditView
+    create_view_class = RelatedCountriesCreateView
 
 
 class ActualityTypeModelAdmin(ModelAdmin):

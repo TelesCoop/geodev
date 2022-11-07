@@ -133,6 +133,13 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
 
         return to_return
 
+    def add_countries_from_zone(self):
+        # add all countries of all selected zones
+        for zone in self.zones.all():
+            for country in zone.country_set.all():
+                self.countries.add(country)
+        super().save()
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
