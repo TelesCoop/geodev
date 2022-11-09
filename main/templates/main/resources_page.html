@@ -186,6 +186,14 @@
               },
               toggleProfile(profile) {
                   this.selectedProfiles[profile] = !this.selectedProfiles[profile];
+                  if (!profile || Object.values(this.selectedProfiles).filter(value => value).length !== 1) {
+                      // unselecting a profile or if multiple profiles are selected,
+                      // select all resource types
+                      Object.keys(this.selectedResourceTypes).map(key => this.selectedResourceTypes[key] = false);
+                  } else {
+                      // select all resource types for that profile, unselect the rest
+                      Object.keys(this.selectedResourceTypes).map(key => this.selectedResourceTypes[key] = this.resourceTypesPerProfile[profile].indexOf(key) !== -1);
+                  }
                   this.updateFilters();
               },
               toggleThematic(thematic) {
