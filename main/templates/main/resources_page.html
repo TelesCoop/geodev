@@ -100,9 +100,6 @@
           selectedProfiles[profileSlug] = false;
       });
       var markers = [];
-      if ('{{ selected_profile }}') {
-          selectedProfiles['{{ selected_profile }}'] = true;
-      }
 
       function normalize(str) {
           return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -191,8 +188,9 @@
                       // select all resource types
                       Object.keys(this.selectedResourceTypes).map(key => this.selectedResourceTypes[key] = false);
                   } else {
+                      var selectedProfile = Object.entries(this.selectedProfiles).filter(value => value[1])[0][0];
                       // select all resource types for that profile, unselect the rest
-                      Object.keys(this.selectedResourceTypes).map(key => this.selectedResourceTypes[key] = this.resourceTypesPerProfile[profile].indexOf(key) !== -1);
+                      Object.keys(this.selectedResourceTypes).map(key => this.selectedResourceTypes[key] = this.resourceTypesPerProfile[selectedProfile].indexOf(key) !== -1);
                   }
                   this.updateFilters();
               },
@@ -457,6 +455,9 @@
               }
           },
           mounted() {
+              if ('{{ selected_profile }}') {
+                  this.toggleProfile('{{ selected_profile }}');
+              }
               this.updateFilters();
           },
           computed: {
