@@ -1,3 +1,4 @@
+from bs4 import BeautifulSoup
 from django.contrib.syndication.views import Feed
 
 from main.models.news import News
@@ -10,8 +11,16 @@ class LatestNewsFeed(Feed):
     description = "Les dernières actualités de GeoDEV."
     description_template = "rss_feed.html"
 
+    @staticmethod
+    def prepare_item(news: News):
+        news.introduction = BeautifulSoup(news.introduction, "html.parser").text
+        return news
+
     def items(self):
-        return News.objects.order_by("-publication_date")[:5]
+        return [
+            self.prepare_item(news)
+            for news in News.objects.order_by("-publication_date")[:5]
+        ]
 
     def item_title(self, item):
         return item.name
