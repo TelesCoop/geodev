@@ -16,6 +16,9 @@ class LatestNewsFeed(Feed):
         news.introduction = BeautifulSoup(news.introduction, "html.parser").text
         return news
 
+    def item_pubdate(self, item: News):
+        return item.publication_date
+
     def items(self):
         return [
             self.prepare_item(news)
