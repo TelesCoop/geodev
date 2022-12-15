@@ -7,7 +7,7 @@ from main.models import Resource
 
 
 def download_csv(request, queryset):
-    if not request.user.is_staff:
+    if not request.user.is_staff or not request.user.is_superuser:
         raise PermissionDenied
 
     model = queryset.model
