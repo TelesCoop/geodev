@@ -1,3 +1,4 @@
+from bs4 import BeautifulSoup
 from django import forms
 from django.db import models
 from django.forms import model_to_dict
@@ -161,6 +162,10 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
     @property
     def is_download(self):
         return bool(self.file)
+
+    @property
+    def description_text(self):
+        return BeautifulSoup(self.short_description, "html.parser").text
 
     class Meta:
         verbose_name_plural = "Ressources"

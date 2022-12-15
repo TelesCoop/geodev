@@ -6,17 +6,28 @@ from django.http import HttpResponse
 from main.models import Resource
 
 
+def get_fields(model):
+    model_fields = model._meta.fields + model._meta.many_to_many
+    field_names, field_verbose_names = [], []
+    for field in model_fields:
+        if field.name == "short_description":
+            field_names.append("description_text")
+            field_verbose_names.append("description")
+            continue
+        field_names.append(field.name)
+        if hasattr(field, "verbose_name"):
+            field_verbose_names.append(field.verbose_name)
+        else:
+            field_verbose_names.append(field.name)
+
+    return field_names, field_verbose_names
+
+
 def download_csv(request, queryset):
     if not request.user.is_staff and not request.user.is_superuser:
         raise PermissionDenied
 
-    model = queryset.model
-    model_fields = model._meta.fields + model._meta.many_to_many
-    field_names = [field.name for field in model_fields]
-    field_verbose_names = [
-        field.verbose_name if hasattr(field, "verbose_name") else field.name
-        for field in model_fields
-    ]
+    field_names, field_verbose_names = get_fields(queryset.model)
 
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="export.csv"'
