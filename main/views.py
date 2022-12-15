@@ -1,14 +1,14 @@
 import csv
 
-from django.core.exceptions import PermissionDenied
+# from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 
 from main.models import Resource
 
 
 def download_csv(request, queryset):
-    if not request.user.is_staff or not request.user.is_superuser:
-        raise PermissionDenied
+    # if not request.user.is_staff or not request.user.is_superuser:
+    #     raise PermissionDenied
 
     model = queryset.model
     model_fields = model._meta.fields + model._meta.many_to_many
