@@ -8,6 +8,7 @@ from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.images.views.serve import ServeView
 
 from main.feed import LatestNewsFeed
+from main.views import export_resources
 from search import views as search_views
 
 urlpatterns = [
@@ -22,6 +23,7 @@ urlpatterns = [
         ServeView.as_view(),
         name="wagtailimages_serve",
     ),
+    path("export/resources", export_resources),
 ]
 
 if settings.DEBUG:
