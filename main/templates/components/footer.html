@@ -6,8 +6,11 @@
       <div class="column is-8 is-flex is-align-items-center desktop is-flex-direction-column-until-widescreen"
            style="margin: auto">
         <img src="{% static 'img/geodev.png' %}" width="206" height="38">
-        <a href="/mentions-legales" class="button is-small is-text">Mentions légales</a>
-        <a href="/donnees-personnelles" class="button is-small is-text">Données personnelles</a>
+        {% for child_page in home_page.get_children.live %}
+          {% if child_page.specific.show_in_footer %}
+            <a href="{{ child_page.url }}" class="button is-small is-text">{{ child_page.title }}</a>
+          {% endif %}
+        {% endfor %}
         <a href="/admin" class="button is-small is-text">intranet</a>
         <a href="/contact/?review=1" class="button is-small is-text">Je donne mon avis sur ce site</a>
       </div>

@@ -4,7 +4,7 @@ from django.db import models
 from django.templatetags.static import static
 from taggit.models import TagBase
 from unidecode import unidecode
-from wagtail.admin.panels import FieldPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.contrib.settings.models import BaseSetting
 from wagtail.contrib.settings.registry import register_setting
 from wagtail.core.fields import RichTextField
@@ -22,7 +22,22 @@ class ContentPage(Page, FreeBodyField):
 
     subpage_types: List[str] = ["ContentPage"]
 
+    show_in_footer = models.BooleanField(
+        verbose_name="Faire apparaître dans le bas de page",
+        default=False,
+        help_text="Si un lien vers cette page devra apparaître dans le bas de page",
+    )
+
     content_panels = Page.content_panels + FreeBodyField.panels
+
+    promote_panels = Page.promote_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("show_in_footer"),
+            ],
+            heading="Pour le bas de page du site",
+        ),
+    ]
 
 
 class ResourceType(TagBase):
