@@ -113,6 +113,16 @@ class Thematic(TagBase):
 
 
 @register_setting
+class StructureSettings(BaseSetting):
+    linkedin = models.URLField(
+        help_text="URL de votre page LinkedIn", blank=True, null=True
+    )
+
+    class Meta:
+        verbose_name = "Paramètre de la structure"
+
+
+@register_setting
 class NewsLetterSettings(BaseSetting):
     newsLetter = models.URLField(
         help_text="Lien d'inscription à la lettre d'information",

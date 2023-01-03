@@ -13,6 +13,8 @@ SECRET_KEY = config.getstr("security.secret_key")
 ALLOWED_HOSTS = config.getlist("security.allowed_hosts", [])
 STATIC_ROOT = config.getstr("staticfiles.static_root")
 
+WAGTAILADMIN_BASE_URL = "https://theia-land.art-geodev.fr"
+
 try:
     from .local import *  # noqa: F401,F403
 except ImportError:

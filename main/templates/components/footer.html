@@ -13,6 +13,14 @@
         {% endfor %}
         <a href="/admin" class="button is-small is-text">intranet</a>
         <a href="/contact/?review=1" class="button is-small is-text">Je donne mon avis sur ce site</a>
+        {% if settings.main.StructureSettings.linkedin %}
+          <a href="{{ settings.main.StructureSettings.linkedin }}" class="button is-small is-text" target="_blank">
+            <span>Suivez-nous</span>
+            <span class="icon mb-2">
+              {% include "components/icon.html" with size="20" name="linkedin-box" %}
+            </span>
+          </a>
+        {% endif %}
       </div>
       <div class="column is-flex is-4 is-justify-content-center footer-logos is-align-items-center">
         <a href="https://www.theia-land.fr">
