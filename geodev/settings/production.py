@@ -49,3 +49,13 @@ BACKUP_BUCKET = "geodev-backup"  # S3 Bucket
 BACKUP_KEEP_N_DAYS = 31  # Optional, defaults to 31
 BACKUP_REGION = "eu-west-3"  # Optional, defaults to eu-west-3 (Paris)
 BACKUP_HOST = "s3.eu-west-3.amazonaws.com"  # Optional, default to s3.{BACKUP_REGIOn}.amazonaws.com
+
+# Mailgun
+ANYMAIL = {
+    "MAILGUN_API_KEY": config.getstr("mail.api_key"),  # noqa: F405
+    "MAILGUN_API_URL": "https://api.eu.mailgun.net/v3",
+    "MAILGUN_SENDER_DOMAIN": "mail.telescoop.fr",
+}
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+DEFAULT_FROM_EMAIL = "no-reply@telescoop.fr"
+SERVER_EMAIL = "no-reply@telescoop.fr"
