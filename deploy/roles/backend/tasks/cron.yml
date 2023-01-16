@@ -6,7 +6,7 @@
     name: "daily database backup"
     hour: '{{ database_backup.hour }}'
     minute: '{{ database_backup.minute }}'
-    job: "{{ venv.path }}/bin/python {{ backend_path }}/manage.py backup_db backup"
+    job: "{{ project_slug }}-ctl backup_db backup"
 
 - name: "daily media backup"
   cron:
@@ -14,4 +14,4 @@
     name: "daily media backup"
     hour: '{{ database_backup.hour }}'
     minute: '{{ database_backup.minute }}'
-    job: "{{ venv.path }}/bin/python {{ backend_path }}/manage.py backup_db media"
+    job: "{{ project_slug }}-ctl backup_db media"
