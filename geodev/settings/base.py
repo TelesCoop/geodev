@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "wagtail.contrib.routable_page",
     "wagtail.contrib.modeladmin",
     "wagtail.contrib.settings",
+    "anymail",
 ]
 
 MIDDLEWARE = [
