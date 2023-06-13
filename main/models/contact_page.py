@@ -1,6 +1,7 @@
 from typing import List
 
-from django.core.exceptions import ValidationError
+from django.conf import settings
+from django.core.mail import send_mail
 from django.shortcuts import render
 from wagtail.admin.panels import FieldPanel
 from wagtail.core.fields import RichTextField
@@ -35,14 +36,20 @@ class ContactPage(Page):
     def serve(self, request, *args, **kwargs):
         if request.method == "POST":
             form = ContactForm(request.POST)
-            form.full_clean()
-            if not form["agree"]:
-                form.add_error(
-                    "agree",
-                    ValidationError("Vous devez accepter les conditions d'utilisation"),
+            if form.is_valid():
+                send_mail(
+                    subject=f"[Geodev] {form.cleaned_data['subject']}",
+                    message=form.cleaned_data["message"],
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=settings.CONTACT_RECIPIENTS,
+                )
+                return render(
+                    request,
+                    "main/contact_page.html",
+                    {"validated": True},
                 )
         else:
-            form = ContactForm(request.POST)
+            form = ContactForm()
 
         context = self.get_context(request)
         context["form"] = form
