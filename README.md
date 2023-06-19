@@ -39,4 +39,4 @@ cocher toutes les cases.
 Ces pages peuvent être ajoutées / modifiées en créant / modifiant une page de contenu avec comme slug :
 
 - `mentions-legales` pour les mentions légales
-- `donnees-personnelles` pour les données personnelles
+- `donnees-personnelles` pour les données personnelles.
