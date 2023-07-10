@@ -13,6 +13,10 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 WAGTAILADMIN_BASE_URL = "http://localhost:8000"
 
+CONTACT_RECIPIENTS = [
+    "contact@telescoop.fr",
+]
+
 
 try:
     from .local import *  # noqa: F401,F403
