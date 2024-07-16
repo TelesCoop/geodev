@@ -11,7 +11,7 @@ public_hostnames:
   - theia-land.art-geodev.fr
   - www.art-geodev.fr
 django_project_name: geodev
-backend_repo: https://gitlab.com/telescoop-public/geodev
+backend_repo: https://github.com/TelesCoop/geodev
 backend_application_port: 8097  # must be unique for each project on the server
 backend_static_path: /{{ organization_slug }}/{{ project_slug}}/backend_static
 backend_media_path: /{{ organization_slug }}/{{ project_slug}}/backend/media
