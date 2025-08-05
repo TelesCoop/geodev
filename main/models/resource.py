@@ -101,31 +101,41 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
                 "short_description",
             ],
         )
+
+        # Use prefetched data to avoid additional queries
+        # These will use the prefetched data when called from ResourcesPage.get_context()
         to_return["profiles"] = [profile.slug for profile in self.profiles.all()]
         to_return["thematics"] = [thematic.slug for thematic in self.thematics.all()]
+
         to_return["is_description_long"] = (
-            is_description_long := len(self.short_description) >= 250
+            is_description_long := len(self.short_description or "") >= 250
         )
-        to_return["short_description_max_250"] = self.short_description[:250]
+        to_return["short_description_max_250"] = (self.short_description or "")[:250]
         if is_description_long:
             to_return["short_description_max_250"] += "..."
+
         if len(to_return["thematics"]) == 1:
             to_return["thematic"] = to_return["thematics"][0]
         elif len(to_return["thematics"]) > 1 and self.main_thematic:
             to_return["thematic"] = self.main_thematic.slug
         else:
             to_return["thematic"] = "multiple"
+
+        # Use prefetched countries and their zones to avoid additional queries
         zones = {country.zone.code for country in self.countries.all() if country.zone}
         if len(zones) == 1:
             to_return["zone"] = next(iter(zones))
         else:
             to_return["zone"] = None
+
         to_return["link"] = self.link
         if self.file:
             to_return["download_name"] = self.file.name
         else:
             to_return["download_name"] = None
         to_return["is_download"] = self.is_download
+
+        # Use prefetched data for countries and types
         to_return["countries"] = [country.code for country in self.countries.all()]
         to_return["types"] = [type_.slug for type_ in self.types.all()]
         return to_return
@@ -142,7 +152,9 @@ class Resource(index.Indexed, TimeStampedModel, FreeBodyField):
 
     def add_countries_from_zone(self):
         # add all countries of all selected zones
-        for zone in self.zones.all():
+        # Use prefetch_related to optimize the query
+        zones_with_countries = self.zones.prefetch_related("country_set").all()
+        for zone in zones_with_countries:
             for country in zone.country_set.all():
                 self.countries.add(country)
         super().save()
