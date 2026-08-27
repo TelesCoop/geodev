@@ -30,9 +30,7 @@ ROLLBAR = {
     "access_token": config.getstr("bugs.rollbar_access_token"),
     "environment": "development" if DEBUG else "production",
     "root": BASE_DIR,  # noqa: F405
-    'ignorable_404_urls': (
-        re.compile('/*'),
-    ),
+    "ignorable_404_urls": (re.compile("/*"),),
 }
 import rollbar  # noqa: E402
 

@@ -1,6 +1,7 @@
 # Django project
 /media/
 *.sqlite3
+*.sqlite3.bak-*
 
 # Python and others
 __pycache__
