@@ -1,7 +1,9 @@
 # Django project
 /media/
+/static/
 *.sqlite3
 *.sqlite3.bak-*
+local_settings.ini
 
 # Python and others
 __pycache__
