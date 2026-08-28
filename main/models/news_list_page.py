@@ -4,7 +4,7 @@ from django.forms import model_to_dict
 from django.http import Http404
 from rest_framework.utils import json
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
-from wagtail.core.models import Page
+from wagtail.models import Page
 
 from main.models import ActualityType
 from main.models.news import News

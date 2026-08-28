@@ -5,11 +5,11 @@ from django.templatetags.static import static
 from taggit.models import TagBase
 from unidecode import unidecode
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
-from wagtail.contrib.settings.models import BaseSetting
+from wagtail.contrib.settings.models import BaseSiteSetting
 from wagtail.contrib.settings.registry import register_setting
-from wagtail.core.fields import RichTextField
-from wagtail.core.models import Page
-from wagtail.core.templatetags.wagtailcore_tags import pageurl
+from wagtail.fields import RichTextField
+from wagtail.models import Page
+from wagtail.templatetags.wagtailcore_tags import pageurl
 from wagtail.documents.models import Document
 
 from main.models.utils import FreeBodyField, SIMPLE_RICH_TEXT_FIELD_FEATURE
@@ -113,7 +113,7 @@ class Thematic(TagBase):
 
 
 @register_setting
-class StructureSettings(BaseSetting):
+class StructureSettings(BaseSiteSetting):
     linkedin = models.URLField(
         help_text="URL de votre page LinkedIn", blank=True, null=True
     )
@@ -123,7 +123,7 @@ class StructureSettings(BaseSetting):
 
 
 @register_setting
-class NewsLetterSettings(BaseSetting):
+class NewsLetterSettings(BaseSiteSetting):
     newsLetter = models.URLField(
         help_text="Lien d'inscription à la lettre d'information",
         max_length=300,
@@ -136,7 +136,7 @@ class NewsLetterSettings(BaseSetting):
 
 
 @register_setting
-class AnalyticsScriptSetting(BaseSetting):
+class AnalyticsScriptSetting(BaseSiteSetting):
     script = models.TextField(
         help_text="Script d'analytics",
         blank=True,

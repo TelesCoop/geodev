@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import wagtail.core.fields
+import wagtail.fields
 
 
 class Migration(migrations.Migration):
@@ -29,11 +29,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "left_column",
-                    wagtail.core.fields.RichTextField(verbose_name="colonne de gauche"),
+                    wagtail.fields.RichTextField(verbose_name="colonne de gauche"),
                 ),
                 (
                     "newsletter_text",
-                    wagtail.core.fields.RichTextField(
+                    wagtail.fields.RichTextField(
                         verbose_name="texte d'introduction newsletter"
                     ),
                 ),

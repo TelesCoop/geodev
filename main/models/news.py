@@ -5,7 +5,7 @@ from django.db import models
 from django.forms import model_to_dict
 from django.utils.text import slugify
 from wagtail.admin.panels import FieldPanel
-from wagtail.core.fields import RichTextField
+from wagtail.fields import RichTextField
 from wagtail.images.views.serve import generate_image_url
 from wagtail.search import index
 
@@ -79,7 +79,7 @@ class News(index.Indexed, TimeStampedModel, FreeBodyField):
     )
 
     search_fields = [
-        index.SearchField("name", partial_match=True),
+        index.SearchField("name"),
         index.FilterField("publication_date"),
     ]
 

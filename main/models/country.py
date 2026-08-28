@@ -49,8 +49,8 @@ class Country(models.Model, Indexed):
     zone = models.ForeignKey(WorldZone, on_delete=models.SET_NULL, null=True)
 
     search_fields = [
-        index.SearchField("name", partial_match=True),
-        index.SearchField("code", partial_match=True),
+        index.SearchField("name"),
+        index.SearchField("code"),
     ]
 
     def __str__(self):
