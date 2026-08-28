@@ -45,8 +45,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "wagtail.contrib.routable_page",
-    "wagtail.contrib.modeladmin",
+    "wagtail.contrib.search_promotions",
     "wagtail.contrib.settings",
+    "wagtail_modeladmin",
     "anymail",
 ]
 

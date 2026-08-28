@@ -1,13 +1,13 @@
 from django.templatetags.static import static
 from django.utils.html import format_html
 from wagtail.admin.panels import FieldPanel
-from wagtail.contrib.modeladmin.options import (
+from wagtail_modeladmin.options import (
     ModelAdmin,
     ModelAdminGroup,
     modeladmin_register,
 )
 from wagtail import hooks
-from wagtail.contrib.modeladmin.views import EditView, CreateView
+from wagtail_modeladmin.views import EditView, CreateView
 
 from main.models.country import WorldZone, Country
 from main.models.models import Profile, Thematic, ActualityType, ResourceType
