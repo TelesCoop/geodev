@@ -107,7 +107,6 @@ class FreeBodyField(models.Model):
         blank=True,
         verbose_name="Contenu",
         help_text="Corps de la page",
-        use_json_field=True,
     )
 
     panels = [
