@@ -30,9 +30,7 @@ ROLLBAR = {
     "access_token": config.getstr("bugs.rollbar_access_token"),
     "environment": "development" if DEBUG else "production",
     "root": BASE_DIR,  # noqa: F405
-    'ignorable_404_urls': (
-        re.compile('/*'),
-    ),
+    "ignorable_404_urls": (re.compile("/*"),),
 }
 import rollbar  # noqa: E402
 
@@ -44,7 +42,9 @@ class MyFileStorage(ManifestStaticFilesStorage):
     manifest_strict = False
 
 
-STATICFILES_STORAGE = "geodev.settings.production.MyFileStorage"
+STORAGES["staticfiles"][  # noqa: F405
+    "BACKEND"
+] = "geodev.settings.production.MyFileStorage"
 
 INSTALLED_APPS.append("telescoop_backup")  # noqa: F405
 BACKUP_ACCESS = config.getstr("backup.backup_access")  # S3 ACCESS

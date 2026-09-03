@@ -2,8 +2,8 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import wagtail.core.blocks
-import wagtail.core.fields
+import wagtail.blocks
+import wagtail.fields
 import wagtail.documents.blocks
 import wagtail.images.blocks
 
@@ -32,22 +32,22 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "body",
-                    wagtail.core.fields.StreamField(
+                    wagtail.fields.StreamField(
                         [
                             (
                                 "heading",
-                                wagtail.core.blocks.CharBlock(
+                                wagtail.blocks.CharBlock(
                                     form_classname="full title",
                                     label="Titre de la page",
                                 ),
                             ),
                             (
                                 "section",
-                                wagtail.core.blocks.StructBlock(
+                                wagtail.blocks.StructBlock(
                                     [
                                         (
                                             "color",
-                                            wagtail.core.blocks.ChoiceBlock(
+                                            wagtail.blocks.ChoiceBlock(
                                                 choices=[
                                                     ("blue", "Bleue"),
                                                     ("pink", "Rose"),
@@ -66,7 +66,7 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "position",
-                                            wagtail.core.blocks.ChoiceBlock(
+                                            wagtail.blocks.ChoiceBlock(
                                                 choices=[
                                                     ("right", "Droite"),
                                                     ("left", "Gauche"),
@@ -77,7 +77,7 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "paragraph",
-                                            wagtail.core.blocks.RichTextBlock(
+                                            wagtail.blocks.RichTextBlock(
                                                 features=[
                                                     "bold",
                                                     "italic",
@@ -94,12 +94,12 @@ class Migration(migrations.Migration):
                                         ),
                                         (
                                             "sub_section",
-                                            wagtail.core.blocks.ListBlock(
-                                                wagtail.core.blocks.StructBlock(
+                                            wagtail.blocks.ListBlock(
+                                                wagtail.blocks.StructBlock(
                                                     [
                                                         (
                                                             "color",
-                                                            wagtail.core.blocks.ChoiceBlock(
+                                                            wagtail.blocks.ChoiceBlock(
                                                                 choices=[
                                                                     ("blue", "Bleue"),
                                                                     ("pink", "Rose"),
@@ -117,7 +117,7 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "paragraph",
-                                                            wagtail.core.blocks.RichTextBlock(
+                                                            wagtail.blocks.RichTextBlock(
                                                                 features=[
                                                                     "bold",
                                                                     "italic",
@@ -133,12 +133,12 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "columns",
-                                                            wagtail.core.blocks.ListBlock(
-                                                                wagtail.core.blocks.StructBlock(
+                                                            wagtail.blocks.ListBlock(
+                                                                wagtail.blocks.StructBlock(
                                                                     [
                                                                         (
                                                                             "color",
-                                                                            wagtail.core.blocks.ChoiceBlock(
+                                                                            wagtail.blocks.ChoiceBlock(
                                                                                 choices=[
                                                                                     (
                                                                                         "blue",
@@ -162,7 +162,7 @@ class Migration(migrations.Migration):
                                                                         ),
                                                                         (
                                                                             "paragraph",
-                                                                            wagtail.core.blocks.RichTextBlock(
+                                                                            wagtail.blocks.RichTextBlock(
                                                                                 features=[
                                                                                     "bold",
                                                                                     "italic",
@@ -224,7 +224,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="homepage",
             name="introduction",
-            field=wagtail.core.fields.RichTextField(
+            field=wagtail.fields.RichTextField(
                 blank=True,
                 null=True,
                 verbose_name="Introduction du bloc des ressources",
@@ -243,7 +243,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="homepage",
             name="ressources_block_explication",
-            field=wagtail.core.fields.RichTextField(
+            field=wagtail.fields.RichTextField(
                 blank=True,
                 help_text="Explication présente sous les listes des différents profils",
                 null=True,
@@ -253,7 +253,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="homepage",
             name="ressources_block_introduction",
-            field=wagtail.core.fields.RichTextField(
+            field=wagtail.fields.RichTextField(
                 blank=True,
                 null=True,
                 verbose_name="Introduction du bloc des ressources",

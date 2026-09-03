@@ -3,7 +3,7 @@ from typing import List
 
 from django.forms import model_to_dict
 from wagtail.contrib.routable_page.models import RoutablePageMixin
-from wagtail.core.models import Page
+from wagtail.models import Page
 
 from main.models import Thematic
 from main.models.country import Country

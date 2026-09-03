@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import wagtail.core.fields
+import wagtail.fields
 
 
 class Migration(migrations.Migration):
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="homepage",
             name="introduction",
-            field=wagtail.core.fields.RichTextField(
+            field=wagtail.fields.RichTextField(
                 blank=True,
                 null=True,
                 verbose_name="Introduction du block des ressources",
@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="homepage",
             name="ressources_block_explication",
-            field=wagtail.core.fields.RichTextField(
+            field=wagtail.fields.RichTextField(
                 blank=True,
                 help_text="Explication présente sous les listes des différents profils",
                 null=True,
@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="homepage",
             name="ressources_block_introduction",
-            field=wagtail.core.fields.RichTextField(
+            field=wagtail.fields.RichTextField(
                 blank=True,
                 null=True,
                 verbose_name="Introduction du block des ressources",
@@ -77,7 +77,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="profile",
             name="description",
-            field=wagtail.core.fields.RichTextField(
+            field=wagtail.fields.RichTextField(
                 blank=True, null=True, verbose_name="Description"
             ),
         ),
@@ -110,7 +110,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="ressource",
             name="short_description",
-            field=wagtail.core.fields.RichTextField(
+            field=wagtail.fields.RichTextField(
                 blank=True,
                 help_text="Sera affiché sur la carte de la ressource",
                 null=True,
