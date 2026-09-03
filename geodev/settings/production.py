@@ -15,6 +15,12 @@ SECRET_KEY = config.getstr("security.secret_key")
 ALLOWED_HOSTS = config.getlist("security.allowed_hosts", [])
 STATIC_ROOT = config.getstr("staticfiles.static_root")
 
+# Le site est servi en HTTPS derrière nginx qui proxifie vers gunicorn en HTTP.
+# Sans ça, Django croit que la requête est en http -> échec de la vérification
+# CSRF (contrôle de l'en-tête Origin, ajouté dans Django 4.0) sur les POST admin.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in ALLOWED_HOSTS]
+
 WAGTAILADMIN_BASE_URL = "https://theia-land.art-geodev.fr"
 
 try:
