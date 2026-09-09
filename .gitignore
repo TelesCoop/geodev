@@ -4,6 +4,7 @@
 *.sqlite3
 *.sqlite3.bak-*
 local_settings.ini
+.telescoop_backup_last_backup
 
 # Python and others
 __pycache__
